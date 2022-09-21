@@ -1,5 +1,7 @@
 # pedule-web
 
+Este é o Projeto Web da Aplicação Pedule - Uma agenda acadêmica pessoal
+
 ## Project setup
 ```
 npm install
