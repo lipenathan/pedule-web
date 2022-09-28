@@ -16,4 +16,8 @@ export default {
   font-family: Quicksand, Helvetica, Arial, sans-serif;
   text-align: center;
 }
+
+body {
+  background-color: #EEEEF8;
+}
 </style>
