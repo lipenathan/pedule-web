@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import Agenda from '../views/Agenda.vue'
+import Agenda from '@/views/Agenda.vue'
+import Atividades from '@/views/Atividades.vue'
+import Materias from '@/views/Materias.vue'
+import Anotacoes from '@/views/Anotacoes.vue'
+import Cursos from '@/views/Cursos.vue'
 
 const routes = [
   {
@@ -20,6 +24,26 @@ const routes = [
     path: '/agenda',
     name: 'agenda',
     component: Agenda
+  },
+  {
+    path: '/atividades',
+    name: 'atividades',
+    component: Atividades
+  },
+  {
+    path: '/materias',
+    name: 'materias',
+    component: Materias
+  },
+  {
+    path: '/anotacoes',
+    name: 'anotacoes',
+    component: Anotacoes
+  },
+  {
+    path: '/cursos',
+    name: 'cursos',
+    component: Cursos
   }
 ];
 
