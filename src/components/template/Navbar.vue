@@ -1,14 +1,14 @@
 <template>
-  <div id="topo">
-    <img
-      id="logo"
-      alt="Logo Pedule"
-      src="../../../public/img/pedule-logo.png" />
-    <input id="pesquisa" type="text" />
-    <p id="nome-usuario">{{ nomeUsuario }}</p>
-    <button id="btn-config">
-      <img id="img-config" src="../../../public/img/down-arrow-grey.png" />
-    </button>
+    <div id="topo">
+      <img
+        id="logo"
+        alt="Logo Pedule"
+        src="../../../public/img/pedule-logo.png" />
+      <input id="pesquisa" type="text" />
+      <p id="nome-usuario">{{ nomeUsuario }}</p>
+      <button id="btn-config">
+        <img id="img-config" src="../../../public/img/down-arrow-grey.png" />
+      </button>
   </div>
   <div id="nav-bar">
     <nav>
