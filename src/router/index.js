@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import Agenda from '@/views/Agenda.vue'
+import Cronograma from '@/views/Cronograma.vue'
 import Atividades from '@/views/Atividades.vue'
 import Materias from '@/views/Materias.vue'
 import Anotacoes from '@/views/Anotacoes.vue'
@@ -27,9 +27,9 @@ const routes = [
     component: Login
   },
   {
-    path: '/agenda',
-    name: 'agenda',
-    component: Agenda
+    path: '/cronograma',
+    name: 'cronograma',
+    component: Cronograma
   },
   {
     path: '/atividades',

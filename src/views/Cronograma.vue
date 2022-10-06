@@ -10,8 +10,8 @@
 
 <script>
 import Navbar from "@/components/template/Navbar.vue";
-import Calendar from "@/components/agenda/CalendarWidget.vue";
-import Cronograma from "@/components/agenda/Cronograma.vue";
+import Calendar from "@/components/cronograma/CalendarWidget.vue";
+import Cronograma from "@/components/cronograma/Cronograma.vue";
 
 export default {
   components: { Navbar, Calendar, Cronograma },
