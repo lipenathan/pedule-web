@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import Agenda from '@/views/Agenda.vue'
+import Cronograma from '@/views/Cronograma.vue'
 import Atividades from '@/views/Atividades.vue'
 import Materias from '@/views/Materias.vue'
 import Anotacoes from '@/views/Anotacoes.vue'
 import Cursos from '@/views/Cursos.vue'
+import Login from '@/views/Login.vue'
 
 const routes = [
   {
@@ -21,9 +22,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
   },
   {
-    path: '/agenda',
-    name: 'agenda',
-    component: Agenda
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/cronograma',
+    name: 'cronograma',
+    component: Cronograma
   },
   {
     path: '/atividades',
