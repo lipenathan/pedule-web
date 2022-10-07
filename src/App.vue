@@ -1,12 +1,12 @@
 <template>
-  <agenda></agenda>
+  <cronograma></cronograma>
   <router-view/>
 </template>
 <script>
-import Agenda from '../src/views/Agenda.vue'
+import Cronograma from '../src/views/Cronograma.vue'
 
 export default {
-  template: {Agenda}
+  template: {Cronograma}
 }
 </script>
 <style lang="scss">

@@ -14,7 +14,7 @@
     <nav>
       <div id="nav-divider"></div>
       <ul>
-        <router-link to="/agenda">Agenda</router-link>
+        <router-link to="/cronograma">Cronograma</router-link>
         <router-link to="/atividades">Atividades</router-link>
         <router-link to="/materias">Matérias</router-link>
         <router-link to="/anotacoes">Anotações</router-link>
