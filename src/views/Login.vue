@@ -6,22 +6,26 @@
                 alt="Logo Pedule"
                 src="../../../../Workspace/pedule-web/public/img/pedule-logo.png" />
 
-                <button type="submit" class="btn-cadastrar" name="btn-cadastrar" @click="register"><a href="#">Cadastre-se</a></button>
+                <button type="submit" class="btn-register" name="btn-register" @click="register"><a href="#">Cadastre-se</a></button>
         </header>
     <main class="container">
 
 
-            <form class="formulario" action="#" method="POST">
+            <form class="form" action="#" method="POST">
                 <fieldset class="card-login">
                     <h1>Login</h1>
+                    <div class="float-label-group">
+                        
+                        <input  id="email" type="text" autofocus required v-model="form.email">
+                        <label class="float-label" for="email">E-mail</label>
+                    </div>
+                    
+                    <div class="float-label-group">
+                        <input id="senha" type="password" name="password" required v-model="form.password">
+                        <label class="float-label" for="password">Senha</label>
+                    </div>
 
-                    <label  for="email">E-mail</label>
-                    <input  id="email" type="text" autofocus required v-model="form.email">
-
-                    <label for="senha">Senha</label>
-                    <input id="senha" type="password" name="senha" required v-model="form.senha">
-
-                    <button type="submit" name="btn-entrar" @click="login"><a href="#">Entrar</a></button>
+                    <button type="submit" name="btn-enter" @click="login"><a href="#">Entrar</a></button>
                     <a href="#"><small>Esqueceu sua senha?</small></a>
                 </fieldset>
              </form> 
@@ -39,7 +43,7 @@ export default {
         return {
             form: {
                 email: "",
-                senha: ""
+                password: ""
             }
         }
     },
@@ -104,14 +108,14 @@ header > img {
   
 }
 
-.formulario {
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.btn-cadastrar {
+.btn-register {
 background: $button;
 height: 2.5rem;
 width: 10rem;
@@ -129,13 +133,14 @@ a {
     font-size: 0.9rem;
 }
 
-.btn-cadastrar:hover {
+.btn-register:hover {
     background: #3da9fc99;
     
 }
 
 .card-login {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
@@ -157,8 +162,6 @@ a {
     margin-bottom: 2rem;
     border-radius: 10px;
     font-weight: 800;
-    
-
 }
 .card-login input {
     margin: 0.6rem 0;
@@ -180,17 +183,28 @@ a {
     outline: 1px solid $button;
 }
 
-  label {
-    font-weight: 500;
-    transition: all 0.1s ease;
-
+.float-label-group {
+    position: relative;
+    margin: 0.6rem;
 }
-input:focus ~ label,
-input:not(:focus):valid ~ label{
-    top: -15px;
+
+.float-label { 
+        position:absolute;
+		font-size: 1rem;
+        font-weight: 400;
+		color: #cccccc;
+		pointer-events: none;
+        top: 1.5rem;
+        left: 12px;
+		transition: all 0.1s ease;
+	}
+input:focus ~ .float-label,
+input:not(:focus):valid ~ .float-label{
+        font-weight: 600;
+        top: -18px;
 		bottom: 0px;
 		left: 0px;
-		font-size: 11px;
+		font-size: 1rem;
 		opacity: 1;
 		color: #404040;
 }
