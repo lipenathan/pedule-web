@@ -5,7 +5,7 @@ import Atividades from '@/views/Atividades.vue'
 import Materias from '@/views/Materias.vue'
 import Anotacoes from '@/views/Anotacoes.vue'
 import Cursos from '@/views/Cursos.vue'
-import TelaCadastro from '@/views/TelaCadastro.vue'
+import TelaCadastro from '@/views/Cadastro.vue'
 
 const routes = [
   {
