@@ -1,20 +1,20 @@
 <template>
-  <div id="topo">
-    <img
-      id="logo"
-      alt="Logo Pedule"
-      src="../../../public/img/pedule-logo.png" />
-    <input id="pesquisa" type="text" />
-    <p id="nome-usuario">{{ nomeUsuario }}</p>
-    <button id="btn-config">
-      <img id="img-config" src="../../../public/img/down-arrow-grey.png" />
-    </button>
+    <div id="topo">
+      <img
+        id="logo"
+        alt="Logo Pedule"
+        src="../../../public/img/pedule-logo.png" />
+      <input id="pesquisa" type="text" />
+      <p id="nome-usuario">{{ nomeUsuario }}</p>
+      <button id="btn-config">
+        <img id="img-config" src="../../../public/img/down-arrow-grey.png" />
+      </button>
   </div>
   <div id="nav-bar">
     <nav>
       <div id="nav-divider"></div>
       <ul>
-        <router-link to="/agenda">Agenda</router-link>
+        <router-link to="/cronograma">Cronograma</router-link>
         <router-link to="/atividades">Atividades</router-link>
         <router-link to="/materias">Matérias</router-link>
         <router-link to="/anotacoes">Anotações</router-link>
