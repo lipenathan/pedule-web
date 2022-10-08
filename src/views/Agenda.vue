@@ -9,8 +9,10 @@
 import Navbar from '@/components/template/Navbar.vue'
 import Calendar from '@/components/agenda/CalendarWidget.vue'
 
+
+
 export default {
-  components: { Navbar, Calendar }
+  components: { Navbar, Calendar}
 }
 </script>
 <style scoped>

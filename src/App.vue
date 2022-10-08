@@ -5,8 +5,10 @@
 <script>
 import Agenda from '../src/views/Agenda.vue'
 
+
 export default {
-  template: {Agenda}
+  template: {Agenda},
+  
 }
 </script>
 <style lang="scss">
