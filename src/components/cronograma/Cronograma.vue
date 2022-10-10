@@ -24,148 +24,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>9:00</td>
-          <td v-for="item in appointments" :key="item.description">
+        <tr v-for="row in this.rows" :key="row.hour">
+          <td>{{row.hour}}</td>
+          <td v-for="item in row.appointments" :key="item.description">
             <appointment
               :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>10:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>11:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>12:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>13:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>14:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>15:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>16:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>17:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>18:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>19:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>20:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>21:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>22:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>23:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
-          </td>
-        </tr>
-        <tr>
-          <td>00:00</td>
-          <td v-for="item in appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"
-            ></appointment>
+              :description="item.description"></appointment> 
           </td>
         </tr>
       </tbody>
@@ -179,33 +43,92 @@ export default {
   data() {
     return {
       headDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-      appointments: [
+      // row: {hour:"",appointments:[]},
+      rows: [],
+      mockAppointments: [
         {
           description: "Análise e Desenvolvimento de Sistemas",
           color: "rgb(20, 100, 80)",
+          week: 1,
+          hour: 15,
         },
         {
           description: "Programação 1",
           color: "rgb(238, 78, 243)",
+          week: 5,
+          hour: 19,
         },
         {
           description: "Banco de dados",
           color: "rgb(243, 252, 0)",
+          week: 3,
+          hour: 21,
         },
         {
           description: "Lógica de programação",
           color: "rgb(20, 100, 80)",
+          week: 1,
+          hour: 14,
         },
         {
           description: "Banco de dados",
           color: "rgb(0, 252, 252)",
+          week: 2,
+          hour: 19,
         },
         {
           description: "Gestão de Projetos",
           color: "rgb(187, 201, 201)",
+          week: 1,
+          hour: 20,
+        },
+        {
+          description: "Estrutura de dados",
+          color: "rgb(187, 201, 201)",
+          week: 2,
+          hour: 12,
+        },
+        {
+          description: "Tópicos especiais",
+          color: "rgb(187, 201, 201)",
+          week: 3,
+          hour: 11,
+        },
+        {
+          description: "Redes",
+          color: "rgb(187, 201, 201)",
+          week: 4,
+          hour: 10,
+        },
+        {
+          description: "Empreendedorismo",
+          color: "rgb(187, 201, 201)",
+          week: 5,
+          hour: 9,
+        },
+        {
+          description: "Matemática para computação",
+          color: "rgb(187, 201, 201)",
+          week: 6,
+          hour: 20,
         },
       ],
     };
+  },
+  methods: {
+    createRows() {
+      for (let i = 0; i < 24; i++) {
+        let row = { hour: i + ":00", appointments: [] };
+        this.rows.push(row);
+      }
+      for (let i = 0; i < this.mockAppointments.length; i++) {
+        let hour = this.mockAppointments[i].hour;
+        this.rows[hour].appointments.push(this.mockAppointments[i]);
+      }
+    }
+  },
+  created() {
+    this.createRows();
   },
 };
 </script>
