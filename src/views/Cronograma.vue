@@ -2,7 +2,7 @@
   <div id="wrapper">
     <navbar />
     <div id="content">
-      <cronograma />
+      <cronograma class="cronograma" />
       <calendar id="calendar" />
     </div>
   </div>
@@ -24,5 +24,10 @@ export default {
 
 #content {
   display: flex;
+}
+
+.cronograma {
+    margin-top: 3rem;
+  margin-inline-start: auto;
 }
 </style>
