@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+ <body>
     <header>
             <img
                 id="logo"
@@ -9,19 +9,17 @@
                 <button type="submit" class="btn-register" name="btn-register" @click="register"><a href="#">Cadastre-se</a></button>
         </header>
     <main class="container">
-
-
             <form class="form" action="#" method="POST">
                 <fieldset class="card-login">
                     <h1>Login</h1>
                     <div class="float-label-group">
                         
-                        <input  id="email" type="text" autofocus required v-model="form.email">
+                        <input  id="email" type="text" autofocus required v-model.trim="$v.form.email.$model" state="getValidation('email')"> 
                         <label class="float-label" for="email">E-mail</label>
                     </div>
                     
                     <div class="float-label-group">
-                        <input id="senha" type="password" name="password" required v-model="form.password">
+                        <input id="senha" type="password" name="password" required v-model.trim="$v.form.password.$model" :state="getValidation">
                         <label class="float-label" for="password">Senha</label>
                     </div>
 
@@ -30,27 +28,65 @@
                 </fieldset>
              </form> 
     </main>
-  </div>
+ </body>
+    
+
     
     
    
 </template>
 
 <script>
-//import {required, minLenght, email} from "vuelidate/lib/validators"
+import useVuelidate from '@vuelidate/core';
+import { required, email, minLength, password } from '@vuelidate/validators'
+
 export default {
     data() {
         return {
+            v$: useVuelidate(),
             form: {
                 email: "",
                 password: ""
             }
         }
     },
-    methods() {
-        login(),
-        register()
+
+    validations() {
+        return {
+
+        form : {
+            email: {
+                required,
+                email
+            },
+
+            password: {
+                required,
+                minLenght: minLenght(6)
+                }
+            }
+        }
+    },
+
+    methods: {
+        login(){
+            this.$v.$touch();
+            if(this.$v.$error){
+                
+            }
+        },
+
+        register() {
+
+        },
+        getValidation(field) {
+            if(this.$v.form.$dirty === false){
+                return null
+            }
+            return !this.$v.form[field].$error;
+        }
     }
+
 }
 </script>
 
@@ -74,7 +110,7 @@ $btn-text: rgb(255, 255, 254);
     font-family: 'Open Sans', sans-serif;
     
 }   
-.body {
+body {
 width: 100%;
 height: 100vh;
 background: $background;
