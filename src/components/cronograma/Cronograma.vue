@@ -26,10 +26,12 @@
       <tbody>
         <tr v-for="row in this.rows" :key="row.hour">
           <td>{{row.hour}}</td>
-          <td v-for="item in row.appointments" :key="item.description">
-            <appointment
-              :color="item.color"
-              :description="item.description"></appointment> 
+          <td v-for="i in 7" :key="i">
+            <template v-for="appointment in row.appointments" :key="appointment.hour">
+              <appointment v-if="appointment.week == i"
+              :color="appointment.color"
+              :description="appointment.description"></appointment>
+            </template>
           </td>
         </tr>
       </tbody>
