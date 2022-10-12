@@ -9,18 +9,25 @@
                 <button type="submit" class="btn-register" name="btn-register" @click="register"><a href="#">Cadastre-se</a></button>
         </header>
     <main class="container">
-            <form class="form" action="#" method="POST">
+            <form class="form" action="#" method="login">
                 <fieldset class="card-login">
                     <h1>Login</h1>
                     <div class="float-label-group">
                         
-                        <input  id="email" type="text" autofocus required v-model.trim="$v.form.email.$model" state="getValidation('email')"> 
+                        <input  id="email" type="text" autocomplete="off" autofocus required v-model="state.email" >
+                        <img src="../assets/envelope-regular.svg" alt="Icone de um evelope">
                         <label class="float-label" for="email">E-mail</label>
+                        <span v-if="v$.email.$error">
+                            {{ v$.email.$errors[0].$message }}
+                        </span>
                     </div>
-                    
+                     
                     <div class="float-label-group">
-                        <input id="senha" type="password" name="password" required v-model.trim="$v.form.password.$model" :state="getValidation">
+                        <input id="senha" type="password" name="password" required v-model="state.password" >
                         <label class="float-label" for="password">Senha</label>
+                        <span v-if="v$.password.$error">
+                            {{ v$.password.$errors[0].$message }}
+                        </span>
                     </div>
 
                     <button type="submit" name="btn-enter" @click="login"><a href="#">Entrar</a></button>
@@ -38,53 +45,44 @@
 
 <script>
 import useVuelidate from '@vuelidate/core';
-import { required, email, minLength, password } from '@vuelidate/validators'
-
+import { required, email, minLength, helpers } from '@vuelidate/validators'
+import {computed, reactive, state} from 'vue'
 export default {
-    data() {
+    setup (){
+        const state = reactive({
+            email: '',
+            password: ''
+            
+        })
+
+        const MensagemDeErroCustomizada = (value) => value.includes('teste')
+        const rules = computed (() =>{
+        return  {
+            email: { required, email, MensagemDeErroCustomizada: helpers.withMessage('TEM QUE TER TESTE NO BAGUI', MensagemDeErroCustomizada ) },
+            password:{ required, minLength: minLength(6) }  
+        }
+    })  
+
+        const v$ = useVuelidate(rules, state)
+        
         return {
-            v$: useVuelidate(),
-            form: {
-                email: "",
-                password: ""
-            }
+            state,
+            v$
         }
     },
-
-    validations() {
-        return {
-
-        form : {
-            email: {
-                required,
-                email
-            },
-
-            password: {
-                required,
-                minLenght: minLenght(6)
-                }
-            }
-        }
-    },
-
     methods: {
         login(){
-            this.$v.$touch();
-            if(this.$v.$error){
-                
+            this.v$.$validate()
+            if(!this.v$.$error){
+                alert('form enviado com sucesso')
+            }else{
+                alert('form não ta indo essa merda')
             }
         },
 
         register() {
 
         },
-        getValidation(field) {
-            if(this.$v.form.$dirty === false){
-                return null
-            }
-            return !this.$v.form[field].$error;
-        }
     }
 
 }
