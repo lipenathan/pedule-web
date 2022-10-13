@@ -3,8 +3,8 @@
   <body>
 
     <main class="container">
-
-        <form class="form" action="#" method="POST">
+  
+        <form class="form" action="#" method="submitForm">
 
             <div class="title">
               <h1>Bem vindo!</h1>
@@ -37,15 +37,20 @@
 
               
                 <label for="password">Senha</label>
-                <input type="password" name="password" id="inp-password"  placeholder="Insira sua senha" required>           
-            
+                <input v-model="state.password.password" type="password" name="password" id="inp-password"  placeholder="Insira sua senha" >           
+                <span v-if="v$.password.password.$error">
+                  {{ v$.password.password.$errors[0].$message }}
+                </span>
 
              
                 <label for="conf-password">Cofirme sua senha</label>
-                <input type="password" name="conf-password" id="conf-password"  placeholder="Confirme sua senha" required>           
-        
+                <input v-model="state.password.confi_pass" type="password" name="conf-password" id="conf-password"  placeholder="Confirme sua senha" >           
+                <span v-if=" v$.password.confi_pass.$error ">
+                  {{ v$.password.confi_pass.$errors[0].$message }}
+                </span>
 
-            <input type="submit" value="Enviar" id="bt">
+
+            <input type="submit" value="Enviar" id="bt" @click="submitForm">
 
         </form> 
 
@@ -55,14 +60,48 @@
 </template>
 
 <script>
+import useValidate from '@vuelidate/core'
+import { required, sameAs, minLength } from '@vuelidate/validators'
+import { reactive, computed } from 'vue'
+
 export default {
-  name: "TelaCadastro",
-  data() {
-    return {
+
+  setup(){
+    const state = reactive ({
+      password: {
+        password: '',
+        confi_pass: '',
+      },
       
-    };
+    })
+
+   const rules = computed (() => {
+    return {
+      password: { required, sameAs, minLength: minLength(6) },
+      confi_pass: { required, sameAs: sameAs(state.password.password) },
+    }
+  })
+
+  const v$ = useValidate(state, rules)
+
+  return {
+    state,
+    rules,
+    v$,
+  }
+},
+  methods: {
+    submitForm() {
+      this.v$.$validate()
+      if(!this.v$.$error) {
+        alert('Form succesfully submitted.')
+      }else{
+        alert('Form failed validation.')
+      }
+    }
   },
 };
+
 </script>
 
 <style  lang="scss" scoped>
