@@ -57,7 +57,7 @@ const routes = [
     path: '/cadastro',
     name: 'cadastro',
     component: TelaCadastro
-  }  
+  },  
 
 ];
 
