@@ -13,9 +13,9 @@
                 <fieldset class="card-login">
                     <h1>Login</h1>
                     <div class="float-label-group">
-                        
+
+                        <img class="email-icon" src="../assets/envelope-regular.svg" alt="Icone de um evelope">
                         <input  id="email" type="text" autocomplete="off" autofocus required v-model="state.email" >
-                        <img src="../assets/envelope-regular.svg" alt="Icone de um evelope">
                         <label class="float-label" for="email">E-mail</label>
                         <span v-if="v$.email.$error">
                             {{ v$.email.$errors[0].$message }}
@@ -27,7 +27,7 @@
                         <label class="float-label" for="password">Senha</label>
                         <span v-if="v$.password.$error">
                             {{ v$.password.$errors[0].$message }}
-                        </span>
+                        </span> 
                     </div>
 
                     <button type="submit" name="btn-enter" @click="login"><a href="#">Entrar</a></button>
@@ -44,9 +44,9 @@
 </template>
 
 <script>
-import useVuelidate from '@vuelidate/core';
+import useValidate from '@vuelidate/core';
 import { required, email, minLength, helpers } from '@vuelidate/validators'
-import {computed, reactive, state} from 'vue'
+import {computed, reactive} from 'vue'
 export default {
     setup (){
         const state = reactive({
@@ -56,18 +56,19 @@ export default {
         })
 
         const MensagemDeErroCustomizada = (value) => value.includes('teste')
-        const rules = computed (() =>{
+
+        const rules = computed (() => {
         return  {
             email: { required, email, MensagemDeErroCustomizada: helpers.withMessage('TEM QUE TER TESTE NO BAGUI', MensagemDeErroCustomizada ) },
             password:{ required, minLength: minLength(6) }  
         }
     })  
 
-        const v$ = useVuelidate(rules, state)
+        const v$ = useValidate(rules, state)
         
         return {
             state,
-            v$
+            v$,
         }
     },
     methods: {
@@ -78,6 +79,7 @@ export default {
             }else{
                 alert('form não ta indo essa merda')
             }
+            return false
         },
 
         register() {
@@ -159,19 +161,16 @@ border-radius: 5px;
 line-height: 0;
 border: none;
 cursor: pointer;
-
 }
 a {
     color: $btn-text;
     font-weight: 800;
     font-size: 0.9rem;
 }
-
 .btn-register:hover {
     background: #3da9fc99;
     
 }
-
 .card-login {
     display: flex;
     position: relative;
@@ -185,8 +184,6 @@ a {
     
     
 }
-
-
 .card-login h1::after {
     content: '';
     display: block;
@@ -196,8 +193,7 @@ a {
     margin-bottom: 2rem;
     border-radius: 10px;
     font-weight: 800;
-}
-.card-login input {
+}.card-login input {
     margin: 0.6rem 0;
     padding: 0.8 1.2rem;
     width: 20rem;
@@ -209,19 +205,25 @@ a {
     outline: none;
     
 }
-
 .card-login input:hover {
     background-color: #eeeeee99;
 }
 .card-login input:focus-visible {
     outline: 1px solid $button;
 }
-
+.email-icon {
+    position: absolute;
+    margin-top: 1.5rem;
+    margin-left: 0.3rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 1;
+    
+}
 .float-label-group {
     position: relative;
     margin: 0.6rem;
 }
-
 .float-label { 
         position:absolute;
 		font-size: 1rem;
@@ -229,7 +231,7 @@ a {
 		color: #cccccc;
 		pointer-events: none;
         top: 1.5rem;
-        left: 12px;
+        left: 2rem;
 		transition: all 0.1s ease;
 	}
 input:focus ~ .float-label,
@@ -242,7 +244,6 @@ input:not(:focus):valid ~ .float-label{
 		opacity: 1;
 		color: #404040;
 }
-
 .card-login button {
     width: 100%;
     border: none;
@@ -252,11 +253,9 @@ input:not(:focus):valid ~ .float-label{
     border-radius: 5px;
     cursor: pointer;
 }
-
 .card-login button:hover{
     background: #3da9fc99;
 }
-
 .card-login button a {
     font-size: 0.93rem;
     font-weight: 500;
