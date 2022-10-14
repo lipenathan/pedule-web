@@ -78,7 +78,9 @@ export default {
         login(){
             this.v$.$validate()
             if(!this.v$.$error){
-                this.toast.success
+                this.toast.success("My toast content", {
+        timeout: 2000
+      });
             }else{
                 this.toast.error
             }
