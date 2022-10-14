@@ -1,18 +1,4 @@
 <template>
-  <!-- <div id="timeline">
-  <div id="days">
-    <img id="ic-clock" src="../../../public/img/icons/clock.png" />
-    <ul>
-      <li>Seg</li>
-      <li>Ter</li>
-      <li>Qua</li>
-      <li>Qui</li>
-      <li>Sex</li>
-      <li>Sab</li>
-      <li>Dom</li>
-    </ul>
-  </div>
-  </div> -->
   <div class="schedule">
     <table class="timeline">
       <thead>
@@ -45,7 +31,6 @@ export default {
   data() {
     return {
       headDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-      // row: {hour:"",appointments:[]},
       rows: [],
       mockAppointments: [
         {

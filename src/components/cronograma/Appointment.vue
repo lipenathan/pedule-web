@@ -1,5 +1,5 @@
 <template>
-  <div id="commitment" :style="{ background: color }">
+  <div class="appointment" :style="{ background: color }">
     <p>{{ description }}</p>
   </div>
 </template>
@@ -18,18 +18,21 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-#commitment {
+.appointment {
   font-size: 0.9rem;
   width: 100%;
   height: 2em;
   border-radius: 10px;
   overflow: hidden;
-  
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-#commitment p {
-    display: table-cell;
+.appointment p {
+    display: contents;
+    float: unset;
+    padding-left: 8px;
+    width: auto;
+    height: 100%;
 }
 </style>
