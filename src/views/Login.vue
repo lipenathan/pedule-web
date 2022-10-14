@@ -15,7 +15,7 @@
                     <div class="float-label-group">
 
                        <span><img class="email-icon" src="../assets/envelope-regular.svg" alt="Icone of a envelope"></span> 
-                        <input  id="email" type="text" autocomplete="off" autofocus required v-model="state.email" >
+                        <input  id="email" type="text" autocomplete="off" autofocus v-model="state.email" >
                         <label class="float-label" for="email">E-mail</label>
                         <span v-if="v$.email.$error">
                             {{ v$.email.$errors[0].$message }}
@@ -24,7 +24,7 @@
                      
                     <div class="float-label-group">
                         <span><img src="../assets/lock-svgrepo-com.svg" alt="icon of a lock"></span>
-                        <input id="senha" type="password" name="password" required v-model="state.password" >
+                        <input id="senha" type="password" name="password" v-model="state.password" >
                         <label class="float-label" for="password">Senha</label>
                         <span v-if="v$.password.$error">
                             {{ v$.password.$errors[0].$message }}
@@ -49,6 +49,7 @@ import useValidate from '@vuelidate/core';
 import { required, email, minLength, helpers } from '@vuelidate/validators'
 import {computed, reactive} from 'vue'
 import { useToast } from "vue-toastification";
+
 export default {
     setup (){
         const state = reactive({
@@ -56,21 +57,15 @@ export default {
             password: ''
             
         })
-
-        const toast = useToast();
-        toast("i am a toast")
-        toast.success("My toast content", {
-        timeout: 2000
-      });
-        const MensagemDeErroCustomizada = (value) => value.includes('teste')
-
+        const MensagemDeErroCustomizada = (value) => value.includes('@')
         const rules = computed (() => {
         return  {
-            email: { required, email, MensagemDeErroCustomizada: helpers.withMessage('TEM QUE TER TESTE NO BAGUI', MensagemDeErroCustomizada ) },
+            email: { required, email, MensagemDeErroCustomizada: helpers.withMessage('Email inválido', MensagemDeErroCustomizada ) },
             password:{ required, minLength: minLength(6) }  
         }
     })  
-
+        const toast = useToast();
+        
         const v$ = useValidate(rules, state)
         
         return {
@@ -83,12 +78,10 @@ export default {
         login(){
             this.v$.$validate()
             if(!this.v$.$error){
-                alert('form enviado com sucesso')
-                this.toast.sucess("form enviado com sucesso");
+                this.toast.success
             }else{
-                alert('form não ta indo essa merda')
+                this.toast.error
             }
-            return false
         },
 
         register() {
