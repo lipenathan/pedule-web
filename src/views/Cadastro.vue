@@ -1,111 +1,170 @@
 <template>
-
   <body>
-
     <main class="container">
-  
-        <form class="form" action="#" method="submitForm">
+      <div class="form">
+        <div class="title">
+          <h1>Bem vindo!</h1>
+        </div>
 
-            <div class="title">
-              <h1>Bem vindo!</h1>
-            </div>
-          
-            <h2>Cadastre-se</h2>
-            <div class="top-box">
-                <div>
-                  <label for="name" id="lb-name" >Nome </label>
-                  <!-- <label for="name" id="icon-name"><i class="fa-solid fa-user"></i></label> -->
-                  <input type="text" name="name" id="inp-name" placeholder="Digite o seu nome" required>
-                  
-                </div>
-                  
-                <div class="top-box-child">
-                  <label for="birth">Data de nascimento</label>
-                  <input type="date" name="birth" id="birth" required> 
-                </div>
-            </div>
+        <h2>Cadastre-se</h2>
+        <div class="top-box">
+          <div>
+            <label for="name" id="lb-name">Nome </label>
+            <label for="name" id="icon-name"
+              ><i class="fa-solid fa-user"></i
+            ></label>
+            <input
+              type="text"
+              name="name"
+              id="inp-name"
+              placeholder="Digite o seu nome"
+              v-model="usuario.nome"
+            />
+          </div>
 
-             
-                <label for="institute">Instituição</label>
-                <input type="text" name="institute" id="inp-institute"  placeholder="Informe a instituição" required>           
-           
+          <div class="top-box-child">
+            <label for="birth">Data de nascimento</label>
+            <input
+              type="date"
+              name="birth"
+              id="birth"
+              v-model="usuario.dataNascimento"
+            />
+          </div>
+        </div>
 
-             
-                <label for="email">Email</label>
-                <input type="email" name="email" id="inp-email" placeholder="Insira o seu email" required>           
-        
+        <label for="institute">Instituição</label>
+        <input
+          type="text"
+          name="institute"
+          id="inp-institute"
+          placeholder="Informe a instituição"
+          v-model="usuario.instituicao"
+        />
 
-              
-                <label for="password">Senha</label>
-                <input v-model="state.password.password" type="password" name="password" id="inp-password"  placeholder="Insira sua senha" >           
-                <span v-if="v$.password.password.$error">
-                  {{ v$.password.password.$errors[0].$message }}
-                </span>
+        <label for="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="inp-email"
+          placeholder="Insira o seu email"
+          v-model="usuario.email"
+        />
 
-             
-                <label for="conf-password">Cofirme sua senha</label>
-                <input v-model="state.password.confi_pass" type="password" name="conf-password" id="conf-password"  placeholder="Confirme sua senha" >           
-                <span v-if=" v$.password.confi_pass.$error ">
-                  {{ v$.password.confi_pass.$errors[0].$message }}
-                </span>
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          name="password"
+          id="inp-password"
+          placeholder="Insira sua senha"
+          v-model="usuario.password.password"
+        />
+        <!-- <span v-if="v$.usuario.password.password.$error">
+          {{ v$.usuario.password.password.$errors[0].$message }}
+        </span> -->
 
+        <label for="conf-password">Cofirme sua senha</label>
+        <input
+          v-model="usuario.password.confirm"
+          type="password"
+          name="conf-password"
+          id="conf-password"
+          placeholder="Confirme sua senha"
+        />
+        <!-- <span v-if="v$.usuario.password.confirm.$error">
+          {{ v$.usuario.password.confirm.$errors[0].$message }}
+        </span> -->
 
-            <input type="submit" value="Enviar" id="bt" @click="submitForm">
-
-        </form> 
-
+        <button id="bt" @click.prevent="submitForm">Enviar</button>
+      </div>
     </main>
-
   </body>
 </template>
 
 <script>
-import useValidate from '@vuelidate/core'
-import { required, sameAs, minLength } from '@vuelidate/validators'
-import { reactive, computed } from 'vue'
+import Api from "../services/API";
+import useValidate from "@vuelidate/core";
+import { required, sameAs, minLength, helpers } from "@vuelidate/validators";
+import { reactive, computed } from "vue";
 
 export default {
+  // setup() {
+  //   const state = reactive({
+  //     usuario: {
+  //       nome: "",
+  //       email: "",
+  //       dataNascimento: "",
+  //       instituicao: "",
+  //       password: {
+  //         password: "",
+  //         confirm: "",
+  //       },
+  //     },
+  //   });
 
-  setup(){
-    const state = reactive ({
-      password: {
-        password: '',
-        confi_pass: '',
-      },
-      
-    })
+  // const customRequired = {
+  //   name: {
+  //     password: helpers.withMessage("Esse campo é obrigatório", required),
+  //   },
+  // };
 
-   const rules = computed (() => {
+  // const rules = computed(() => {
+  //   return {
+  //     password: {
+  //       password: { customRequired, minLength: minLength(6) },
+  //       confirm: {
+  //         customRequired,
+  //         sameAs: sameAs(usuario.password.password),
+  //       },
+  //     },
+  //   };
+  // });
+
+  // const v$ = useValidate(rules, state);
+
+  // return {
+  //   state,
+  //   v$,
+  // };
+  // },
+  data() {
     return {
-      password: { required, sameAs, minLength: minLength(6) },
-      confi_pass: { required, sameAs: sameAs(state.password.password) },
-    }
-  })
-
-  const v$ = useValidate(state, rules)
-
-  return {
-    state,
-    rules,
-    v$,
-  }
-},
+      usuario: {
+        nome: "",
+        email: "",
+        dataNascimento: "",
+        instituicao: "",
+        password: {
+          password: "",
+          confirm: "",
+        },
+      },
+    };
+  },
   methods: {
     submitForm() {
-      this.v$.$validate()
-      if(!this.v$.$error) {
-        alert('Form succesfully submitted.')
-      }else{
-        alert('Form failed validation.')
-      }
-    }
+      // this.v$.$validate();
+      Api().post("/usuario/novo", {
+        nome: this.usuario.nome,
+        email: this.usuario.email,
+        dataNascimento: this.usuario.dataNascimento,
+        instituicao: this.usuario.instituicao,
+        senha: this.usuario.password.password,
+      }).then(res => {
+        this.usuario.nome = ""
+        this.usuario.email = ""
+        this.usuario.dataNascimento = null
+        this.usuario.instituicao = ""
+        this.usuario.password.password = ""
+        this.usuario.password.confirm = ""
+      })
+    },
   },
 };
-
 </script>
 
 <style  lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
 
 $background: rgb(255, 255, 254);
 $button: rgb(61, 169, 252);
@@ -113,22 +172,21 @@ $tittle: rgb(9, 64, 103);
 $paragraph: rgb(95, 108, 123);
 $btn-text: rgb(255, 255, 254);
 
-  body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-family: 'Open Sans', sans-serif;
-    
-  }
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Open Sans", sans-serif;
+}
 
-  #icon-name {
-    font-size: 15PX;
-    position: absolute;
-    top:214px;
-    left: 530px;
-    opacity: 5.6;
-  }
+#icon-name {
+  font-size: 15px;
+  position: absolute;
+  top: 214px;
+  left: 530px;
+  opacity: 5.6;
+}
 
 .container {
   display: flex;
@@ -139,7 +197,7 @@ $btn-text: rgb(255, 255, 254);
 }
 
 .form {
-  display: flex;  
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -147,11 +205,9 @@ $btn-text: rgb(255, 255, 254);
   border-radius: 15px;
   width: 300px;
   height: 470px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   box-shadow: 2px 3px 5px #888;
 }
-
-
 
 h1 {
   margin-top: 0px;
@@ -170,29 +226,25 @@ h1 {
   display: flex;
   text-align: start;
   width: 306px;
-
 }
 .top-box div input[type="text"] {
   height: 23px;
 }
 .top-box-child {
   margin-left: 21px;
-}         
+}
 
 .top-box-child input[type="date"] {
   width: 155px;
   height: 23px;
-  
 }
- 
 
 input {
-  width: 100%;    
+  width: 100%;
   border-radius: 8px;
   height: 30px;
-  border: .5px solid rgb(104, 104, 104, 0.2);
+  border: 0.5px solid rgb(104, 104, 104, 0.2);
   margin-bottom: 10px;
-  
 }
 
 input::placeholder {
@@ -200,24 +252,20 @@ input::placeholder {
 }
 
 .top-box div input {
-   width: 120px;
+  width: 120px;
 }
 
- .form input[type="submit"] {
+.form input[type="submit"] {
   background-color: $button;
   height: 50px;
   width: 306px;
   margin-top: 10px;
   margin-bottom: 0px;
   font-size: 18px;
-  font-weight: bold ;
-  color: #FFFFFF;
+  font-weight: bold;
+  color: #ffffff;
   border: none;
   box-shadow: 0px 2px 3px #888;
   cursor: pointer;
 }
-
-
 </style>
-
-
