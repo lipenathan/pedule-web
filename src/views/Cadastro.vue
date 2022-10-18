@@ -14,7 +14,7 @@
             <div class="top-box">
                 <div>
                   <label for="name" id="lb-name" >Nome </label>
-                  <label for="name" id="icon-name"><i class="fa-solid fa-user"></i></label>
+                  <!-- <label for="name" id="icon-name"><i class="fa-solid fa-user"></i></label> -->
                   <input type="text" name="name" id="inp-name" placeholder="Digite o seu nome" required>
                   
                 </div>
