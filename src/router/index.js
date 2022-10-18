@@ -7,6 +7,7 @@ import Anotacoes from '@/views/Anotacoes.vue'
 import Cursos from '@/views/Cursos.vue'
 import TelaCadastro from '@/views/Cadastro.vue'
 import Login from '@/views/Login.vue'
+import Req from '@/views/Req.vue'
 
 const routes = [
   {
@@ -52,13 +53,16 @@ const routes = [
     name: 'cursos',
     component: Cursos
   },
-
+  {
+    path: '/req',
+    name: 'req',
+    component: Req
+  },
   {
     path: '/cadastro',
     name: 'cadastro',
     component: TelaCadastro
   },  
-
 ];
 
 const router = createRouter({

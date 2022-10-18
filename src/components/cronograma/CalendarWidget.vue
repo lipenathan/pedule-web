@@ -24,41 +24,6 @@
         <li>S</li>
       </ul>
       <ul class="card__body--dates">
-        <!-- <li class="prev">30</li>
-        <li class="prev">31</li>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li class="active">7</li>
-        <li>8</li>
-        <li>9</li>
-        <li>10</li>
-        <li>11</li>
-        <li>12</li>
-        <li>13</li>
-        <li>14</li>
-        <li>15</li>
-        <li class="notification">16 <span>5</span></li>
-        <li>17</li>
-        <li>18</li>
-        <li class="notification">19 <span>6</span></li>
-        <li>20</li>
-        <li>21</li>
-        <li>22</li>
-        <li>23</li>
-        <li>24</li>
-        <li>25</li>
-        <li>26</li>
-        <li>27</li>
-        <li>28</li>
-        <li>29</li>
-        <li>30</li>
-        <li>31</li>
-        <li class="next">1</li>
-        <li class="next">2</li> -->
         <li v-for="day in calendar" :key="day.day" :class="day.month">
           {{ day.day }}
         </li>
@@ -239,14 +204,17 @@ ul {
 .card {
   border-radius: 20px;
   background: $primary;
-  width: 15%;
-  max-width: 15rem;
-  min-height: 16rem;
+  height: 14rem;
+  width: 12rem;
+   // min-height: 16rem;
+  // max-width: 15rem;
   display: grid;
+  justify-content: center;
+  align-content: center;
   box-shadow: 0 1rem 2.5rem rgb(27, 64, 94);
 
   &__header {
-    padding: 0 1.25rem;
+    padding: 0rem 1.25rem;
     color: $black;
     display: flex;
     justify-content: space-between;
