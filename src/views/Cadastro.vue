@@ -1,7 +1,7 @@
 <template>
   <body>
     <main class="container">
-      <form class="form" action="#" method="submitForm">
+      <div class="form">
         <div class="title">
           <h1>Bem vindo!</h1>
         </div>
@@ -18,12 +18,18 @@
               name="name"
               id="inp-name"
               placeholder="Digite o seu nome"
+              v-model="usuario.nome"
             />
           </div>
 
           <div class="top-box-child">
             <label for="birth">Data de nascimento</label>
-            <input type="date" name="birth" id="birth" />
+            <input
+              type="date"
+              name="birth"
+              id="birth"
+              v-model="usuario.dataNascimento"
+            />
           </div>
         </div>
 
@@ -33,6 +39,7 @@
           name="institute"
           id="inp-institute"
           placeholder="Informe a instituição"
+          v-model="usuario.instituicao"
         />
 
         <label for="email">Email</label>
@@ -41,82 +48,116 @@
           name="email"
           id="inp-email"
           placeholder="Insira o seu email"
+          v-model="usuario.email"
         />
 
         <label for="password">Senha</label>
         <input
-          v-model="state.password.password"
           type="password"
           name="password"
           id="inp-password"
           placeholder="Insira sua senha"
+          v-model="usuario.password.password"
         />
-        <span v-if="v$.password.password.$error">
-          {{ v$.password.password.$errors[0].$message }}
-        </span>
+        <!-- <span v-if="v$.usuario.password.password.$error">
+          {{ v$.usuario.password.password.$errors[0].$message }}
+        </span> -->
 
         <label for="conf-password">Cofirme sua senha</label>
         <input
-          v-model="state.password.confirm"
+          v-model="usuario.password.confirm"
           type="password"
           name="conf-password"
           id="conf-password"
           placeholder="Confirme sua senha"
         />
-        <span v-if="v$.password.confirm.$error">
-          {{ v$.password.confirm.$errors[0].$message }}
-        </span>
+        <!-- <span v-if="v$.usuario.password.confirm.$error">
+          {{ v$.usuario.password.confirm.$errors[0].$message }}
+        </span> -->
 
         <button id="bt" @click.prevent="submitForm">Enviar</button>
-      </form>
+      </div>
     </main>
   </body>
 </template>
 
 <script>
+import Api from "../services/API";
 import useValidate from "@vuelidate/core";
 import { required, sameAs, minLength, helpers } from "@vuelidate/validators";
 import { reactive, computed } from "vue";
 
 export default {
-  setup() {
-    const state = reactive({
-      password: {
-        password: "",
-        confirm: "",
-      },
-    });
+  // setup() {
+  //   const state = reactive({
+  //     usuario: {
+  //       nome: "",
+  //       email: "",
+  //       dataNascimento: "",
+  //       instituicao: "",
+  //       password: {
+  //         password: "",
+  //         confirm: "",
+  //       },
+  //     },
+  //   });
 
-    const customRequired = {
-      name: {
-        password: helpers.withMessage("Esse campo é obrigatório", required)
-      },
-    };
+  // const customRequired = {
+  //   name: {
+  //     password: helpers.withMessage("Esse campo é obrigatório", required),
+  //   },
+  // };
 
-    const rules = computed(() => {
-      return {
-        password: {
-          password: {customRequired, minLength: minLength(6) },
-          confirm: { customRequired, sameAs: sameAs(state.password.password) },
-        },
-      };
-    });
+  // const rules = computed(() => {
+  //   return {
+  //     password: {
+  //       password: { customRequired, minLength: minLength(6) },
+  //       confirm: {
+  //         customRequired,
+  //         sameAs: sameAs(usuario.password.password),
+  //       },
+  //     },
+  //   };
+  // });
 
-    const v$ = useValidate(rules, state);
+  // const v$ = useValidate(rules, state);
 
+  // return {
+  //   state,
+  //   v$,
+  // };
+  // },
+  data() {
     return {
-      state,
-      v$,
+      usuario: {
+        nome: "",
+        email: "",
+        dataNascimento: "",
+        instituicao: "",
+        password: {
+          password: "",
+          confirm: "",
+        },
+      },
     };
   },
   methods: {
     submitForm() {
-      this.v$.$validate();
-      // if (!this.v$.$error) {
-      //   alert("Formulário preenchido com sucesso");
-      // } else {
-      //   alert("Formulário equivocado");
-      // }
+      // this.v$.$validate();
+      Api().post("/usuario/novo", {
+        nome: this.usuario.nome,
+        email: this.usuario.email,
+        dataNascimento: this.usuario.dataNascimento,
+        instituicao: this.usuario.instituicao,
+        senha: this.usuario.password.password,
+      }).then(res => {
+        this.usuario.nome = ""
+        this.usuario.email = ""
+        this.usuario.dataNascimento = null
+        this.usuario.instituicao = ""
+        this.usuario.password.password = ""
+        this.usuario.password.confirm = ""
+      })
     },
   },
 };
