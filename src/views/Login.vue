@@ -4,26 +4,29 @@
        <main class="container">
 
                <form class="form" action="#" method="login">
-                   <fieldset class="card-login">
-                       <h1>Login</h1>
-                       <div class="float-label-group">
 
+                   <fieldset class="card-login">
+
+                       <h1>Login</h1>
+
+                       <div class="float-label-group" >
                           <span class="login-icons"><img class="email-icon" src="../assets/envelope-regular.svg" alt="Icone of a envelope"></span> 
-                           <input  id="email" type="text" autocomplete="off" autofocus v-model="state.email" >
+                           <input  id="email" type="text" autocomplete="off" autofocus v-model="state.email">
                            <label class="float-label" for="email">E-mail</label>
 
-                           <span class="error-message" v-if="v$.email.$error">
-                              <small>{{ state.errors.errors[v$.email.$errors[0].$message] }}</small> 
+                           <span  v-if="v$.email.$error">
+                              <small class="error-message">{{ state.errors.errors[v$.email.$errors[0].$message] }}</small> 
                            </span> 
-
                        </div>
                         
                        <div class="float-label-group">
+
                            <span class="login-icons"><img src="../assets/lock-svgrepo-com.svg" alt="icon of a lock"></span>
                            <input id="senha" type="password" name="password" v-model="state.password" >
                            <label class="float-label" for="password">Senha</label>
-                           <span class="error-message" v-if="v$.password.$error">
-                            <small>{{ state.errors.errors[v$.password.$errors[0].$message] }}</small> 
+
+                           <span  v-if="v$.password.$error">
+                            <small class="error-message">{{ state.errors.errors[v$.password.$errors[0].$message] }}</small> 
                            </span> 
                        </div>
    
@@ -48,6 +51,9 @@
    import Toast, { POSITION } from "vue-toastification";
    import Header from '@/components/template/Header.vue';
    import i18n from '@/Utils/i18n.json'
+
+   const baseUrl = 'https://15.229.7.73:3333'
+   //usuario /login
    
    export default {
     components: {
@@ -70,7 +76,9 @@
                 password: { required }
             };
         });
+
         const v$ = useValidate(rules, state);
+
         return {
             state,
             v$,
@@ -78,9 +86,15 @@
         };
     },
     methods: {
-
         login() {
             this.v$.$validate();
+            api().get('/usuario/login', {
+                email: this.state.email,
+                password: this.state.password    
+            }).then(res => {
+                this.state.email = "",
+                this.state.password = ""
+            })
             if (!this.v$.$error) {
                 this.toast.error("Email/Senha incorretos", { position: POSITION.TOP_CENTER });
             }
@@ -139,8 +153,7 @@ small {
        align-items: center;
        justify-content: center;
    }
-   
-   
+        
    a {
        color: $btn-text;
        font-weight: 800;
@@ -209,7 +222,8 @@ small {
            left: 2rem;
            transition: all 0.1s ease;
        }
-   input:focus ~ .float-label,input:not(:focus):valid ~ .float-label{
+   input:focus ~ .float-label,
+   input:not(:focus):valid ~ .float-label{
            font-weight: 600;    
            top: -18px;
            bottom: 0px;
@@ -238,5 +252,7 @@ small {
     display: flex;
     color: #c92432;
     border-color: #c92432;
+    
    }
+  
    </style>
