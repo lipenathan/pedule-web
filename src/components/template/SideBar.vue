@@ -1,10 +1,18 @@
 <template>
-    <div class="sidebar">
+  <div class="sidebar">
+    <div class="entire">
       <a href="">Programação</a>
       <a href="">Banco de Dados</a>
       <a href="">Redes</a>
       <a href="">Lógica de Programação</a>
     </div>
+    <div class="short">
+      <a href="">PRO</a>
+      <a href="">BAD</a>
+      <a href="">RED</a>
+      <a href="">LOP</a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -14,14 +22,49 @@ export default {};
 <style lang="scss" scoped>
 $grey: #9b98981f;
 
-.sidebar {
+$border: 0 1rem 1rem 0;
+
+.sidebar, .sidebar:hover {
   margin: 0;
   padding: 0;
-  width: 8rem;
-  background-color: transparent;
+  width: 3rem;
+  background-color: $grey;
   position: fixed;
-  height: 100%;
-  overflow: auto;
+  height: fit-content;
+  min-height: 100%;
+  border-radius: $border;
+}
+
+// .sidebar {
+//   margin: 0;
+//   padding: 0;
+//   width: 3rem;
+//   background-color: $grey;
+//   position: fixed;
+//   height: fit-content;
+//   min-height: 50%;
+//   border-radius: 0 1rem 1rem 0;
+// }
+
+.sidebar:hover {
+  width: 8rem;
+  transition: 500ms;
+}
+
+.sidebar .entire {
+  display: none;
+}
+
+.sidebar:hover .entire {
+  display: block;
+}
+
+.sidebar .short {
+  display: block;
+}
+
+.sidebar:hover .short {
+  display: none;
 }
 
 .sidebar a {
@@ -29,17 +72,19 @@ $grey: #9b98981f;
   color: black;
   padding: 16px;
   text-decoration: none;
-  border-radius: 0 20px 20px 0;
+  border-radius: $border;
 }
 
 .sidebar a.active {
   background-color: #04aa6d;
   color: white;
+  transition: 500ms;
 }
 
 .sidebar a:hover:not(.active) {
   background-color: #555;
   color: white;
+  transition: 500ms;
 }
 
 div.content {
