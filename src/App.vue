@@ -5,8 +5,11 @@
 <script>
 import Cronograma from '../src/views/Cronograma.vue'
 
+
+
 export default {
-  template: {Cronograma}
+  template: {Cronograma},
+  
 }
 </script>
 <style lang="scss">
