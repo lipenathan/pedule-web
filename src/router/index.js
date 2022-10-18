@@ -6,6 +6,7 @@ import Materias from '@/views/Materias.vue'
 import Anotacoes from '@/views/Anotacoes.vue'
 import Cursos from '@/views/Cursos.vue'
 import Login from '@/views/Login.vue'
+import Req from '@/views/Req.vue'
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
     path: '/cursos',
     name: 'cursos',
     component: Cursos
+  },
+  {
+    path: '/req',
+    name: 'req',
+    component: Req
   }
 ];
 
