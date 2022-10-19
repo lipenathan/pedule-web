@@ -1,217 +1,258 @@
 <template>
-  <div class="body">
-    <header>
-            <img
-                id="logo"
-                alt="Logo Pedule"
-                src="../../../../Workspace/pedule-web/public/img/pedule-logo.png" />
+    <body>
+        <Header/>
+       <main class="container">
 
-                <button type="submit" class="btn-cadastrar" name="btn-cadastrar" @click="register"><a href="#">Cadastre-se</a></button>
-        </header>
-    <main class="container">
+               <form class="form" action="#" method="login">
 
+                   <fieldset class="card-login">
 
-            <form class="formulario" action="#" method="POST">
-                <fieldset class="card-login">
-                    <h1>Login</h1>
+                       <h1>Login</h1>
 
-                    <label  for="email">E-mail</label>
-                    <input  id="email" type="text" autofocus required v-model="form.email">
+                       <div class="float-label-group" >
+                          <span class="login-icons"><img class="email-icon" src="../assets/envelope-regular.svg" alt="Icone of a envelope"></span> 
+                           <input  id="email" type="text" autocomplete="off" autofocus v-model="state.email">
+                           <label class="float-label" for="email">E-mail</label>
 
-                    <label for="senha">Senha</label>
-                    <input id="senha" type="password" name="senha" required v-model="form.senha">
+                           <span  v-if="v$.email.$error">
+                              <small class="error-message">{{ state.errors.errors[v$.email.$errors[0].$message] }}</small> 
+                           </span> 
+                       </div>
+                        
+                       <div class="float-label-group">
 
-                    <button type="submit" name="btn-entrar" @click="login"><a href="#">Entrar</a></button>
-                    <a href="#"><small>Esqueceu sua senha?</small></a>
-                </fieldset>
-             </form> 
-    </main>
-  </div>
-    
-    
+                           <span class="login-icons"><img src="../assets/lock-svgrepo-com.svg" alt="icon of a lock"></span>
+                           <input id="senha" type="password" name="password" v-model="state.password" >
+                           <label class="float-label" for="password">Senha</label>
+
+                           <span  v-if="v$.password.$error">
+                            <small class="error-message">{{ state.errors.errors[v$.password.$errors[0].$message] }}</small> 
+                           </span> 
+                       </div>
    
-</template>
+                       <button type="submit" name="btn-enter" @click.prevent="login" ><a href="#">Entrar</a></button>
+                       <a href="#"><small>Esqueceu sua senha?</small></a>
+                   </fieldset>
+                </form> 
+       </main>
+    </body>
+       
+   
+       
+       
+      
+ </template>
+   
+   <script>
+   import useValidate from '@vuelidate/core';
+   import { required, email, helpers } from '@vuelidate/validators'
+   import {computed, reactive} from 'vue'
+   import { useToast } from "vue-toastification";
+   import Toast, { POSITION } from "vue-toastification";
+   import Header from '@/components/template/Header.vue';
+   import i18n from '@/Utils/i18n.json'
 
-<script>
-//import {required, minLenght, email} from "vuelidate/lib/validators"
-export default {
-    data() {
-        return {
-            form: {
-                email: "",
-                senha: ""
-            }
-        }
+   const baseUrl = 'https://15.229.7.73:3333'
+   //usuario /login
+   
+   export default {
+    components: {
+        Header  
     },
-    methods() {
-        login(),
-        register()
-    }
-}
-</script>
+    setup() {
+        const state = reactive({
+            email: "",
+            password: "",
+            errors: i18n
+        });
 
-<style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+        const toast = useToast();
 
-    
-$background: rgb(255, 255, 254);
-$button: rgb(61, 169, 252);
-$tittle: rgb(9, 64, 103);
-$paragraph: rgb(95, 108, 123);
-$btn-text: rgb(255, 255, 254);
-    
-*,
-*::after,
-*::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-family: 'Open Sans', sans-serif;
-    
-}   
-.body {
-width: 100%;
-height: 100vh;
-background: $background;
+        const emailVerification = (value) => value.includes("@", ".com");
+
+        const rules = computed(() => {
+            return {
+                email: { required, email, emailVerification: helpers.withMessage("Email Invalido", emailVerification) },
+                password: { required }
+            };
+        });
+
+        const v$ = useValidate(rules, state);
+
+        return {
+            state,
+            v$,
+            toast,
+        };
+    },
+    methods: {
+        login() {
+            this.v$.$validate();
+            api().get('/usuario/login', {
+                email: this.state.email,
+                password: this.state.password    
+            }).then(res => {
+                this.state.email = "",
+                this.state.password = ""
+            })
+            if (!this.v$.$error) {
+                this.toast.error("Email/Senha incorretos", { position: POSITION.TOP_CENTER });
+            }
+            else {
+
+            }
+        },
+        register() {
+        },
+    },
+
 }
-.container {
+   </script>
+   
+   <style scoped lang="scss">
+   @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+   
+       
+   $background: rgb(255, 255, 254);
+   $button: rgb(61, 169, 252);
+   $tittle: rgb(9, 64, 103);
+   $paragraph: rgb(95, 108, 123);
+   $btn-text: rgb(255, 255, 254);
+       
+   *,
+   *::after,
+   *::before {
+       margin: 0;
+       padding: 0;
+       box-sizing: border-box;
+       text-decoration: none;
+       font-family: 'Open Sans', sans-serif;
+       
+   }   
+   body {
+   width: 100%;
+   height: 100vh;
+   background: $background;
+   }
+   .container {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       width: 100%;
+       height: 85vh;
+       box-shadow: 5px 5px 10px rgba(0, 0, 0, .212);
+       
+   }
+   
+small {
+    width: 50%;
+}
+   .form {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+   }
+        
+   a {
+       color: $btn-text;
+       font-weight: 800;
+       font-size: 0.9rem;
+   }
+   
+   .card-login {
+       display: flex;
+       position: relative;
+       flex-direction: column;
+       align-items: flex-start;
+       justify-content: center;
+       border-radius: 1.2rem;
+       box-shadow: 0px 10px 40px #00000056;
+       border: none;
+       padding: 5rem;
+       
+       
+   }
+   .card-login h1::after {
+       content: '';
+       display: block;
+       width: 100% ;
+       height: 0.3rem;
+       background: $button;
+       margin-bottom: 2rem;
+       border-radius: 10px;
+       font-weight: 800;
+   }.card-login input {
+       margin: 0.8rem 0;
+       padding: 0.8rem 2rem;
+       width: 20rem;
+       border: none;
+       border-radius: 12px;
+       font-size: 12pt;
+       box-shadow: 1px 1px 10px #0000001c;
+       outline: none;
+       
+   }
+   .card-login input:hover {
+       background-color: #eeeeee99;
+   }
+   .card-login input:focus-visible {
+       outline: 1px solid $button;
+   }
+   .login-icons {
+       position: absolute;
+       margin-top: 1.4rem;
+       margin-left: 0.3rem;
+       width: 1.5rem;
+       height: 1.5rem;
+       opacity: 1;   
+   }
+   
+   .float-label-group {
+       position: relative;
+       margin: 0.6rem;
+   }
+   .float-label { 
+           position:absolute;
+           font-size: 1rem;
+           font-weight: 400;
+           color: #cccccc;
+           pointer-events: none;
+           top: 1.5rem;
+           left: 2rem;
+           transition: all 0.1s ease;
+       }
+   input:focus ~ .float-label,
+   input:not(:focus):valid ~ .float-label{
+           font-weight: 600;    
+           top: -18px;
+           bottom: 0px;
+           left: 0px;
+           font-size: 1rem;
+           opacity: 1;
+           color: #404040;
+   }
+   .card-login button {
+       width: 100%;
+       border: none;
+       margin: 1.5rem 0;
+       background: $button;
+       padding: 0.62rem;
+       border-radius: 5px;
+       cursor: pointer;
+   }
+   .card-login button:hover{
+       background: #3da9fc99;
+   }
+   .card-login button a {
+       font-size: 0.93rem;
+       font-weight: 500;
+   }
+   .error-message {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 85vh;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, .212);
+    color: #c92432;
+    border-color: #c92432;
     
-}
-
-    
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 8rem;
-    
-}
-
-header > img {
-  display: flex;
-  width: 130px;
-  height: auto;
-  margin: 2rem;
-  cursor: pointer;
+   }
   
-}
-
-.formulario {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-cadastrar {
-background: $button;
-height: 2.5rem;
-width: 10rem;
-padding: 0.4rem 1rem;
-margin: 2rem;
-border-radius: 5px;
-line-height: 0;
-border: none;
-cursor: pointer;
-
-}
-a {
-    color: $btn-text;
-    font-weight: 800;
-    font-size: 0.9rem;
-}
-
-.btn-cadastrar:hover {
-    background: #3da9fc99;
-    
-}
-
-.card-login {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    border-radius: 1.2rem;
-    box-shadow: 0px 10px 40px #00000056;
-    border: none;
-    padding: 5rem;
-    
-    
-}
-
-
-.card-login h1::after {
-    content: '';
-    display: block;
-    width: 100% ;
-    height: 0.3rem;
-    background: $button;
-    margin-bottom: 2rem;
-    border-radius: 10px;
-    font-weight: 800;
-    
-
-}
-.card-login input {
-    margin: 0.6rem 0;
-    padding: 0.8 1.2rem;
-    width: 20rem;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    font-size: 12pt;
-    box-shadow: 1px 1px 10px #0000001c;
-    outline: none;
-    
-}
-
-.card-login input:hover {
-    background-color: #eeeeee99;
-}
-.card-login input:focus-visible {
-    outline: 1px solid $button;
-}
-
-  label {
-    font-weight: 500;
-    transition: all 0.1s ease;
-
-}
-input:focus ~ label,
-input:not(:focus):valid ~ label{
-    top: -15px;
-		bottom: 0px;
-		left: 0px;
-		font-size: 11px;
-		opacity: 1;
-		color: #404040;
-}
-
-.card-login button {
-    width: 100%;
-    border: none;
-    margin: 1.5rem 0;
-    background: $button;
-    padding: 0.62rem;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.card-login button:hover{
-    background: #3da9fc99;
-}
-
-.card-login button a {
-    font-size: 0.93rem;
-    font-weight: 500;
-}
-
-</style>
+   </style>
