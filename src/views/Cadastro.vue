@@ -16,7 +16,7 @@
               name="name"
               id="inp-name"
               placeholder="Digite o seu nome"
-              v-model="usuario.nome"
+              v-model="usuario.nome" required
             />
             
           </div>
@@ -28,7 +28,7 @@
               type="date"
               name="birth"
               id="birth"
-              v-model="usuario.dataNascimento"
+              v-model="usuario.dataNascimento" required
             />
           </div>
         </div>
@@ -40,7 +40,7 @@
           name="institute"
           id="inp-institute"
           placeholder="Informe a instituição"
-          v-model="usuario.instituicao" class="inp_top_box2"/>
+          v-model="usuario.instituicao" class="inp_top_box2" required/>
         
 
         <label for="email">Email</label>
@@ -49,7 +49,7 @@
           name="email"
           id="inp-email"
           placeholder="Insira o seu email"
-          v-model="usuario.email" class="inp_top_box2"
+          v-model="usuario.email" class="inp_top_box2" required
         />
         <span class="icon_email" ><i class="fa-solid fa-envelope"></i></span>
 
@@ -60,7 +60,7 @@
           name="password"
           id="inp-password"
           placeholder="Insira sua senha"
-          v-model="usuario.password.password" class="inp_top_box2"
+          v-model="usuario.password.password" class="inp_top_box2" required
         />
 
         <label for="conf-password">Cofirme sua senha</label>
@@ -70,7 +70,7 @@
           type="password"
           name="conf-password"
           id="conf-password"
-          placeholder="Confirme sua senha" class="inp_top_box2"
+          placeholder="Confirme sua senha" class="inp_top_box2" required
         />
 
         <button id="bt" @click.prevent="submitForm">Enviar</button>
@@ -116,6 +116,7 @@ export default {
         this.usuario.instituicao = ""
         this.usuario.password.password = ""
         this.usuario.password.confirm = ""
+        this.$router.push('/login')
       })
     },
   },
