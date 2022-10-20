@@ -4,7 +4,7 @@
   <Toast/>
 </template>
 <script>
-import Cronograma from '../src/views/Cronograma.vue';
+import Cronograma from '../src/views/Cronograma.vue'
 import Toast from "vue-toastification";
 export default {
     template: { Cronograma, Toast },
