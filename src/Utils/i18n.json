@@ -1,5 +1,6 @@
  {
     "errors": {
-        "Value is required": "Campo Obrigatório"
+        "Value is required": "Campo obrigatório",
+        "Must be a valid email address.": "Email inválido"
     }
  }

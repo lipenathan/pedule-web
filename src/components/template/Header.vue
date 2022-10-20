@@ -1,11 +1,19 @@
 <template>
   <header>
-    <img
+    <router-link to="/login">
+      <img
+        
         id="logo"
         alt="Logo Pedule"
-        src="../../../public/img/pedule-logo-sqr.png" />
+        src="../../../public/img/pedule-logo-sqr.png"
+         />
+    </router-link>
+      
    
-        <button type="submit" class="btn-register" name="btn-register" @click="register"><a href="#">Cadastre-se</a></button>
+   
+   
+        <button type="submit" class="btn-register" name="btn-register"><router-link to="/cadastro">Cadastre-se</router-link></button>
+        
  </header>
 </template>
 
@@ -32,7 +40,7 @@ export default {
        
    }
    
-   header > img {
+   img {
      display: flex;
      width: 130px;
      height: auto;
