@@ -29,7 +29,9 @@ export default {
   margin-left: 200px;
   padding: 1px 16px;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  justify-content: space-around;
 }
 
 .cronograma {
