@@ -21,18 +21,18 @@
               :style="{ width: '45rem' }"
               id="inputtext-left"
               type="text"
-              v-model="tituloMateria"
+              v-model="tituloForm"
             />
             <label for="inputtext-left">Título matéria</label>
           </span>
           <small
-                v-if="
-                  (v$.tituloMateria.$invalid && submitted) ||
-                  v$.tituloMateria.$pending.$response
-                "
-                class="p-error"
-                >{{ tituloMateriaRequired }}</small
-              >
+            v-if="
+              (v$.tituloForm.$invalid && submitted) ||
+              v$.tituloForm.$pending.$response
+            "
+            class="p-error"
+            >{{ tituloMateriaRequired }}</small
+          >
         </div>
         <div class="inputtext">
           <span class="p-float-label p-input-icon-left">
@@ -42,7 +42,7 @@
                 <p-text-area
                   id="textarea"
                   :style="{ width: '45rem' }"
-                  v-model="descricao"
+                  v-model="descricaoForm"
                   rows="3"
                 />
                 <label for="textarea">Descrição Matéria</label>
@@ -57,7 +57,7 @@
               :style="{ width: '45rem' }"
               id="inputtext-left"
               type="text"
-              v-model="professor"
+              v-model="professorForm"
             />
             <label for="inputtext-left">Professor</label>
           </span>
@@ -70,7 +70,7 @@
             aria-labelledby="switch-color"
           />
           <label for="cor">Selecione uma cor para a matéria (opcional)</label>
-          <p-color-picker id="cor" v-model="cor" :disabled="!switchColor" />
+          <p-color-picker id="cor" v-model="corForm" :disabled="!switchColor" />
         </div>
       </div>
       <template #footer>
@@ -110,28 +110,79 @@ export default {
   },
   data() {
     return {
-      tituloMateria: "",
-      descricao: "",
-      professor: "",
-      cor: "",
+      tituloForm: "",
+      descricaoForm: "",
+      professorForm: "",
+      corForm: "",
+      semanaHorarioForm: [
+        {
+          id: 0,
+          horario: "",
+        //   {
+        //     hour: 0,
+        //     minute: 0,
+        //     second: 0,
+        //     nano: 0,
+        //   },
+          semana: {
+            id: 0,
+            nome: "",
+          },
+        },
+      ],
+
       switchColor: true,
       submitted: false, //flag que diz se formulário já foi submetido
       tituloMateriaRequired: "Título da matéria é obrigatório", //constante de mensagem de erro de título da matéria
       camposObrigatorioMessage: "Preencha os Campos obrigatórios",
-      toast: useToast()
+      toast: useToast(),
     };
   },
   props: {
     show: false,
     update: false,
+    materia: {
+      titulo: "",
+      professor: "",
+      descricao: "",
+      cor: "",
+      usuario: {
+        nome: "",
+        email: "",
+        dataNascimento: "",
+        instituicao: "",
+        emailAtivo: false,
+        senha: "",
+      },
+      semanaHorario: [
+        {
+          id: 0,
+          horario:
+          "",
+        //    {
+        //     hour: 0,
+        //     minute: 0,
+        //     second: 0,
+        //     nano: 0,
+        //   },
+          semana: {
+            id: 0,
+            nome: "",
+          },
+        },
+      ],
+    },
   },
   methods: {
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
-        //   api()
-        //     .post("/materia/novo", {})
-        //     .then((res) => {});
+        api()
+          .post("/materia/novo", {
+            titulo: this.tituloForm,
+            descricao: this.descricaoForm,
+          })
+          .then((res) => {});
       } else {
         this.toast.error(this.camposObrigatorioMessage, {
           position: POSITION.TOP_CENTER,
@@ -145,20 +196,33 @@ export default {
       if (!switchColor) {
       }
     },
+    /**
+     * lógica para ser usada no fluxo de edição:
+     * Ao receber o objeto a ser editado via props e a flag de edição(update) == true
+     * os campos dos formulários serão preenchidos conforme objeto recebido pelo componente pai
+     */
+    setMateria() {
+      if (this.update) {
+        this.tituloForm = this.materia.titulo
+        this.descricaoForm = this.materia.descricao
+        this.professorForm = this.materia.professor
+        this.corForm = this.materia.cor
+        this.semanaHorarioForm = this.materia.semanaHorario
+      }
+    },
   },
   validations() {
     return {
-      tituloMateria: { required },
+      tituloForm: { required },
     };
+  },
+  created() {
+    this.setMateria();
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.materia-dialog ::v-deep .p-dialog {
-  background-color: red;
-  width: 100rem;
-}
 
 .inputtext {
   height: auto;
