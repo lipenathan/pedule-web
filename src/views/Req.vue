@@ -10,14 +10,15 @@
         v-model="usuario.dataNascimento"
       />
       <input type="password" placeholder="senha" v-model="usuario.senha" />
-      <p-button @click="submit">Cadastrar</p-button>
+      <p-button @click="submit">Cadastrar</p-button >
     </div>
     <div>
-      <p-button @click="showModal">Show Modal</p-button>
+      <p-button @click="showModal">Show Modal</p-button >
     </div>
     <div>
-      <p-dialog class="p-dialog" v-model:visible="showDialog">
-        <p-calendar class="calendar" :inline="true" selectionMode="single || multiple || range"></p-calendar>
+      <p-dialog header="Header" :draggable="false" v-model:visible="showDialog" :modal="true">
+        <h2>Exemplo de modal</h2>
+        <!-- <p-calendar class="calendar" :inline="true" selectionMode="single || multiple || range"></p-calendar> -->
       </p-dialog>
     </div>
   </div>
@@ -26,11 +27,11 @@
 <script>
 import Api from '../services/API';
 import PCalendar from 'primevue/calendar'
-import PDialog from 'primevue/dialog'
 import PButton from 'primevue/button'
+import PDialog from 'primevue/dialog'
 
 export default {
-  components: {PCalendar, PDialog, PButton},
+  components: {PCalendar, PButton, PDialog},
   data() {
     return {
       usuario: {
@@ -69,10 +70,5 @@ export default {
 <style scoped>
 .wrapper {
   border: solid 2px grey;
-}
-.calendar {
-  border: solid blue 2px;
-  border-radius: 5px;
-  background: rgb(178, 178, 212);
 }
 </style>

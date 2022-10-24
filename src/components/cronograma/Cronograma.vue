@@ -124,10 +124,11 @@ $grey: #cccccc;
 $dark-grey: #cecece92;
 
 .schedule {
+  display: flex;
   border: solid 0.1rem $grey;
   border-radius: 1rem;
-  height: 25rem;
-  width: 55rem;
+  height: 30rem;
+  width: 65rem;
   overflow-y: auto;
 }
 
