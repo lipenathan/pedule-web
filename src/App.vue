@@ -19,16 +19,16 @@ export default {
   text-align: center;
   
 }
-*,
-   *::after,
-   *::before {
-       margin: 0;
-       padding: 0;
-       box-sizing: border-box;
-       text-decoration: none;
-       font-family: 'Open Sans', sans-serif;
+// *,
+//    *::after,
+//    *::before {
+//        margin: 0;
+//        padding: 0;
+//        box-sizing: border-box;
+//        text-decoration: none;
+//        font-family: 'Open Sans', sans-serif;
        
-   }   
+//    }   
 body {
   background-color: #EEEEF8;
 }
