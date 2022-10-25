@@ -17,15 +17,24 @@
       <input type="text" class="data_atividade" value="17/10/2022">
       <input type="radio">
       <input type="button" value="Excluir">
-    </div> 
-      
-  
-  
+    </div>  
+    <p-button @click="showDialog = !showDialog">Show dialog</p-button>
+    <atividade-adialog
+    :show="showDialog"
+    :update="false"
+    />
 </template>
 <script>
 import Navbar from '@/components/template/Navbar.vue'
+import PButton from 'primevue/button'
+import AtividadeAdialog from '@/components/atividades/AtividadeDialog.vue'
 export default {
-  components: { Navbar }
+  components: { Navbar, AtividadeAdialog, PButton },
+  data() {
+    return {
+      showDialog: false
+    }
+  }
 }
 </script>
 
@@ -50,8 +59,6 @@ export default {
     font-size: 18px;
     color:#3D3939
    }
-
-   
 
    .div_atividade {
     display: flex;
@@ -91,7 +98,4 @@ export default {
    #inp_check{
     margin-left: -60px;
    }
-
-   
-
 </style>
