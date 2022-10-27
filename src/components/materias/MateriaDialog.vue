@@ -16,7 +16,7 @@
       <div class="content">
         <div class="inputtext">
           <span class="p-float-label p-input-icon-left">
-            <i class="pi pi-search" />
+            <i class="pi pi-book" />
             <p-input-text
               :style="{ width: '45rem' }"
               id="inputtext-left"
@@ -52,7 +52,7 @@
         </div>
         <div class="inputtext">
           <span class="p-float-label p-input-icon-left">
-            <i class="pi pi-search" />
+            <i class="pi pi-user" />
             <p-input-text
               :style="{ width: '45rem' }"
               id="inputtext-left"
@@ -61,6 +61,9 @@
             />
             <label for="inputtext-left">Professor</label>
           </span>
+        </div>
+        <div class="inputtext">
+          <dia-semana @updated="semanaHorarioForm = $event"></dia-semana>
         </div>
         <div class="inputtext">
           <label>Cor</label>
@@ -86,16 +89,21 @@
   </div>
 </template>
 <script>
+//primevue
 import PDialog from "primevue/dialog";
 import PInputText from "primevue/inputtext";
 import PTextArea from "primevue/textarea";
 import PButton from "primevue/button";
 import PColorPicker from "primevue/colorpicker";
 import PInputSwitch from "primevue/inputswitch";
+//validation
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
+//toast
 import { useToast } from "vue-toastification";
 import Toast, { POSITION } from "vue-toastification";
+//local
+import DiaSemana from "@/components/materias/DiaSemana.vue";
 
 import api from "@/services/API";
 export default {
@@ -107,6 +115,7 @@ export default {
     PButton,
     PColorPicker,
     PInputSwitch,
+    DiaSemana,
   },
   data() {
     return {
@@ -114,19 +123,15 @@ export default {
       descricaoForm: "",
       professorForm: "",
       corForm: "",
+      usuario: {
+        id: 16,
+      },
       semanaHorarioForm: [
         {
-          id: 0,
-          horario: "",
-        //   {
-        //     hour: 0,
-        //     minute: 0,
-        //     second: 0,
-        //     nano: 0,
-        //   },
-          semana: {
-            id: 0,
-            nome: "",
+          diaSemanaForm: null,
+          horario: {
+            horaForm: "",
+            minutoForm: "",
           },
         },
       ],
@@ -156,18 +161,14 @@ export default {
       },
       semanaHorario: [
         {
-          id: 0,
-          horario:
-          "",
-        //    {
-        //     hour: 0,
-        //     minute: 0,
-        //     second: 0,
-        //     nano: 0,
-        //   },
+          horario: {
+            hour: 0,
+            minute: 0,
+            second: 0,
+            nano: 0,
+          },
           semana: {
             id: 0,
-            nome: "",
           },
         },
       ],
@@ -177,12 +178,42 @@ export default {
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
+        let listSemanaHorario = [];
+        for (let i in this.semanaHorarioForm) {
+          let diaSemana = this.semanaHorarioForm[i];
+          listSemanaHorario.push({
+            semana: {
+              id: diaSemana.diaSemanaForm,
+            },
+            horario: `${diaSemana.horario.horaForm}:${diaSemana.horario.minutoForm}:00`,
+          });
+        }
         api()
           .post("/materia/novo", {
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
+            professor: this.professorForm,
+            cor: this.corForm,
+            usuario: this.usuario,
+            semanaHorario: listSemanaHorario,
           })
-          .then((res) => {});
+          .then((res) => {
+            this.toast.success("Matéria cadastrada com sucesso", {
+              position: POSITION.TOP_CENTER,
+            });
+            this.tituloForm = "";
+            this.descricaoForm = "";
+            this.professorForm = "";
+            this.corForm = "";
+            this.semanaHorarioForm = [];
+            this.closeDialog()
+            this.submitted = false
+          })
+          .catch((error) => {
+            this.toast.error(error.message, {
+              position: POSITION.TOP_CENTER,
+            });
+          });
       } else {
         this.toast.error(this.camposObrigatorioMessage, {
           position: POSITION.TOP_CENTER,
@@ -203,11 +234,11 @@ export default {
      */
     setMateria() {
       if (this.update) {
-        this.tituloForm = this.materia.titulo
-        this.descricaoForm = this.materia.descricao
-        this.professorForm = this.materia.professor
-        this.corForm = this.materia.cor
-        this.semanaHorarioForm = this.materia.semanaHorario
+        this.tituloForm = this.materia.titulo;
+        this.descricaoForm = this.materia.descricao;
+        this.professorForm = this.materia.professor;
+        this.corForm = this.materia.cor;
+        this.semanaHorarioForm = this.materia.semanaHorario;
       }
     },
   },
@@ -223,7 +254,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .inputtext {
   height: auto;
   margin-top: 2rem;

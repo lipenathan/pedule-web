@@ -8,7 +8,7 @@
     <dialog-materia
       :show="showDialog"
       @closedDialog="showDialog = false"
-      :update="true"
+      :update="false"
       :materia="materia"
     ></dialog-materia>
   </div>
@@ -28,8 +28,8 @@ export default {
        *que está sendo exibida ao usuário e que foi recebida via api
        */
       materia: {
-        titulo: "Materia POSTMAN",
-        descricao: "matéria de teste via requisicao",
+        titulo: "Materia Exemplo",
+        descricao: "matéria de teste passada de um componente pai para um componente filho",
         semanaHorario: [
           {
             horario: "20:15:00",
