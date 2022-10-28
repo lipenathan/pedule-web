@@ -188,6 +188,9 @@ export default {
             horario: `${diaSemana.horario.horaForm}:${diaSemana.horario.minutoForm}:00`,
           });
         }
+        if (!this.switchColor) {
+          this.corForm = "";
+        }
         api()
           .post("/materia/novo", {
             titulo: this.tituloForm,
@@ -199,15 +202,15 @@ export default {
           })
           .then((res) => {
             this.toast.success("Matéria cadastrada com sucesso", {
-              position: POSITION.TOP_CENTER,
+              position: POSITION.TOP_CENTER, timeout: 2500,
             });
             this.tituloForm = "";
             this.descricaoForm = "";
             this.professorForm = "";
             this.corForm = "";
             this.semanaHorarioForm = [];
-            this.closeDialog()
-            this.submitted = false
+            this.closeDialog();
+            this.submitted = false;
           })
           .catch((error) => {
             this.toast.error(error.message, {

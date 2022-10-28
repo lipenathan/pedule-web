@@ -53,6 +53,7 @@
         >
       </div>
     </div>
+    <span>Horário</span>
     <div class="time">
       <p-list-box v-model="diaHorario.horario.horaForm" :options="listaHora" optionLabel="hora" optionValue="code" @click="update"/>
       <p-list-box v-model="diaHorario.horario.minutoForm" :options="listaMinutos" optionLabel="minuto" optionValue="code" @click="update"/>
@@ -117,6 +118,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dia-semana-item {
+  text-align: center;
+}
+
 .radio-group {
   width: 100%;
   display: flex;
@@ -132,7 +137,6 @@ export default {
 .time {
   width: 100%;
   display: flex;
-  margin-top: 0.8rem;
   justify-content: center;
 }
 
