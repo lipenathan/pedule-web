@@ -1,9 +1,10 @@
 <template>
   <div>
     <navbar />
-    <h1>Tela a ser Implementada</h1>
+    <Anotacoes />
   </div>
-  <div class="dialog">
+  
+  <!-- <div class="dialog">
     <p-button @click="showDialog = !showDialog">Show Materia Dialog</p-button>
     <dialog-anotacoes
       :show="showDialog"
@@ -11,15 +12,17 @@
       :update="false"
       :materia="materia"
     ></dialog-anotacoes>
-  </div>
+  </div>  -->
 </template>
 <script>
+
 import Navbar from "@/components/template/Navbar.vue";
 import DialogAnotacoes from "@/components/anotacoes/AnotacoesDialog.vue";
 import PButton from "primevue/button";
+import Anotacoes from "@/components/anotacoes/Anotacoes.vue"
 
 export default {
-  components: { Navbar, DialogAnotacoes, PButton },
+  components: { Navbar, DialogAnotacoes, PButton, Anotacoes },
   data() {
     return {
       showDialog: false,
