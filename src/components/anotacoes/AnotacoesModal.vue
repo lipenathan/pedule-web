@@ -11,19 +11,19 @@
                         <form @submit.prevent="submit">
                             <div class="mb-3">
                                  <label class="form-label" for="">Titulo</label>
-                                 <input type="text" class="form-control" v-model="titulo">
+                                 <input type="text" class="form-control" v-model="anotacao.titulo">
                             </div>
                             <small
                              v-if="(v$.titulo.$invalid && submitted) || v$.titulo.$pending.$response" class="p-error">{{ tituloAnotacaoRequired }}</small>
                             <div class="mb-3">
                                 <label class="form-label" for="">Descrição</label>
-                                <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="descricao"></textarea>
+                                <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="anotacao.descricao"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="">Lembrete</label>
                                 <p-input-switch
                                 id="Lembrete"
-                                v-model="lembrete"
+                                v-model="anotacao.lembrete"
                                  aria-labelledby="Lembrete"
                                  @click="lembrete = !lembrete"
                                  />
@@ -61,22 +61,7 @@
         },
         data() {
           return {
-            titulo: "",
-            descricao: "",
-            lembrete: 0,
-             usuario: {
-              id: 16
-             },  
-            submitted: false, //flag que diz se formulário já foi submetido
-            tituloAnotacaoRequired: "Título da anotação é obrigatório", //constante de mensagem de erro de título da matéria
-            camposObrigatorioMessage: "Preencha os Campos obrigatórios",
-            toast: useToast(),
-          };
-        },
-        props: {
-          
-          update: false,
-          anotacao: {
+            anotacao: {
             id: 0,
             titulo: "",
             descricao: "",
@@ -91,20 +76,34 @@
               senha: "",
             },
           },
+            lembrete: 0,
+            update: false,
+             usuario: {
+              id: 16
+             },  
+            submitted: false, //flag que diz se formulário já foi submetido
+            tituloAnotacaoRequired: "Título da anotação é obrigatório", //constante de mensagem de erro de título da matéria
+            camposObrigatorioMessage: "Preencha os Campos obrigatórios",
+            toast: useToast(),
+          };
+        },
+        props: {
+          anotacoes: [],
         },
         methods: {
           submit() {  
               api()
                 .post("/anotacao/novo", {
-                  titulo: this.titulo,
-                  descricao: this.descricao,
-                  lembrete: this.lembrete,
+                  titulo: this.anotacao.titulo,
+                  descricao: this.anotacao.descricao,
+                  lembrete: this.anotacao.lembrete,
                   usuario: this.usuario,
                 })
                 .then((response) => {
                   this.toast.success("Anotacao Inserida com sucesso", {
                     position: POSITION.TOP_CENTER,
                   });
+                  
                 }).catch((error) => {
                     console.log(error)
                 });      
