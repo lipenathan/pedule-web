@@ -5,7 +5,7 @@
         :draggable="false"
         modal
         @after-hide="closeDialog"
-        :style="{ width: '50rem' }"
+        :style="{ width: '50rem', }"
       >
         <template #header>
           <h3 v-if="!update">Nova Atividade</h3>
@@ -21,7 +21,7 @@
                 :style="{ width: '45rem' }"
                 id="inputtext-left"
                 type="text"
-                v-model="tituloForm"
+                v-model="tituloForm" 
               />
               <label for="inputtext-left">Título atividade</label>
             </span>
@@ -31,10 +31,38 @@
                 v$.tituloForm.$pending.$response
               "
               class="p-error"
-              >{{ tituloMateriaRequired }}</small
-            >
+              >{{ tituloAtividadeRequired }}</small>
           </div>
-         
+          <div class="inputtext2">
+            <span class="p-float-label p-input-icon-left">
+              <i class="pi-align-left"/>
+              <p-input-text
+                :style="{ width: '45rem' }"
+                id="inputtext-left2"
+                type="text"
+                v-model="descricaoForm"
+              />
+              <label for="inputtext-left">Descrição</label>
+            </span>
+          </div>
+
+          <div class="inputtext3">
+            <span class="p-float-label p-input-icon-left">
+              <i class="pi-calendar"/>
+              <p-calendar
+                id="inputtext-left2"
+                v-model="dataForm"
+              />
+              <label for="inputtext-left">Data de entrega</label>
+            </span>
+            <small
+              v-if="
+                (v$.dataForm.$invalid && submitted) ||
+                v$.dataForm.$pending.$response
+              "
+              class="p-error"
+              >{{ dataEntregaRequired }}</small>
+          </div>
         </div>
         <template #footer>
           <p-button class="button-submit" v-if="!update" @click="submitForm"
@@ -57,6 +85,7 @@
   import { useVuelidate } from "@vuelidate/core";
   import { useToast } from "vue-toastification";
   import Toast, { POSITION } from "vue-toastification";
+  import PCalendar from 'primevue/calendar';
   
   import api from "@/services/API";
   export default {
@@ -66,6 +95,7 @@
       PInputText,
       PTextArea,
       PButton,
+      PCalendar
     },
     data() {
       return {
@@ -74,11 +104,13 @@
         dataForm: null,
         prioridadeForm: false,
         feitoForm: false,
+        usuario: {id:3},
 
   
         switchColor: true,
         submitted: false, //flag que diz se formulário já foi submetido
-        tituloMateriaRequired: "Título da matéria é obrigatório", //constante de mensagem de erro de título da matéria
+        tituloAtividadeRequired : "Título da atividade é obrigatório", //constante de mensagem de erro de título da matéria
+        dataEntregaRequired: "Data de entrea da atividade é obrigatório",
         camposObrigatorioMessage: "Preencha os Campos obrigatórios",
         toast: useToast(),
       };
@@ -86,36 +118,10 @@
     props: {
       show: false,
       update: false,
-      materia: {
+      atividade: {
         titulo: "",
-        professor: "",
         descricao: "",
-        cor: "",
-        usuario: {
-          nome: "",
-          email: "",
-          dataNascimento: "",
-          instituicao: "",
-          emailAtivo: false,
-          senha: "",
-        },
-        semanaHorario: [
-          {
-            id: 0,
-            horario:
-            "",
-          //    {
-          //     hour: 0,
-          //     minute: 0,
-          //     second: 0,
-          //     nano: 0,
-          //   },
-            semana: {
-              id: 0,
-              nome: "",
-            },
-          },
-        ],
+        dataHorarioEntrega: null,
       },
     },
     methods: {
@@ -123,11 +129,22 @@
         this.submitted = true;
         if (!this.v$.$invalid) {
           api()
-            .post("/materia/novo", {
+            .post("/atividade/novo", {
               titulo: this.tituloForm,
               descricao: this.descricaoForm,
+              dataHorarioEntrega: this.dataForm,
+              usuario: this.usuario
             })
-            .then((res) => {});
+            .then((res) => {
+              this.toast.success("Atividade cadastrada com sucesso", {
+                position: POSITION.TOP_CENTER,
+              });
+            this.tituloForm = ""
+            this.descricaoForm = ""
+            this.dataForm = null  
+            this.submitted = false
+            this.closeDialog()
+            });
         } else {
           this.toast.error(this.camposObrigatorioMessage, {
             position: POSITION.TOP_CENTER,
@@ -137,32 +154,28 @@
       closeDialog() {
         this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
       },
-      disableColorPicker() {
-        if (!switchColor) {
-        }
-      },
       /**
        * lógica para ser usada no fluxo de edição:
        * Ao receber o objeto a ser editado via props e a flag de edição(update) == true
        * os campos dos formulários serão preenchidos conforme objeto recebido pelo componente pai
        */
-      setMateria() {
-        if (this.update) {
-          this.tituloForm = this.materia.titulo
-          this.descricaoForm = this.materia.descricao
-          this.professorForm = this.materia.professor
-          this.corForm = this.materia.cor
-          this.semanaHorarioForm = this.materia.semanaHorario
+      setAtividade() {
+        if (1 == 1) {
+           console.log(this.update)
+          this.tituloForm = this.atividade.titulo
+          this.descricaoForm = this.atividade.descricao
+          this.dataForm = this.atividade.dataHorarioEntrega
         }
       },
     },
     validations() {
       return {
         tituloForm: { required },
+        dataForm: { required },
       };
     },
     created() {
-      this.setMateria();
+      this.setAtividade();
     },
   };
   </script>
@@ -170,6 +183,18 @@
   <style lang="scss" scoped>
   
   .inputtext {
+    height: auto;
+    margin-top: 2rem;
+    
+  }
+
+  .inputtext2 {
+    height: auto;
+    margin-top: 2rem;
+    
+  }
+
+  .inputtext3{
     height: auto;
     margin-top: 2rem;
   }
