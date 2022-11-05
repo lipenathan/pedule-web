@@ -1,13 +1,14 @@
 <template>
-  <div class="item" :style="{ background: materia.color }">
+  <div class="item" :style="{ background: '#' + materia.cor }">
     <h3>{{ materia.titulo }}</h3>
-    <i class="pi pi-pencil"></i>
-    <i class="pi pi-trash"></i>
+    <p-button @click="edit()" class="edit" icon="pi pi-pencil"></p-button>
+    <p-button class="delete" icon="pi pi-trash"></p-button>
   </div>
 </template>
-
 <script>
+import PButton from "primevue/button";
 export default {
+  components: { PButton },
   props: {
     materia: {
       id: null,
@@ -19,22 +20,59 @@ export default {
       semanaHorario: [],
     },
   },
+  methods: {
+    edit() {
+      this.$emit('edit', true)
+    }
+  }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$button-size: 3rem;
+
 .item {
-  display: flex;
-  width: 100%;
-  background-color: blue;
-  margin: 5px 0;
+  width: 98%;
+  margin: 0.5rem 0.5rem 0.5rem 0.5rem;
   border-radius: 10px;
-  padding: 5px;
+  border: 1px solid;
+  height: 3rem;
+  display: flex;
+  align-items: center;
 }
 
-.pi-pencil {
+.item > h3 {
+  margin-left: 1rem;
+  width: fit-content;
 }
 
-.pi-trash {
+.item > .edit {
+  width: min-content;
+  margin-right: 1rem;
+  margin-left: auto;
+}
+
+.item > .delete {
+  margin-right: 1rem;
+  width: min-content;
+}
+
+.p-button {
+  background-color: transparent;
+  border: none;
+  color: black;
+}
+
+.p-button:enabled:hover {
+  background: transparent;
+  color: #ffffff;
+  border-color: none;
+}
+
+.p-button,
+p-button:enabled:hover {
+  border-radius: 50px;
+  width: $button-size;
+  height: $button-size;
 }
 </style>

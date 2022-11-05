@@ -35,7 +35,7 @@ export default {
 }
 
 .cronograma {
-  margin-top: 3rem;
+  margin-top: 2rem;
   margin-inline-start: auto;
   margin-inline-end: auto;
 }

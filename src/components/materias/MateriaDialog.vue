@@ -63,7 +63,16 @@
           </span>
         </div>
         <div class="inputtext">
-          <dia-semana @updated="semanaHorarioForm = $event"></dia-semana>
+          <dia-semana
+            v-if="!update"
+            @updated="semanaHorarioForm = $event"
+          ></dia-semana>
+          <dia-semana
+            v-else
+            :set="true"
+            @updated="semanaHorarioForm = $event"
+            :semanaHorario="materia.semanaHorario"
+          ></dia-semana>
         </div>
         <div class="inputtext">
           <label>Cor</label>
@@ -128,6 +137,7 @@ export default {
       },
       semanaHorarioForm: [
         {
+          id: null,
           diaSemanaForm: null,
           horario: {
             horaForm: "",
@@ -147,6 +157,7 @@ export default {
     show: false,
     update: false,
     materia: {
+      id: null,
       titulo: "",
       professor: "",
       descricao: "",
@@ -161,20 +172,25 @@ export default {
       },
       semanaHorario: [
         {
-          horario: {
-            hour: 0,
-            minute: 0,
-            second: 0,
-            nano: 0,
-          },
+          id: 0,
+          horario: "",
           semana: {
             id: 0,
+            nome: "",
           },
         },
       ],
     },
   },
   methods: {
+    cleanDialog() {
+      this.tituloForm = "";
+      this.descricaoForm = "";
+      this.professorForm = "";
+      this.corForm = "";
+      this.semanaHorarioForm = [];
+      this.submitted = false;
+    },
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
@@ -182,6 +198,7 @@ export default {
         for (let i in this.semanaHorarioForm) {
           let diaSemana = this.semanaHorarioForm[i];
           listSemanaHorario.push({
+            id: diaSemana.id,
             semana: {
               id: diaSemana.diaSemanaForm,
             },
@@ -193,6 +210,7 @@ export default {
         }
         api()
           .post("/materia/novo", {
+            id: this.materia.id,
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
             professor: this.professorForm,
@@ -202,15 +220,10 @@ export default {
           })
           .then((res) => {
             this.toast.success("Matéria cadastrada com sucesso", {
-              position: POSITION.TOP_CENTER, timeout: 2500,
+              position: POSITION.TOP_CENTER,
+              timeout: 2500,
             });
-            this.tituloForm = "";
-            this.descricaoForm = "";
-            this.professorForm = "";
-            this.corForm = "";
-            this.semanaHorarioForm = [];
             this.closeDialog();
-            this.submitted = false;
           })
           .catch((error) => {
             this.toast.error(error.message, {
@@ -225,6 +238,7 @@ export default {
     },
     closeDialog() {
       this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
+      this.cleanDialog();
     },
     disableColorPicker() {
       if (!switchColor) {
@@ -241,7 +255,16 @@ export default {
         this.descricaoForm = this.materia.descricao;
         this.professorForm = this.materia.professor;
         this.corForm = this.materia.cor;
-        this.semanaHorarioForm = this.materia.semanaHorario;
+        // let list = this.materia.semanaHorario;
+        // for (let i = 0; i < list.lenght; i++) {
+        //   let semanaHorario;
+        //   semanaHorario.id = list[i].id;
+        //   semanaHorario.diaSemanaForm.id = list[i].semana.id;
+        //   let horario = list[i].horario.split(":");
+        //   semanaHorario.horario.horaForm = horario[0];
+        //   semanaHorario.horario.minutoForm = horario[1];
+        //   this.semanaHorarioForm.push(semanaHorario);
+        // }
       }
     },
   },
@@ -250,7 +273,7 @@ export default {
       tituloForm: { required },
     };
   },
-  created() {
+  updated() {
     this.setMateria();
   },
 };

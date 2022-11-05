@@ -3,50 +3,50 @@
     <div class="radios">
       <div class="radio-group" @click="update">
         <span
-          ><p-radio-button
-            name="Dom"
+          ><input
+            type="radio"
             value="1"
             v-model="diaHorario.diaSemanaForm"
           />Dom</span
         >
         <span
-          ><p-radio-button
-            name="Seg"
+          ><input
+            type="radio"
             value="2"
             v-model="diaHorario.diaSemanaForm"
           />Seg</span
         >
         <span
-          ><p-radio-button
-            name="Ter"
+          ><input
+            type="radio"
             value="3"
             v-model="diaHorario.diaSemanaForm"
           />Ter</span
         >
         <span
-          ><p-radio-button
-            name="Qua"
+          ><input
+            type="radio"
             value="4"
             v-model="diaHorario.diaSemanaForm"
           />Qua</span
         >
         <span
-          ><p-radio-button
-            name="Qui"
+          ><input
+            type="radio"
             value="5"
             v-model="diaHorario.diaSemanaForm"
           />Qui</span
         >
         <span
-          ><p-radio-button
-            name="Sex"
+          ><input
+            type="radio"
             value="6"
             v-model="diaHorario.diaSemanaForm"
           />Sex</span
         >
         <span
-          ><p-radio-button
-            name="Sab"
+          ><input
+            type="radio"
             value="7"
             v-model="diaHorario.diaSemanaForm"
           />Sab</span
@@ -55,8 +55,20 @@
     </div>
     <span>Horário</span>
     <div class="time">
-      <p-list-box v-model="diaHorario.horario.horaForm" :options="listaHora" optionLabel="hora" optionValue="code" @click="update"/>
-      <p-list-box v-model="diaHorario.horario.minutoForm" :options="listaMinutos" optionLabel="minuto" optionValue="code" @click="update"/>
+      <p-list-box
+        v-model="diaHorario.horario.horaForm"
+        :options="listaHora"
+        optionLabel="hora"
+        optionValue="code"
+        @click="update"
+      />
+      <p-list-box
+        v-model="diaHorario.horario.minutoForm"
+        :options="listaMinutos"
+        optionLabel="minuto"
+        optionValue="code"
+        @click="update"
+      />
     </div>
   </div>
 </template>
@@ -69,11 +81,12 @@ export default {
   data() {
     return {
       diaHorario: {
+        id: null,
         diaSemanaForm: null,
         horario: {
           horaForm: null,
-      minutoForm: null,
-        }
+          minutoForm: null,
+        },
       },
       listaHora: [
         { hora: "00", code: "00" },
@@ -111,9 +124,29 @@ export default {
   },
   methods: {
     update() {
-      this.$emit("updated", this.diaHorario)
-    }
-  }
+      this.$emit("updated", this.diaHorario);
+    },
+    setSemanaHorario() {
+      if (this.set) {
+        let horario = this.semanaHorario.horario.split(":");
+        this.diaHorario.id = this.semanaHorario.id
+        this.diaHorario.diaSemanaForm = this.semanaHorario.semana.id;
+        this.diaHorario.horario.horaForm = horario[0];
+        this.diaHorario.horario.minutoForm = horario[1];
+      }
+    },
+  },
+  props: {
+    set: Boolean,
+    semanaHorario: {
+      id: null,
+      semana: {},
+      horario: "",
+    },
+  },
+  created() {
+    this.setSemanaHorario();
+  },
 };
 </script>
 
@@ -147,8 +180,8 @@ export default {
 }
 
 .p-listbox::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
 
 label {
   display: block;
