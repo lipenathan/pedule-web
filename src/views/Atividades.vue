@@ -65,6 +65,7 @@ export default {
 <style scoped>
   .header_atividade {
   display: flex;
+  width: 54rem;
   margin-left: 250px;
   background-color: #b9b9b9;
   border-radius: 10px;
@@ -81,5 +82,9 @@ li {
   font-weight: bold;
   font-size: 18px;
   color: #3d3939;
+}
+.btn-new-activity {
+  margin-left: -1140px;
+  margin-top: -700px;
 }
 </style>

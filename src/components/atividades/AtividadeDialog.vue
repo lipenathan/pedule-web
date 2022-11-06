@@ -35,7 +35,7 @@
           </div>
           <div class="inputtext2">
             <span class="p-float-label p-input-icon-left">
-              <i class="pi-align-left"/>
+              <i class="fa-regular fa-pen-to-square"></i>
               <p-input-text
                 :style="{ width: '45rem' }"
                 id="inputtext-left2"
@@ -48,12 +48,14 @@
 
           <div class="inputtext3">
             <span class="p-float-label p-input-icon-left">
-              <i class="pi-calendar"/>
+              <!-- <i class="pi-calendar"></i> -->
               <p-calendar
                 id="inputtext-left2"
                 v-model="dataForm"
               />
+              <label for="" id="lb_icon_calendar"><i class="fa-solid fa-calendar-days"></i></label>
               <label for="inputtext-left">Data de entrega</label>
+      
             </span>
             <small
               v-if="
@@ -116,12 +118,12 @@
       };
     },
     props: {
-      show: false,
-      update: false,
+      show: Boolean,
+      update: Boolean,
       atividade: {
-        titulo: "",
-        descricao: "",
-        dataHorarioEntrega: null,
+        titulo: String,
+        descricao: String,
+        dataHorarioEntrega: Date,
       },
     },
     methods: {
@@ -160,7 +162,8 @@
        * os campos dos formulários serão preenchidos conforme objeto recebido pelo componente pai
        */
       setAtividade() {
-        if (1 == 1) {
+        if (this.update) {
+          alert('Chegou')
            console.log(this.update)
           this.tituloForm = this.atividade.titulo
           this.descricaoForm = this.atividade.descricao
@@ -205,5 +208,8 @@
   
   #switch-cor {
     display: block;
+  }
+  #lb_icon_calendar{
+   margin-left: -23px;
   }
   </style>
