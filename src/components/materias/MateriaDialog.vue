@@ -224,6 +224,7 @@ export default {
               timeout: 2500,
             });
             this.closeDialog();
+            this.$emit("updateList", true)
           })
           .catch((error) => {
             this.toast.error(error.message, {
@@ -255,16 +256,6 @@ export default {
         this.descricaoForm = this.materia.descricao;
         this.professorForm = this.materia.professor;
         this.corForm = this.materia.cor;
-        // let list = this.materia.semanaHorario;
-        // for (let i = 0; i < list.lenght; i++) {
-        //   let semanaHorario;
-        //   semanaHorario.id = list[i].id;
-        //   semanaHorario.diaSemanaForm.id = list[i].semana.id;
-        //   let horario = list[i].horario.split(":");
-        //   semanaHorario.horario.horaForm = horario[0];
-        //   semanaHorario.horario.minutoForm = horario[1];
-        //   this.semanaHorarioForm.push(semanaHorario);
-        // }
       }
     },
   },

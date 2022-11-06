@@ -27,28 +27,17 @@ $border: 0 1rem 1rem 0;
 .sidebar, .sidebar:hover {
   margin: 0;
   padding: 0;
-  width: 3rem;
   background-color: $grey;
   position: fixed;
+  width: 4rem;
   height: fit-content;
   min-height: 100%;
   border-radius: $border;
+  transition: 500ms;
 }
-
-// .sidebar {
-//   margin: 0;
-//   padding: 0;
-//   width: 3rem;
-//   background-color: $grey;
-//   position: fixed;
-//   height: fit-content;
-//   min-height: 50%;
-//   border-radius: 0 1rem 1rem 0;
-// }
 
 .sidebar:hover {
   width: 8rem;
-  transition: 500ms;
 }
 
 .sidebar .entire {
