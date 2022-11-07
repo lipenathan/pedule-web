@@ -1,21 +1,22 @@
 <template>
   <div class="content">
-    <p-button label="Nova Anotação" class="p-button-raised p-button-warning" data-bs-toggle="modal"
-      data-bs-target="#myModal" />
+
+    <p-button label="Nova Anotação" class="p-button-raised p-button-warning close" v-bind:data-bs-toggle="modal"
+      data-bs-target="#myModal"  @click="openModal(false)" />
     <div class="anotation">
 
-      <Card v-for="item in anotacoes" :key="item.id" :anotacoes="item"/>
-      
-      <AnotacoesDialog :show="showdialog" @click="closedDialog" />
+      <Card v-for="item in anotacoes" :key="item.id" :anotacao="item" @click="openUpdateModal(item)"/>
+    
     </div>
-    <AnotacoesModal />
+    <AnotacoesModal :anotacao = "anotacao"  :update = "update" />
 
   </div>
 </template>
   
 <script>
 
-import 'bootstrap/dist/css/bootstrap.min.css'   
+
+import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import "bootstrap"
 
@@ -25,30 +26,33 @@ import Api from "@/services/API";
 import AnotacoesDialog from '@/components/anotacoes/AnotacoesDialog.vue'
 import AnotacoesModal from '@/components/anotacoes/AnotacoesModal'
 
+
 export default {
   components: { Card, PButton, AnotacoesDialog, AnotacoesModal },
   data() {
     return {
-      showdialog: false, 
+      modal: "",
+      update: false,
+      anotacao: {},
       anotacoes: [
-          {
-            id: 0,
-            titulo: "",
-            descricao: "",
-            lembrete: false,
-            dataHorario: null,
-            link: [
-              {
-                id: 0,
-                url: "",
-                anotacao: ""
-              }
-            ],
-          }
-        ],
-        usuario: {
-          id: 16,
-        },
+        {
+          id: 0,
+          titulo: "",
+          descricao: "",
+          lembrete: false,
+          dataHorario: null,
+          link: [
+            {
+              id: 0,
+              url: "",
+              anotacao: ""
+            }
+          ],
+        }
+      ],
+      usuario: {
+        id: 16,
+      },
     }
 
 
@@ -57,11 +61,21 @@ export default {
     getAnotacoes() {
       Api()
         .get("/anotacao/listar/16", {
-
         }).then((response) => {
           this.anotacoes = response.data
-          console.log(this.anotacoes)
+
         })
+    },
+    resetFields() {
+      Object.assign(this.$data, this.$options.data.call(this.anotacao));
+    },
+    openModal(update) {
+      this.update = update
+      this.modal = "modal"
+    },
+    openUpdateModal(anotacao){
+      this.anotacao = anotacao
+      this.openModal(true)
     }
   },
   created() {
