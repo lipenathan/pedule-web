@@ -14,20 +14,6 @@
         <calendar />
       </div>
     </div>
-    <div class="dialog">
-      <dialog-materia
-        :show="showDialog"
-        @closedDialog="showDialog = false"
-        @updateList="buscarMaterias()"
-        :update="update"
-        v-bind:materia="materia"
-      ></dialog-materia>
-      <p-button
-        class="p-button-raised p-button-rounded button-add"
-        icon="pi pi-plus"
-        @click="openDialog(false)"
-      />
-    </div>
   </div>
 </template>
 <script>
