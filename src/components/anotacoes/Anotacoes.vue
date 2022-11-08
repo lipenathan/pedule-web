@@ -40,7 +40,7 @@ export default {
           titulo: "",
           descricao: "",
           lembrete: false,
-          dataHorario: null,
+          dataHorario: "11/10/2022 20:11:29",
           link: [
             {
               id: 0,
@@ -63,9 +63,9 @@ export default {
         .get("/anotacao/listar/16", {
         }).then((response) => {
           this.anotacoes = response.data
-
         })
     },
+
     resetFields() {
       Object.assign(this.$data, this.$options.data.call(this.anotacao));
     },

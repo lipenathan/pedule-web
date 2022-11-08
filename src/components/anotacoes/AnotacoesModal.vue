@@ -22,6 +22,17 @@
                   v-model="novaAnotacao.descricao" placeholder="Descrição"></textarea>
                   
               </div>
+              <div class="link">
+                <p-button
+                    label="Link"
+                    id="plus"
+                    class="p-button-raised p-button-rounded"
+                    icon="pi pi-plus"
+                    @click="addLinkField()"
+                  />
+                  <linkvue />
+              </div>
+            
               <div class="mb-3">
                 <label class="form-label" for="">Lembrete</label>
                 <p-input-switch v-if="update" id="Lembrete" v-model="anotacao.lembrete" aria-labelledby="Lembrete"
@@ -33,7 +44,7 @@
                 <button v-if="update" @click.prevent="updateAnotacao()"  class="btn  col-1 "><i class="fas fa-check"></i></button>
                 <button v-if="update" @click.prevent="deleteAnotacao()"  class="btn  col-1 "><i class="far fa-trash-alt"></i></button>
                 <button v-else  class="btn btn-primary col-6 mx-auto" @click.prevent="submit()">Salvar</button>
-              
+                
               </div>
             </form>
           </div>
@@ -55,22 +66,24 @@ import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "vue-toastification";
 import Toast, { POSITION } from "vue-toastification";
 import PInputSwitch from "primevue/inputswitch";
+import PButton from "primevue/button";
 import api from "@/services/API";
+import linkvue from '@/components/anotacoes/Link.vue'
 
 export default {
   setup: () => ({ v$: useVuelidate() }),
   components: {
-    PInputSwitch
+    PInputSwitch,
+    PButton,
+    linkvue
   },
 
   data() {
     return {
-        id: 0,
-        titulo: "",
-        descricao: "",
-        lembrete: false,
-        dataHorario: "2022-11-04T18:47:52.943553",
-        usuario: { },
+      dataHorario: "2022-11-04T18:47:52.943553",
+      usuario: { },
+      link: [],
+
       usuario: {
         id: 16
       },
@@ -78,7 +91,6 @@ export default {
       tituloAnotacaoRequired: "Título da anotação é obrigatório", //constante de mensagem de erro de título da matéria
       camposObrigatorioMessage: "Preencha os Campos obrigatórios",
       toast: useToast(),
-      
       novaAnotacao: {
         titulo: "",
         descricao: "",
@@ -149,9 +161,11 @@ export default {
         }
       }
     },
+    addLinkField(){
+
+    },
     closeModal(){
       this.modal = "modal"
-
     }
   },
   validations() {
@@ -192,21 +206,20 @@ export default {
   align-items: center;
   border: none;
 }
-.form-control:focus{
-  background-color: rgb(249, 192, 139);
-  border-style: none;
-  outline: none;
-}
-.form-control{
+.form-control:focus,.form-control{
   background-color: rgb(249, 192, 139);
   border: none;
   border-style: none;
   outline: none;
 }
-
 .mb-3 {
   position: relative;
   margin-top: 15px;
 	margin-bottom: 25px;
+}
+.link {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>
