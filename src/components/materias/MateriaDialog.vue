@@ -115,18 +115,8 @@ import Toast, { POSITION } from "vue-toastification";
 import DiaSemana from "@/components/materias/DiaSemana.vue";
 
 import api from "@/services/API";
-export default {
-  setup: () => ({ v$: useVuelidate() }),
-  components: {
-    PDialog,
-    PInputText,
-    PTextArea,
-    PButton,
-    PColorPicker,
-    PInputSwitch,
-    DiaSemana,
-  },
-  data() {
+
+function initialState(){
     return {
       tituloForm: "",
       descricaoForm: "",
@@ -145,14 +135,29 @@ export default {
           },
         },
       ],
-
       switchColor: true,
       submitted: false, //flag que diz se formulário já foi submetido
       tituloMateriaRequired: "Título da matéria é obrigatório", //constante de mensagem de erro de título da matéria
       camposObrigatorioMessage: "Preencha os Campos obrigatórios",
       toast: useToast(),
     };
+  }
+
+export default {
+  setup: () => ({ v$: useVuelidate() }),
+  components: {
+    PDialog,
+    PInputText,
+    PTextArea,
+    PButton,
+    PColorPicker,
+    PInputSwitch,
+    DiaSemana,
   },
+  
+  data: function() {
+    return initialState()
+  } ,
   props: {
     show: false,
     update: false,
@@ -240,6 +245,7 @@ export default {
     closeDialog() {
       this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
       this.cleanDialog();
+      Object.assign(this.$data,initialState())
     },
     disableColorPicker() {
       if (!switchColor) {

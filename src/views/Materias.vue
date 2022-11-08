@@ -70,7 +70,6 @@ export default {
         .get(`/materia/listar/${this.usuario.id}`)
         .then((res) => {
           this.materias = res.data;
-          console.log(this.materias);
         });
     },
     openDialog(update) {
