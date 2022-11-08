@@ -19,7 +19,7 @@
     />
     <dialog-materia
       :show="showDialog"
-      @closedDialog="showDialog = false"
+      @closedDialog="closedDialog()"
       @updateList="buscarMaterias()"
       :update="update"
       v-bind:materia="materia"
@@ -80,6 +80,10 @@ export default {
       this.materia = materia;
       this.openDialog(true);
     },
+    closedDialog() {
+      this.showDialog = false
+      this.materia = {}
+    }
   },
   created() {
     this.buscarMaterias();

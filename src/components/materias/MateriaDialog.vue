@@ -4,7 +4,7 @@
       v-model:visible="show"
       :draggable="false"
       modal
-      @after-hide="closeDialog"
+      @after-hide="closeDialog()"
       :style="{ width: '50rem' }"
     >
       <template #header>
@@ -113,11 +113,22 @@ import { useToast } from "vue-toastification";
 import Toast, { POSITION } from "vue-toastification";
 //local
 import DiaSemana from "@/components/materias/DiaSemana.vue";
+import api from '@/services/API'
 
-import api from "@/services/API";
-
-function initialState(){
+export default {
+  setup: () => ({ v$: useVuelidate() }),
+  components: {
+    PDialog,
+    PInputText,
+    PTextArea,
+    PButton,
+    PColorPicker,
+    PInputSwitch,
+    DiaSemana,
+  },
+  data() {
     return {
+      id: null,
       tituloForm: "",
       descricaoForm: "",
       professorForm: "",
@@ -141,23 +152,7 @@ function initialState(){
       camposObrigatorioMessage: "Preencha os Campos obrigatórios",
       toast: useToast(),
     };
-  }
-
-export default {
-  setup: () => ({ v$: useVuelidate() }),
-  components: {
-    PDialog,
-    PInputText,
-    PTextArea,
-    PButton,
-    PColorPicker,
-    PInputSwitch,
-    DiaSemana,
   },
-  
-  data: function() {
-    return initialState()
-  } ,
   props: {
     show: false,
     update: false,
@@ -196,6 +191,10 @@ export default {
       this.semanaHorarioForm = [];
       this.submitted = false;
     },
+    closeDialog() {
+      this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
+      this.cleanDialog();
+    },
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
@@ -215,7 +214,7 @@ export default {
         }
         api()
           .post("/materia/novo", {
-            id: this.materia.id,
+            id: this.id,
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
             professor: this.professorForm,
@@ -229,7 +228,7 @@ export default {
               timeout: 2500,
             });
             this.closeDialog();
-            this.$emit("updateList", true)
+            this.$emit("updateList", true);
           })
           .catch((error) => {
             this.toast.error(error.message, {
@@ -242,11 +241,6 @@ export default {
         });
       }
     },
-    closeDialog() {
-      this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
-      this.cleanDialog();
-      Object.assign(this.$data,initialState())
-    },
     disableColorPicker() {
       if (!switchColor) {
       }
@@ -258,10 +252,17 @@ export default {
      */
     setMateria() {
       if (this.update) {
+        this.id = this.materia.id
         this.tituloForm = this.materia.titulo;
         this.descricaoForm = this.materia.descricao;
         this.professorForm = this.materia.professor;
         this.corForm = this.materia.cor;
+      } else {
+        this.id = null;
+        this.tituloForm = "";
+        this.descricaoForm = "";
+        this.professorForm = "";
+        this.corForm = "";
       }
     },
   },
