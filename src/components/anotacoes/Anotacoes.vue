@@ -1,8 +1,9 @@
 <template>
   <div class="content">
 
-    <p-button label="Nova Anotação" class="p-button-raised p-button-warning close" v-bind:data-bs-toggle="modal"
+    <p-button  class="p-button-raised p-button-rounded button-add close" icon="pi pi-plus" v-bind:data-bs-toggle="modal"
       data-bs-target="#myModal"  @click="openModal(false)" />
+      
     <div class="anotation">
 
       <Card v-for="item in anotacoes" :key="item.id" :anotacao="item" @click="openUpdateModal(item)"/>
@@ -141,6 +142,7 @@ $dark-grey: #cecece92;
   background: rgb(249, 192, 139);
   border-radius: 10px;
 }
+
 </style>
   
   
