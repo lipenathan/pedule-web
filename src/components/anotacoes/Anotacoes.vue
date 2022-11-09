@@ -51,7 +51,7 @@ export default {
         }
       ],
       usuario: {
-        id: 16,
+        id: 6,
       },
     }
 
@@ -63,11 +63,8 @@ export default {
         .get("/anotacao/listar/16", {
         }).then((response) => {
           this.anotacoes = response.data
+          console.log(this.anotacoes)
         })
-    },
-
-    resetFields() {
-      Object.assign(this.$data, this.$options.data.call(this.anotacao));
     },
     openModal(update) {
       this.update = update

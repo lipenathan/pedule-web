@@ -1,7 +1,7 @@
 <template>
-  <div  class="input-group ">
-    <input type="text" placeholder="descricao" >
-    <input type="url" placeholder="URL">
+  <div class="inputs">
+    <input type="text" placeholder="URL" v-model="link.url" @focusout="updateValue()">
+    <input type="text" placeholder="Descrição" v-model="link.descricao" @focusout="updateValue()" > 
   </div>
 </template>
 
@@ -9,31 +9,50 @@
 export default {
     data() {
     return {
-      diaSemanaForm: "",
-      qtdDias: 1,
-      diasSemana: [{ diaSemanaForm: {}, horario: {} }],
+     link:{
+      url: "",
+      descricao: ""
+     } 
     };
   },
-
-  methods: {
-    addQtdDias() {
-      this.qtdDias++;
-      this.diasSemana.push({ diaSemanaForm: {}, horario: {} });
-    },
-    update(index, diaSemana) {
-      this.diasSemana[index] = diaSemana;
-      this.$emit("updated", this.diasSemana);
-    },
+  props: {
+    // link: {
+    //   url: "",
+    //   descricao: ""
+    // },
+    update: false
   },
+  methods: {
+    setLink(){
+      if(this.update){
+        link.url = link.url
+        link.descricao = link.descricao
+      } 
+    },
+    updateValue(){
+      this.$emit("updateValue", this.link)
+    }
+  },
+  created(){
+    this.setLink()
+  }
 }
 </script>
 
-<style>
+<style scoped>
 input,input:focus {
-  width: 49%;
+  width: 80%;
+  display: block;
   border-style: none;
   outline: none;
   background-color: rgb(249, 192, 139);
-  margin: 0 2px;
+  margin: 0 6px;
+ 
 }
+.inputs {
+  width: 100%;
+  border: solid 1px gray;
+  border-radius: 10px;
+}
+
 </style>
