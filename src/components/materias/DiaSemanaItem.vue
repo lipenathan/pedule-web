@@ -128,11 +128,10 @@ export default {
     },
     setSemanaHorario() {
       if (this.set) {
-        let horario = this.semanaHorario.horario.split(":");
         this.diaHorario.id = this.semanaHorario.id
-        this.diaHorario.diaSemanaForm = this.semanaHorario.semana.id;
-        this.diaHorario.horario.horaForm = horario[0];
-        this.diaHorario.horario.minutoForm = horario[1];
+        this.diaHorario.diaSemanaForm = this.semanaHorario.diaSemanaForm;
+        this.diaHorario.horario.horaForm = this.semanaHorario.horario.horaForm;
+        this.diaHorario.horario.minutoForm = this.semanaHorario.horario.minutoForm;
       }
     },
   },

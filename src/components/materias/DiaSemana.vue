@@ -8,22 +8,22 @@
       @click="addQtdDias"
     />
     <div>
-      <template v-if="set">
+      <!-- <template v-if="set"> -->
         <dia-semana-item
           :set="set"
-          v-for="(item, i) in semanaHorario"
+          v-for="(item, i) in this.diasSemana"
           :key="item.id"
           @updated="update([i], $event)"
           :semanaHorario="item"
         />
-      </template>
-      <template v-else>
+      <!-- </template> -->
+      <!-- <template>
         <dia-semana-item
           v-for="i in qtdDias"
           :key="i"
           @updated="update([i], $event)"
         />
-      </template>
+      </template> -->
     </div>
   </div>
 </template>
@@ -67,6 +67,7 @@ export default {
           };
           this.diasSemana.push(diaSemana)
         }
+        this.qtdDias = this.diasSemana.length
         this.$emit("updated", this.diasSemana);
       }
     },
