@@ -2,7 +2,9 @@
   <div class="div_atividade_pai">
     <div class="div_atividade">
       <input type="checkbox" name="" id="inp_check" />
-      <h3 class="nome_atividade" @click="openUpdateDialog(item)">{{ atividade.titulo }}</h3>
+      <h3 class="nome_atividade" @click="openUpdateDialog(item)">
+       <p> {{ atividade.titulo }}</p>
+      </h3>
       <span class="data_atividade">{{ atividade.dataHorarioEntrega }}</span>
       <label class="check_prioridade">
         <input
@@ -45,16 +47,16 @@
           class="p-button-text"
           @click="showEDialog = false"
         />
-        <PButton label="Sim" icon="pi pi-check" autofocus @click="excluir"  />
+        <PButton label="Sim" icon="pi pi-check" autofocus @click="excluir" />
       </template>
     </PDialog>
   </div>
   <atividade-dialog
-      @closedDialog="showDialog = false"
-      :show="showDialog"
-      :update="updateDialog"
-      :atividade="atividadeUpdate"
-    ></atividade-dialog>
+    @closedDialog="showDialog = false"
+    :show="showDialog"
+    :update="updateDialog"
+    :atividade="atividadeUpdate"
+  ></atividade-dialog>
 </template>
 
 <script>
@@ -64,12 +66,12 @@ import PDialog from "primevue/dialog";
 import AtividadeDialog from "@/components/atividades/AtividadeDialog.vue";
 
 export default {
-  components: {PButton, PDialog, AtividadeDialog },
+  components: { PButton, PDialog, AtividadeDialog },
   data() {
     return {
       prioridadeForm: false,
       showDialog: false,
-      showEDialog:false,
+      showEDialog: false,
       updateDialog: false,
       mensagemExcluir: "Deseja realmente excluir?",
     };
@@ -90,11 +92,10 @@ export default {
       this.showEDialog = !this.showEDialog;
     },
 
-    openUpdateDialog(){
+    openUpdateDialog() {
       this.showDialog = !this.showDialog;
       this.updateDialog = !this.updateDialog;
     },
-    
 
     changeCheck() {
       api().post("/atividade/atualizar", {
@@ -112,8 +113,8 @@ export default {
     },
 
     excluir() {
-      this.$emit("delete", true)
-      this.showEDialog = false
+      this.$emit("delete", true);
+      this.showEDialog = false;
     },
   },
   created() {
@@ -173,6 +174,14 @@ export default {
   cursor: pointer;
   font-size: 14px;
   align-items: center;
+  
+}
+
+.nome_atividade p {
+  max-width: 18ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .data_atividade {
@@ -219,4 +228,9 @@ input[type="button"] {
   font-size: 20px;
   cursor: pointer;
 }
+
+/*  max-width: 25ch;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap; */
 </style>
