@@ -2,29 +2,78 @@
   <div class="div_atividade_pai">
     <div class="div_atividade">
       <input type="checkbox" name="" id="inp_check" />
-      <h3 class="nome_atividade" @click="openItem()">{{ atividade.titulo }}</h3>
+      <h3 class="nome_atividade" @click="openUpdateDialog(item)">{{ atividade.titulo }}</h3>
       <span class="data_atividade">{{ atividade.dataHorarioEntrega }}</span>
       <label class="check_prioridade">
-        <input type="checkbox"/>
+        <input
+          v-model="prioridadeForm"
+          type="checkbox"
+          @click="changeCheck()"
+        />
         <span></span>
       </label>
-      <span class="icon_trash" @click="dialogExcluir()"
-        ><i class="fa-solid fa-trash-can"></i></span>
+      <span class="icon_trash" @click="openDialog()"
+        ><i class="fa-solid fa-trash-can"></i
+      ></span>
     </div>
     <div class="titulo_drescricao">
       <h4>Descrição</h4>
     </div>
     <div class="dv_descricao">
       <p>
-        Aqui vai a descrição da atividade para testar como ficará a mensagem na
-        interface do usuário
+        {{ atividade.descricao }}
       </p>
     </div>
+    <PDialog
+      v-model:visible="showEDialog"
+      @after-hide="showEDialog = false"
+      modal
+      :draggable="false"
+    >
+      <template #header>
+        <h3>Confirmação</h3>
+      </template>
+
+      <div>
+        {{ mensagemExcluir }}
+      </div>
+
+      <template #footer>
+        <PButton
+          label="Não"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="showEDialog = false"
+        />
+        <PButton label="Sim" icon="pi pi-check" autofocus @click="excluir"  />
+      </template>
+    </PDialog>
   </div>
+  <atividade-dialog
+      @closedDialog="showDialog = false"
+      :show="showDialog"
+      :update="updateDialog"
+      :atividade="atividadeUpdate"
+    ></atividade-dialog>
 </template>
 
 <script>
+import api from "@/services/API";
+import PButton from "primevue/button";
+import PDialog from "primevue/dialog";
+import AtividadeDialog from "@/components/atividades/AtividadeDialog.vue";
+
 export default {
+  components: {PButton, PDialog, AtividadeDialog },
+  data() {
+    return {
+      prioridadeForm: false,
+      showDialog: false,
+      showEDialog:false,
+      updateDialog: false,
+      mensagemExcluir: "Deseja realmente excluir?",
+    };
+  },
   props: {
     atividade: {
       id: 0,
@@ -37,13 +86,38 @@ export default {
     },
   },
   methods: {
-    openItem() {
-      this.$emit("itemClicked", true);
+    openDialog() {
+      this.showEDialog = !this.showEDialog;
     },
-    dialogExcluir() {
-      confirm("Deseja Realmente Excluir?");
-      let ip = document.querySelector
+
+    openUpdateDialog(){
+      this.showDialog = !this.showDialog;
+      this.updateDialog = !this.updateDialog;
     },
+    
+
+    changeCheck() {
+      api().post("/atividade/atualizar", {
+        id: this.atividade.id,
+        titulo: this.atividade.titulo,
+        descricao: this.atividade.descricao,
+        prioridade: this.prioridadeForm,
+        dataHorarioEntrega: this.atividade.dataHorarioEntrega,
+        usuario: { id: this.atividade.usuario.id },
+      });
+    },
+
+    setAtividade() {
+      this.prioridadeForm = this.atividade.prioridade;
+    },
+
+    excluir() {
+      this.$emit("delete", true)
+      this.showEDialog = false
+    },
+  },
+  created() {
+    this.setAtividade();
   },
 };
 </script>
@@ -83,7 +157,7 @@ export default {
   background-color: #ffffff;
   border-radius: 10px;
   margin-top: 8px;
-  margin-left: 250px;
+  /* margin-left: 250px; */
   height: 100px;
 }
 
@@ -97,6 +171,8 @@ export default {
   border: none;
   padding-left: 3px;
   cursor: pointer;
+  font-size: 14px;
+  align-items: center;
 }
 
 .data_atividade {
@@ -117,21 +193,20 @@ export default {
 }
 
 .check_prioridade input {
-    display: none;
-  
+  display: none;
 }
 
 .check_prioridade span {
-    width: 18px;
-    height: 18px;
-    display: block;
-    background-color: #8BFFA5;
-    margin-left: 65px;
-    border-radius: 15px;
+  width: 18px;
+  height: 18px;
+  display: block;
+  background-color: #8bffa5;
+  margin-left: 65px;
+  border-radius: 15px;
 }
 
 .check_prioridade input:checked + span {
-    background-color: #FF8B8B;
+  background-color: #ff8b8b;
 }
 
 input[type="button"] {
