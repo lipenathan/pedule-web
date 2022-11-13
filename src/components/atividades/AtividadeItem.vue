@@ -189,8 +189,9 @@ export default {
   width: 170px;
   margin-left: 63px;
   border-radius: 12px;
-  text-align: center;
   font-weight: bold;
+  font-size: 13px;
+  padding-top: 5px;
   background-color: rgba(233, 233, 157, 0.801);
   border: 1px solid rgb(126, 125, 125);
 }
@@ -228,9 +229,4 @@ input[type="button"] {
   font-size: 20px;
   cursor: pointer;
 }
-
-/*  max-width: 25ch;
-   overflow: hidden;
-   text-overflow: ellipsis;
-   white-space: nowrap; */
 </style>
