@@ -109,6 +109,7 @@ export default {
           this.toast.success("Login efetuado com sucesso", {
             position: POSITION.TOP_CENTER,
           });
+          this.$store.dispatch('usuario', response.data)
         })
         .catch((error) => {
           if (error.response.status == 400) {

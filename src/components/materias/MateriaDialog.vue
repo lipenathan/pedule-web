@@ -113,8 +113,9 @@ import { useToast } from "vue-toastification";
 import Toast, { POSITION } from "vue-toastification";
 //local
 import DiaSemana from "@/components/materias/DiaSemana.vue";
-import api from '@/services/API'
-
+import api from "@/services/API";
+//vuex - sessão do usuário
+import { mapGetters } from "vuex";
 export default {
   setup: () => ({ v$: useVuelidate() }),
   components: {
@@ -133,9 +134,6 @@ export default {
       descricaoForm: "",
       professorForm: "",
       corForm: "",
-      usuario: {
-        id: 16,
-      },
       semanaHorarioForm: [
         {
           id: null,
@@ -228,7 +226,7 @@ export default {
               timeout: 2500,
             });
             this.closeDialog();
-            this.$emit("updateList", true);
+            this.$emit("itemSaved", true);
           })
           .catch((error) => {
             this.toast.error(error.message, {
@@ -252,7 +250,7 @@ export default {
      */
     setMateria() {
       if (this.update) {
-        this.id = this.materia.id
+        this.id = this.materia.id;
         this.tituloForm = this.materia.titulo;
         this.descricaoForm = this.materia.descricao;
         this.professorForm = this.materia.professor;
@@ -273,6 +271,9 @@ export default {
   },
   updated() {
     this.setMateria();
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
 };
 </script>

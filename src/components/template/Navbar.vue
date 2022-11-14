@@ -5,8 +5,19 @@
       alt="Logo Pedule"
       src="../../../public/img/pedule-logo.png"
     />
-    <input id="pesquisa" type="text" />
-    <p id="nome-usuario">{{ nomeUsuario }}</p>
+    <!-- <input id="pesquisa" type="text" /> -->
+
+    <span class="p-input-icon-left">
+      <i class="pi pi-search" />
+      <p-input-text
+        class="pesquisa"
+        type="text"
+        v-model="pesquisa"
+        placeholder="Pesquisar"
+      />
+    </span>
+    <p id="nome-usuario" v-if="usuario">{{ usuario.nome }}</p>
+    <p id="nome-usuario" v-else> Você não está logado </p>
     <button id="btn-config">
       <img id="img-config" src="../../../public/img/down-arrow-grey.png" />
     </button>
@@ -25,11 +36,18 @@
   </div>
 </template>
 <script>
+import PInputText from "primevue/inputtext";
+import { mapGetters } from "vuex";
 export default {
+  components: { PInputText },
   data() {
     return {
       nomeUsuario: "F. Nathan",
+      pesquisa: "",
     };
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
 };
 </script>
@@ -71,18 +89,21 @@ ul a {
   cursor: pointer;
 }
 
-#pesquisa {
+.p-inputtext {
+  height: 2rem;
   width: 320px;
-  height: 28px;
-  border: 1px black solid;
   border-radius: 20px;
   margin-top: 10px;
-  margin-inline-start: 50px;
-  background: url("../../../public/img/lupa.png") no-repeat left;
-  background-size: 20px;
-  background-position: 10px;
-  background-color: #1498d5;
-  padding: 0 5px 0 40px;
+}
+
+i.pi.pi-search::before {
+  position: relative !important;
+  top: 5px;
+}
+
+.p-inputtext,
+i.pi.pi-search::before {
+  margin-left: 2rem;
 }
 
 .topo {

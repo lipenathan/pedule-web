@@ -4,6 +4,7 @@
       <template v-slot:content>
         <div class="materias">
           <materia-item
+            @itemSaved="buscarMaterias()"
             v-for="item in materias"
             :key="item.id"
             :materia="item"
@@ -20,7 +21,7 @@
     <dialog-materia
       :show="showDialog"
       @closedDialog="closedDialog()"
-      @updateList="buscarMaterias()"
+      @itemSaved="buscarMaterias()"
       :update="update"
       v-bind:materia="materia"
     ></dialog-materia>
@@ -81,9 +82,9 @@ export default {
       this.openDialog(true);
     },
     closedDialog() {
-      this.showDialog = false
-      this.materia = {}
-    }
+      this.showDialog = false;
+      this.materia = {};
+    },
   },
   created() {
     this.buscarMaterias();
