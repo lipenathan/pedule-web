@@ -37,7 +37,7 @@
         <div class="inputtext2">
           <span class="p-float-label p-input-icon-left">
             <i class="fa-regular fa-pen-to-square"></i>
-            <p-input-text
+            <p-text-area
               :style="{ width: '45rem' }"
               id="inputtext-left2"
               type="text"
@@ -55,7 +55,7 @@
         <div class="inputtext3">
           <span class="p-float-label p-input-icon-left">
             <!-- <i class="pi-calendar"></i> -->
-            <p-calendar :showTime="true" :showSeconds="true" :stepMinute="15"  dateFormat="dd/mm/yy" id="inputtext-left2" v-model="dataForm" />
+            <p-calendar :stepSecond="60" :showTime="true" :showSeconds="true" :stepMinute="15"  dateFormat="dd/mm/yy" id="inputtext-left2" v-model="dataForm" />
             <label for="" id="lb_icon_calendar"
               ><i class="fa-solid fa-calendar-days"></i
             ></label>
