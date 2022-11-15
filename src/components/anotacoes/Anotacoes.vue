@@ -1,34 +1,42 @@
 <template>
   <div class="content">
-    
-    <p-button class="p-button-raised p-button-rounded button-add" icon="pi pi-plus" data-bs-toggle="modal" data-bs-target="#myModal" />
+    <p-button
+      class="p-button-raised p-button-rounded button-add"
+      icon="pi pi-plus"
+      data-bs-toggle="modal"
+      data-bs-target="#myModal"
+      @click="cleanAnotacao()"
+    />
     <!-- data-bs-toggle="modal" data-bs-target="#exampleModal" -->
     <div class="anotation">
-
-      <Card v-for="item in anotacoes" :key="item.id" :anotacao="item" @click="openUpdateModal(item)" />
-
+      <Card
+        v-for="item in anotacoes"
+        :key="item.id"
+        :anotacao="item"
+        @click="openUpdateModal(item)"
+      />
     </div>
-    <AnotacoesModal :anotacao="anotacao" :update="update" @closedDialog="modal = ''" />
-    
+    <AnotacoesModal
+      :anotacao="anotacao"
+      :update="update"
+      @closedDialog="closeModal()"
+    />
   </div>
 </template>
   
 <script>
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap";
 
-
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.min.js'
-import "bootstrap"
-
-import Card from '@/components/anotacoes/Card.vue'
-import PButton from 'primevue/button';
+import Card from "@/components/anotacoes/Card.vue";
+import PButton from "primevue/button";
 import Api from "@/services/API";
-import PCalendar from 'primevue/calendar';
-import AnotacoesModal from '@/components/anotacoes/AnotacoesModal.vue';
-
+import PCalendar from "primevue/calendar";
+import AnotacoesModal from "@/components/anotacoes/AnotacoesModal.vue";
 
 export default {
-  components: { Card, PButton, AnotacoesModal, PCalendar, DatePicker},
+  components: { Card, PButton, AnotacoesModal, PCalendar },
   data() {
     return {
       modal: "",
@@ -45,42 +53,45 @@ export default {
             {
               id: 0,
               url: "",
-              anotacao: ""
-            }
+              anotacao: "",
+            },
           ],
-        }
+        },
       ],
       usuario: {
         id: 6,
       },
-    }
-
-
+    };
   },
   methods: {
     getAnotacoes() {
       Api()
-        .get("/anotacao/listar/16", {
-        }).then((response) => {
-          this.anotacoes = response.data
-        })
+        .get("/anotacao/listar/16", {})
+        .then((response) => {
+          this.anotacoes = response.data;
+        });
     },
     openModal(update) {
-      this.update = update
-      this.modal = "modal"
+      this.update = update;
+      this.showModal = true
+      this.modal = "modal";
+    },
+    closeModal() {
+      this.modal = ''
     },
     openUpdateModal(anotacao) {
-      this.anotacao = anotacao
-      this.openModal(true)
+      this.anotacao = anotacao;
+      this.openModal(true);
+    },
+    cleanAnotacao() {
+      this.anotacao = null
+      this.update = false
     }
   },
   created() {
-    this.getAnotacoes()
+    this.getAnotacoes();
   },
-}
-
-
-
+};
 </script>
   
 <style lang="scss" scoped>
@@ -110,10 +121,9 @@ $margin-button: 4rem;
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
-
 }
 
-.card>img {
+.card > img {
   width: 30%;
   height: auto;
 }
@@ -133,7 +143,6 @@ $margin-button: 4rem;
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
-
 }
 
 /* Handle */
