@@ -1,15 +1,16 @@
 <template>
   <div class="container mt-5">
-    <div class="modal" id="myModal">
+    <div class="modal" id="myModal" data-backdrop="static">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" @click="$router.go()"></button>
+            <button type="button" class="btn-close" @click="closedDialog()"></button>
           </div>
           <div class="modal-body">
             <form>
               <div class="mb-3">
-                <input v-if="update" type="text" class="form-control" v-model="anotacao.titulo" placeholder="Titulo">
+                <input v-if="update" type="text" id="titulo" class="form-control" v-model="anotacao.titulo"
+                  placeholder="Titulo">
                 <input v-else type="text" class="form-control" v-model="novaAnotacao.titulo" placeholder="Titulo">
               </div>
               <small v-if="(v$.titulo.$invalid && submitted) || v$.titulo.$pending.$response" class="p-error">{{
@@ -25,14 +26,20 @@
               <div class="link">
                 <p-button label="Link" id="plus" class="p-button-raised p-button-rounded" icon="pi pi-plus"
                   @click="addLinkField()" />
+
                 <linkvue v-for="(item, index) in novaAnotacao.link" :key="item.id" :link="item"
                   @updateValue="updateValue($event, [index])" />
               </div>
 
-              <div class="mb-3">
+              <div class="mb-3" id="lembrete">
+
                 <label class="form-label" for="">Lembrete</label>
+
                 <p-input-switch v-if="update" id="Lembrete" v-model="anotacao.lembrete" aria-labelledby="Lembrete" />
                 <p-input-switch v-else id="Lembrete" v-model="novaAnotacao.lembrete" aria-labelledby="Lembrete" />
+
+               <Datepicker v-if="anotacao.lembrete" class="inputdatepicker" v-model="novaAnotacao.dataHorario" placeholder="Selecione uma data e hora" showNowButton nowButtonLabel="Current" locale="pt-BR" cancelText="cancelar" selectText="selecionar"/>
+               
               </div>
               <div class="modal-footer">
                 <button v-if="update" @click.prevent="updateAnotacao()" class="btn  col-1 "><i
@@ -64,19 +71,26 @@ import Toast, { POSITION } from "vue-toastification";
 import PInputSwitch from "primevue/inputswitch";
 import PButton from "primevue/button";
 import api from "@/services/API";
-import linkvue from '@/components/anotacoes/Link.vue'
+import linkvue from '@/components/anotacoes/Link.vue';
+import PCalendar from 'primevue/calendar';
+
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
   setup: () => ({ v$: useVuelidate() }),
   components: {
     PInputSwitch,
     PButton,
-    linkvue
+    linkvue,
+    PCalendar,
+    Datepicker
+    
+    
   },
 
   data() {
     return {
-      dataHorario: "2022-11-04T18:47:52.943553",
       usuario: {},
       usuario: {
         id: 16
@@ -90,7 +104,7 @@ export default {
         titulo: "",
         descricao: "",
         lembrete: false,
-        dataHorario: "2022-11-04T18:47:52.943553",
+        dataHorario: "",
         link: []
       }
 
@@ -105,22 +119,23 @@ export default {
     update: false
   },
   methods: {
+    
     submit() {
       api()
         .post("/anotacao/novo", {
 
           titulo: this.novaAnotacao.titulo,
-           descricao : this.novaAnotacao.descricao,
-           lembrete: this.novaAnotacao.lembrete,
-           dataHorario: this.novaAnotacao.dataHorario,
-           link: this.novaAnotacao.link,
-           usuario: this.usuario
+          descricao: this.novaAnotacao.descricao,
+          lembrete: this.novaAnotacao.lembrete,
+          dataHorario: this.novaAnotacao.dataHorario,
+          link: this.novaAnotacao.link,
+          usuario: this.usuario
 
-         })
+        })
         .then((response) => {
           this.toast.success("Anotacao Inserida com sucesso", {
             position: POSITION.TOP_CENTER,
-              
+
           });
 
           setTimeout(() => {
@@ -162,7 +177,7 @@ export default {
 
           });
           setTimeout(() => {
-            this.$router.go()
+            this.closedDialog()
           }, 1500);
         }
       }
@@ -170,13 +185,16 @@ export default {
     addLinkField() {
       this.novaAnotacao.link.push({ url: null, descricao: null })
     },
-    closeModal() {
-      this.modal = "modal"
+    closedDialog() {
+      this.$router.go()
+      this.$emit("closeDialog", true)
     },
     updateValue(value, index) {
       this.novaAnotacao.link[index] = value
     }
+
   },
+
 
   validations() {
     return {
@@ -189,6 +207,7 @@ export default {
 </script>
     
 <style scoped>
+
 .modal-content {
   border-radius: 1rem;
   width: 43.75rem;
@@ -206,6 +225,7 @@ export default {
   display: flex;
   align-items: flex-start;
 }
+
 .modal-header {
   border: none;
 }
@@ -225,10 +245,18 @@ export default {
   outline: none;
 }
 
+#titulo {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
 .mb-3 {
   position: relative;
   margin-top: 15px;
   margin-bottom: 25px;
+  display: flex;
+  gap: 3px;
+  
 }
 
 .link {
@@ -238,4 +266,17 @@ export default {
   align-items: flex-start;
   gap: 8px;
 }
+
+#lembrete {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+ 
+}
+.inputdatepicker {
+ width: 40%;
+ margin-left: 5rem;
+ margin-bottom: 6px;
+}
+
 </style>

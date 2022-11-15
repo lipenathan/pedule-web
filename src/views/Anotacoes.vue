@@ -17,12 +17,11 @@
 <script>
 
 import Navbar from "@/components/template/Navbar.vue";
-import DialogAnotacoes from "@/components/anotacoes/AnotacoesDialog.vue";
 import PButton from "primevue/button";
 import Anotacoes from "@/components/anotacoes/Anotacoes.vue"
 
 export default {
-  components: { Navbar, DialogAnotacoes, PButton, Anotacoes },
+  components: { Navbar, PButton, Anotacoes },
   data() {
     return {
       showDialog: false,

@@ -1,16 +1,15 @@
 <template>
   <div class="content">
-
-    <p-button  class="p-button-raised p-button-rounded button-add close" icon="pi pi-plus" v-bind:data-bs-toggle="modal"
-      data-bs-target="#myModal"  @click="openModal(false)" />
-      
+    
+    <p-button class="p-button-raised p-button-rounded button-add" icon="pi pi-plus" data-bs-toggle="modal" data-bs-target="#myModal" />
+    <!-- data-bs-toggle="modal" data-bs-target="#exampleModal" -->
     <div class="anotation">
 
-      <Card v-for="item in anotacoes" :key="item.id" :anotacao="item" @click="openUpdateModal(item)"/>
-    
-    </div>
-    <AnotacoesModal :anotacao = "anotacao"  :update = "update" />
+      <Card v-for="item in anotacoes" :key="item.id" :anotacao="item" @click="openUpdateModal(item)" />
 
+    </div>
+    <AnotacoesModal :anotacao="anotacao" :update="update" @closedDialog="modal = ''" />
+    
   </div>
 </template>
   
@@ -24,12 +23,12 @@ import "bootstrap"
 import Card from '@/components/anotacoes/Card.vue'
 import PButton from 'primevue/button';
 import Api from "@/services/API";
-import AnotacoesDialog from '@/components/anotacoes/AnotacoesDialog.vue'
-import AnotacoesModal from '@/components/anotacoes/AnotacoesModal'
+import PCalendar from 'primevue/calendar';
+import AnotacoesModal from '@/components/anotacoes/AnotacoesModal.vue';
 
 
 export default {
-  components: { Card, PButton, AnotacoesDialog, AnotacoesModal },
+  components: { Card, PButton, AnotacoesModal, PCalendar, DatePicker},
   data() {
     return {
       modal: "",
@@ -64,14 +63,13 @@ export default {
         .get("/anotacao/listar/16", {
         }).then((response) => {
           this.anotacoes = response.data
-          console.log(this.anotacoes)
         })
     },
     openModal(update) {
       this.update = update
       this.modal = "modal"
     },
-    openUpdateModal(anotacao){
+    openUpdateModal(anotacao) {
       this.anotacao = anotacao
       this.openModal(true)
     }
@@ -93,6 +91,7 @@ $paragraph: rgb(95, 108, 123);
 $btn-text: rgb(255, 255, 254);
 $grey: #cccccc;
 $dark-grey: #cecece92;
+$margin-button: 4rem;
 
 .content {
   display: flex;
@@ -143,6 +142,13 @@ $dark-grey: #cecece92;
   border-radius: 10px;
 }
 
+.button-add {
+  width: 3.5rem !important;
+  height: 3.5rem !important;
+  position: fixed;
+  bottom: $margin-button;
+  right: $margin-button;
+}
 </style>
   
   
