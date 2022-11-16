@@ -33,6 +33,7 @@ import MateriaItem from "@/components/materias/MateriaItem.vue";
 import PButton from "primevue/button";
 import PDataTable from "primevue/datatable";
 import CustomTemplate from "@/components/template/Template.vue";
+import { mapGetters } from "vuex";
 
 import api from "@/services/API";
 
@@ -48,9 +49,6 @@ export default {
     return {
       showDialog: false,
       update: false,
-      usuario: {
-        id: 16,
-      },
       materias: [
         {
           id: null,
@@ -67,11 +65,13 @@ export default {
   },
   methods: {
     buscarMaterias() {
-      api()
-        .get(`/materia/listar/${this.usuario.id}`)
-        .then((res) => {
-          this.materias = res.data;
-        });
+      if (this.usuario) {
+        api()
+          .get(`/materia/listar/${this.usuario.id}`)
+          .then((res) => {
+            this.materias = res.data;
+          });
+      }
     },
     openDialog(update) {
       this.showDialog = true;
@@ -88,6 +88,9 @@ export default {
   },
   created() {
     this.buscarMaterias();
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
 };
 </script>
