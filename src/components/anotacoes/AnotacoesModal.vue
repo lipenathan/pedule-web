@@ -21,14 +21,14 @@
                 placeholder="Titulo"
               />
             </div>
-             <!-- <small
+              <small
               v-if="
                 (v$.tituloForm.$invalid && submitted) ||
                 v$.tituloForm.$pending.$response
               "
               class="p-error"
               >{{ tituloAnotacaoRequired }}</small
-            > -->
+            > 
             <div class="mb-3">
               <textarea
                 class="form-control"
@@ -123,8 +123,8 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 export default {
-  setup () { 
-    v$: useVuelidate()
+  setup: () => { 
+    const v$ = useVuelidate()
     const date = ref(new Date());
 
     const format = (date) => {
@@ -139,6 +139,7 @@ export default {
     return {
       date,
       format,
+      v$
       
     }
 
@@ -182,8 +183,11 @@ export default {
     update: false,
   },
   methods: {
+
     submit() {
-      api()
+      this.submitted = true;
+      if (!this.v$.$invalid) {
+        api()
         .post("/anotacao/novo", {
           titulo: this.tituloForm,
           descricao: this.descricaoForm,
@@ -205,6 +209,12 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+      } else {
+        this.toast.error(this.camposObrigatorioMessage, {
+          position: POSITION.TOP_CENTER, timeout: 2500 
+        })
+      }
+      
     },
     /**
      *
@@ -289,7 +299,7 @@ export default {
   validations() {
     return {
       tituloForm: { required },
-      dataHorarioForm: {required}
+      dataHorarioForm: { required }
     };
   },
   updated() {
