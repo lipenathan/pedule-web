@@ -21,14 +21,14 @@
                 placeholder="Titulo"
               />
             </div>
-            <small
+             <!-- <small
               v-if="
                 (v$.tituloForm.$invalid && submitted) ||
                 v$.tituloForm.$pending.$response
               "
               class="p-error"
               >{{ tituloAnotacaoRequired }}</small
-            >
+            > -->
             <div class="mb-3">
               <textarea
                 class="form-control"
@@ -53,6 +53,7 @@
                 v-for="(item, index) in linkForm"
                 :key="item.id"
                 :link="item"
+                :update = "update"
                 @updateValue="updateValue($event, [index])"
               />
             </div>
@@ -72,10 +73,13 @@
                 v-model="dataHorarioForm"
                 placeholder="Selecione uma data e hora"
                 showNowButton
-                nowButtonLabel="Current"
+                nowButtonLabel="Hora Atual"
                 locale="pt-BR"
                 cancelText="cancelar"
                 selectText="selecionar"
+                utc
+                :format="format"
+                
               />
             </div>
             <div class="modal-footer">
@@ -114,12 +118,31 @@ import PButton from "primevue/button";
 import api from "@/services/API";
 import linkvue from "@/components/anotacoes/Link.vue";
 import PCalendar from "primevue/calendar";
-
+import {ref} from 'vue';
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 export default {
-  setup: () => ({ v$: useVuelidate() }),
+  setup () { 
+    v$: useVuelidate()
+    const date = ref(new Date());
+
+    const format = (date) => {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const hour = date.getHours();
+      const minute = date.getMinutes();
+      return `${day}/${month}/${year}, ${hour}:${minute}`;
+    }
+
+    return {
+      date,
+      format,
+      
+    }
+
+   },
   components: {
     PInputSwitch,
     PButton,
@@ -133,7 +156,9 @@ export default {
       tituloForm: "",
       descricaoForm: "",
       lembreteForm: false,
-      dataHorarioForm: "",
+
+      dataHorarioForm: this.date,
+      
       linkForm: [],
       usuario: {
         id: 16,
@@ -212,7 +237,15 @@ export default {
     },
     async deleteAnotacao() {
       if (this.update) {
-        var res = await api().post("/anotacao/deletar", this.anotacao);
+        var res = await api().post("/anotacao/deletar", {
+          id: this.id,
+          titulo: this.tituloForm,
+          descricao: this.descricaoForm,
+          lembrete: this.lembreteForm,
+          dataHorario: this.dataHorarioForm,
+          link: this.linkForm,
+          usuario: this.usuario,
+        });
         if (res.status == 200) {
           this.toast.success("Anotacao Alterada com sucesso", {
             position: POSITION.TOP_CENTER,
@@ -256,6 +289,7 @@ export default {
   validations() {
     return {
       tituloForm: { required },
+      dataHorarioForm: {required}
     };
   },
   updated() {

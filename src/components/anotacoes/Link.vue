@@ -1,6 +1,6 @@
 <template>
   <div class="inputs">
-    <input type="text" placeholder="URL" v-model="link.url" @focusout="updateValue()">
+    <input  type="url"  placeholder="URL" v-model="link.url" @focusout="updateValue()"> 
     <input type="text" placeholder="Descrição" v-model="link.descricao" @focusout="updateValue()" > 
   </div>
 </template>
@@ -9,24 +9,24 @@
 export default {
     data() {
     return {
-     link:{
+     linkForm:{
       url: "",
       descricao: ""
      } 
     };
   },
   props: {
-    // link: {
-    //   url: "",
-    //   descricao: ""
-    // },
+     link: {
+      url: "",
+      descricao: ""
+     },
     update: false
   },
   methods: {
     setLink(){
       if(this.update){
-        link.url = link.url
-        link.descricao = link.descricao
+        this.linkForm.url = this.link.url
+        this.linkForm.descricao = this.link.descricao
       } 
     },
     updateValue(){
