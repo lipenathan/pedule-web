@@ -55,20 +55,35 @@
     </div>
     <span>Horário</span>
     <div class="time">
-      <p-list-box
-        v-model="diaHorario.horario.horaForm"
-        :options="listaHora"
-        optionLabel="hora"
-        optionValue="code"
-        @click="update"
-      />
-      <p-list-box
-        v-model="diaHorario.horario.minutoForm"
-        :options="listaMinutos"
-        optionLabel="minuto"
-        optionValue="code"
-        @click="update"
-      />
+      <p-calendar
+        :showIcon="true"
+        icon="pi pi-clock"
+        :timeOnly="true"
+        :showTime="true"
+        :step-minute="15"
+        v-model="horarioForm"
+        :showButtonBar="true"
+        :manualInput="false"
+      >
+        <!-- <template #footer>
+          <div class="p-datepicker-buttonbar">
+            <button
+              class="p-button p-component p-button-text"
+              type="button"
+              @click="selecionar()"
+            >
+              Selecionar
+            </button>
+            <button
+              class="p-button p-component p-button-text"
+              type="button"
+              @click="limpar()"
+            >
+              Limpar
+            </button>
+          </div>
+        </template> -->
+        </p-calendar>
     </div>
   </div>
 </template>
@@ -76,8 +91,9 @@
 <script>
 import PRadioButton from "primevue/radiobutton";
 import PListBox from "primevue/listbox";
+import PCalendar from "primevue/calendar";
 export default {
-  components: { PRadioButton, PListBox },
+  components: { PRadioButton, PListBox, PCalendar },
   data() {
     return {
       diaHorario: {
@@ -87,6 +103,7 @@ export default {
           horaForm: null,
           minutoForm: null,
         },
+        horarioForm: null,
       },
       listaHora: [
         { hora: "00", code: "00" },
@@ -128,10 +145,11 @@ export default {
     },
     setSemanaHorario() {
       if (this.set) {
-        this.diaHorario.id = this.semanaHorario.id
+        this.diaHorario.id = this.semanaHorario.id;
         this.diaHorario.diaSemanaForm = this.semanaHorario.diaSemanaForm;
         this.diaHorario.horario.horaForm = this.semanaHorario.horario.horaForm;
-        this.diaHorario.horario.minutoForm = this.semanaHorario.horario.minutoForm;
+        this.diaHorario.horario.minutoForm =
+          this.semanaHorario.horario.minutoForm;
       }
     },
   },
