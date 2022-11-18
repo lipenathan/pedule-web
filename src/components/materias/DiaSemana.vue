@@ -16,14 +16,6 @@
           @updated="update([i], $event)"
           :semanaHorario="item"
         />
-      <!-- </template> -->
-      <!-- <template>
-        <dia-semana-item
-          v-for="i in qtdDias"
-          :key="i"
-          @updated="update([i], $event)"
-        />
-      </template> -->
     </div>
   </div>
 </template>
@@ -59,11 +51,12 @@ export default {
         for (let i in this.semanaHorario) {
           let diaSemana = {
             id: this.semanaHorario[i].id,
-            diaSemanaForm: this.semanaHorario[i].semana.id,
-            horario: {
-              horaForm: this.semanaHorario[i].horario.split(":")[0],
-              minutoForm: this.semanaHorario[i].horario.split(":")[1],
-            },
+            diaSemanaForm: this.semanaHorario[i].semana,
+            horario: this.semanaHorario[i].horario
+            // {
+            //   horaForm: this.semanaHorario[i].horario.split(":")[0],
+            //   minutoForm: this.semanaHorario[i].horario.split(":")[1],
+            // },
           };
           this.diasSemana.push(diaSemana)
         }

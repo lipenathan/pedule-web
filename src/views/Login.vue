@@ -108,6 +108,7 @@ export default {
           this.$router.push("/cronograma");
           this.toast.success("Login efetuado com sucesso", {
             position: POSITION.TOP_CENTER,
+            timeout: 2500
           });
           this.$store.dispatch('usuario', response.data)
         })
@@ -115,6 +116,7 @@ export default {
           if (error.response.status == 400) {
             this.toast.error("Email/Senha incorretos", {
               position: POSITION.TOP_CENTER,
+              timeout: 2500
             });
           } else {
           }

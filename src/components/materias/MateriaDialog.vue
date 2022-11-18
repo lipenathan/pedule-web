@@ -196,17 +196,17 @@ export default {
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
-        let listSemanaHorario = [];
-        for (let i in this.semanaHorarioForm) {
-          let diaSemana = this.semanaHorarioForm[i];
-          listSemanaHorario.push({
-            id: diaSemana.id,
-            semana: {
-              id: diaSemana.diaSemanaForm,
-            },
-            horario: `${diaSemana.horario.horaForm}:${diaSemana.horario.minutoForm}:00`,
-          });
-        }
+        // let listSemanaHorario = [];
+        // for (let i in this.semanaHorarioForm) {
+        //   let diaSemana = this.semanaHorarioForm[i];
+        //   listSemanaHorario.push({
+        //     id: diaSemana.id,
+        //     semana: {
+        //       id: diaSemana.diaSemanaForm,
+        //     },
+        //     horario: `${diaSemana.horario.horaForm}:${diaSemana.horario.minutoForm}:00`,
+        //   });
+        // }
         if (!this.switchColor) {
           this.corForm = "";
         }
@@ -218,7 +218,7 @@ export default {
             professor: this.professorForm,
             cor: this.corForm,
             usuario: this.usuario,
-            semanaHorario: listSemanaHorario,
+            semanaHorario: this.semanaHorarioForm,
           })
           .then((res) => {
             this.toast.success("Matéria cadastrada com sucesso", {

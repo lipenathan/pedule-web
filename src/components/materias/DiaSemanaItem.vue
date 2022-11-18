@@ -6,55 +6,54 @@
           ><input
             type="radio"
             value="1"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Dom</span
         >
         <span
           ><input
             type="radio"
             value="2"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Seg</span
         >
         <span
           ><input
             type="radio"
             value="3"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Ter</span
         >
         <span
           ><input
             type="radio"
             value="4"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Qua</span
         >
         <span
           ><input
             type="radio"
             value="5"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Qui</span
         >
         <span
           ><input
             type="radio"
             value="6"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Sex</span
         >
         <span
           ><input
             type="radio"
             value="7"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Sab</span
         >
       </div>
     </div>
-    <span>Horário</span>
-    <div class="time">
+    <!-- <div class="time">
       <p-calendar
         :showIcon="true"
         icon="pi pi-clock"
@@ -62,10 +61,9 @@
         :showTime="true"
         :step-minute="15"
         v-model="horarioForm"
-        :showButtonBar="true"
         :manualInput="false"
       >
-        <!-- <template #footer>
+        <template #footer>
           <div class="p-datepicker-buttonbar">
             <button
               class="p-button p-component p-button-text"
@@ -82,8 +80,19 @@
               Limpar
             </button>
           </div>
-        </template> -->
-        </p-calendar>
+        </template>
+      </p-calendar>
+    </div> -->
+    <div class="field col-12 md:col-4">
+      <label for="clock">Horário</label>
+      <p-calendar
+        inputId="clock"
+        v-model="horarioForm"
+        :timeOnly="true"
+        @date-select="update"
+        hideOnDateTimeSelect
+        :stepMinute="15"
+      />
     </div>
   </div>
 </template>
@@ -98,13 +107,10 @@ export default {
     return {
       diaHorario: {
         id: null,
-        diaSemanaForm: null,
-        horario: {
-          horaForm: null,
-          minutoForm: null,
-        },
-        horarioForm: null,
+        semana: "",
+        horario: null
       },
+      horarioForm: null,
       listaHora: [
         { hora: "00", code: "00" },
         { hora: "01", code: "01" },
@@ -141,15 +147,17 @@ export default {
   },
   methods: {
     update() {
+      let hora = this.horarioForm.getHours()
+      let minuto = this.horarioForm.getMinutes()
+      this.diaHorario.horario = `${hora}:${minuto}:00`
       this.$emit("updated", this.diaHorario);
     },
     setSemanaHorario() {
       if (this.set) {
         this.diaHorario.id = this.semanaHorario.id;
-        this.diaHorario.diaSemanaForm = this.semanaHorario.diaSemanaForm;
-        this.diaHorario.horario.horaForm = this.semanaHorario.horario.horaForm;
-        this.diaHorario.horario.minutoForm =
-          this.semanaHorario.horario.minutoForm;
+        this.diaHorario.semana = this.semanaHorario.diaSemanaForm;
+        this.diaHorario.horario = this.semanaHorario.horario
+        this.horarioForm = this.diaHorario.horario
       }
     },
   },
@@ -157,8 +165,8 @@ export default {
     set: Boolean,
     semanaHorario: {
       id: null,
-      semana: {},
-      horario: "",
+      diaSemanaForm: null,
+      horario: null,
     },
   },
   created() {
