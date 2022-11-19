@@ -4,83 +4,45 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              @click="closedDialog()"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" @click="closedDialog()"></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <input
-                type="text"
-                id="titulo"
-                class="form-control"
-                v-model="tituloForm"
-                placeholder="Titulo"
-              />
+              <input type="text" id="titulo" class="form-control" v-model="tituloForm" placeholder="Titulo" />
             </div>
-              <small
-              v-if="
-                (v$.tituloForm.$invalid && submitted) ||
-                v$.tituloForm.$pending.$response
-              "
-              class="p-error"
-              >{{ tituloAnotacaoRequired }}</small
-            > 
+            <small v-if="
+              (v$.tituloForm.$invalid && submitted) ||
+              v$.tituloForm.$pending.$response
+            " class="p-error">{{ tituloAnotacaoRequired }}</small>
             <div class="mb-3">
-              <textarea
-                class="form-control"
-                name=""
-                id=""
-                cols="30"
-                rows="10"
-                v-model="descricaoForm"
-                placeholder="Descrição"
-              ></textarea>
+              <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="descricaoForm"
+                placeholder="Descrição"></textarea>
             </div>
             <div class="link">
-              <p-button
-                label="Link"
-                id="plus"
-                class="p-button-raised p-button-rounded"
-                icon="pi pi-plus"
-                @click="addLinkField()"
-              />
+              <div class="buttons">
+                <p-button label="Link" id="plus" class="p-button-raised p-button-rounded" icon="pi pi-plus"
+                  @click="addLinkField()" />
 
-              <linkvue
-                v-for="(item, index) in linkForm"
-                :key="item.id"
-                :link="item"
-                :update = "update"
-                @updateValue="updateValue($event, [index])"
-              />
+                <p-button label="Link" id="minus" class="p-button-raised p-button-rounded p-button-danger"
+                  icon="pi pi-minus" @click="deleteLinkField()" />
+              </div>
+
+              <linkvue v-for="(item, index) in linkForm" :key="item.id" :link="item" :update="update"
+                @updateValue="updateValue($event, [index])" />
             </div>
 
             <div class="mb-3" id="lembrete">
               <label class="form-label" for="">Lembrete</label>
 
-              <p-input-switch
-                id="Lembrete"
-                v-model="lembreteForm"
-                aria-labelledby="Lembrete"
-              />
+              <p-input-switch id="Lembrete" v-model="lembreteForm" aria-labelledby="Lembrete" />
 
-              <Datepicker
-                v-if="lembreteForm"
-                class="inputdatepicker"
-                v-model="dataHorarioForm"
-                placeholder="Selecione uma data e hora"
-                showNowButton
-                nowButtonLabel="Hora Atual"
-                locale="pt-BR"
-                cancelText="cancelar"
-                selectText="selecionar"
-                utc
-                :format="format"
-                
-              />
+              <Datepicker v-if="lembreteForm" class="inputdatepicker" v-model="dataHorarioForm"
+                placeholder="Selecione uma data e hora" showNowButton nowButtonLabel="Hora Atual" locale="pt-BR"
+                cancelText="cancelar" selectText="selecionar" utc :format="format" />
+              <small v-if="
+                (v$.dataHorarioForm.$invalid && submitted) ||
+                v$.dataHorarioForm.$pending.$response
+              " class="p-error">{{ dataHorarioFormRequired }}</small>
             </div>
             <div class="modal-footer">
               <button v-if="update" @click="updateAnotacao()" class="btn col-1">
@@ -89,11 +51,7 @@
               <button v-if="update" @click="deleteAnotacao()" class="btn col-1">
                 <i class="far fa-trash-alt"></i>
               </button>
-              <button
-                v-else
-                class="btn btn-primary col-6 mx-auto"
-                @click="submit()"
-              >
+              <button v-else class="btn btn-primary col-6 mx-auto" @click="submit()">
                 Salvar
               </button>
             </div>
@@ -118,13 +76,14 @@ import PButton from "primevue/button";
 import api from "@/services/API";
 import linkvue from "@/components/anotacoes/Link.vue";
 import PCalendar from "primevue/calendar";
-import {ref} from 'vue';
+import { ref } from 'vue';
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 export default {
-  setup: () => { 
+  setup: () => {
     const v$ = useVuelidate()
+
     const date = ref(new Date());
 
     const format = (date) => {
@@ -140,10 +99,10 @@ export default {
       date,
       format,
       v$
-      
+
     }
 
-   },
+  },
   components: {
     PInputSwitch,
     PButton,
@@ -159,7 +118,7 @@ export default {
       lembreteForm: false,
 
       dataHorarioForm: this.date,
-      
+
       linkForm: [],
       usuario: {
         id: 16,
@@ -168,6 +127,7 @@ export default {
       submitted: false, //flag que diz se formulário já foi submetido
       tituloAnotacaoRequired: "Título da anotação é obrigatório", //constante de mensagem de erro de título da matéria
       camposObrigatorioMessage: "Preencha os Campos obrigatórios",
+      dataHorarioFormRequired: "Data e hora da anotação é obrigatório",
       toast: useToast(),
     };
   },
@@ -188,33 +148,38 @@ export default {
       this.submitted = true;
       if (!this.v$.$invalid) {
         api()
-        .post("/anotacao/novo", {
-          titulo: this.tituloForm,
-          descricao: this.descricaoForm,
-          lembrete: this.lembreteForm,
-          dataHorario: this.dataHorarioForm,
-          link: this.linkForm,
-          usuario: this.usuario,
-        })
-        .then((response) => {
-          this.toast.success("Anotacao Inserida com sucesso", {
-            position: POSITION.TOP_CENTER,
-          });
+          .post("/anotacao/novo", {
+            titulo: this.tituloForm,
+            descricao: this.descricaoForm,
+            lembrete: this.lembreteForm,
+            dataHorario: this.dataHorarioForm,
+            link: this.linkForm,
+            usuario: this.usuario,
+          })
+          .then((response) => {
+            this.toast.success("Anotacao Inserida com sucesso", {
+              position: POSITION.TOP_CENTER,
+            });
 
-          setTimeout(() => {
-            this.$router.go();
-          }, 1500);
-          this.init = true
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+            setTimeout(() => {
+              this.$router.go();
+            }, 1500);
+            this.init = true
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
+        if (this.lembreteForm == true) {
+          this.toast.error(this.dataHorarioFormRequired, {
+            position: POSITION.TOP_CENTER, timeout: 2500
+          })
+        }
         this.toast.error(this.camposObrigatorioMessage, {
-          position: POSITION.TOP_CENTER, timeout: 2500 
+          position: POSITION.TOP_CENTER, timeout: 2500
         })
       }
-      
+
     },
     /**
      *
@@ -269,6 +234,9 @@ export default {
     addLinkField() {
       this.linkForm.push({ url: null, descricao: null });
     },
+    deleteLinkField() {
+      this.linkForm.pop({ url: null, descricao: null })
+    },
     closedDialog() {
       this.init = true
       this.$emit("closedDialog", true);
@@ -300,7 +268,7 @@ export default {
     return {
       tituloForm: { required },
       dataHorarioForm: { required }
-    };
+    }
   },
   updated() {
     this.setAnotacao();
@@ -371,9 +339,14 @@ export default {
   align-items: center;
   justify-content: flex-start;
 }
+
 .inputdatepicker {
   width: 40%;
   margin-left: 5rem;
   margin-bottom: 6px;
+}
+
+.buttons {
+  display: flex;
 }
 </style>
