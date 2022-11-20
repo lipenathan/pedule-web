@@ -136,6 +136,7 @@ export default {
     submitForm() {
       this.submitted = true;
       alert(this.dataForm)
+      console.log(this.dataForm)
       if (!this.v$.$invalid) {
         api()
           .post("/atividade/novo", {
