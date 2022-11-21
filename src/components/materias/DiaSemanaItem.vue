@@ -3,60 +3,97 @@
     <div class="radios">
       <div class="radio-group" @click="update">
         <span
-          ><p-radio-button
-            name="Dom"
+          ><input
+            type="radio"
             value="1"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Dom</span
         >
         <span
-          ><p-radio-button
-            name="Seg"
+          ><input
+            type="radio"
             value="2"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Seg</span
         >
         <span
-          ><p-radio-button
-            name="Ter"
+          ><input
+            type="radio"
             value="3"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Ter</span
         >
         <span
-          ><p-radio-button
-            name="Qua"
+          ><input
+            type="radio"
             value="4"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Qua</span
         >
         <span
-          ><p-radio-button
-            name="Qui"
+          ><input
+            type="radio"
             value="5"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Qui</span
         >
         <span
-          ><p-radio-button
-            name="Sex"
+          ><input
+            type="radio"
             value="6"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Sex</span
         >
         <span
-          ><p-radio-button
-            name="Sab"
+          ><input
+            type="radio"
             value="7"
-            v-model="diaHorario.diaSemanaForm"
+            v-model="diaHorario.semana.id"
           />Sab</span
         >
       </div>
     </div>
-    <span>Horário</span>
-    <div class="time">
-      <p-list-box v-model="diaHorario.horario.horaForm" :options="listaHora" optionLabel="hora" optionValue="code" @click="update"/>
-      <p-list-box v-model="diaHorario.horario.minutoForm" :options="listaMinutos" optionLabel="minuto" optionValue="code" @click="update"/>
+    <!-- <div class="time">
+      <p-calendar
+        :showIcon="true"
+        icon="pi pi-clock"
+        :timeOnly="true"
+        :showTime="true"
+        :step-minute="15"
+        v-model="horarioForm"
+        :manualInput="false"
+      >
+        <template #footer>
+          <div class="p-datepicker-buttonbar">
+            <button
+              class="p-button p-component p-button-text"
+              type="button"
+              @click="selecionar()"
+            >
+              Selecionar
+            </button>
+            <button
+              class="p-button p-component p-button-text"
+              type="button"
+              @click="limpar()"
+            >
+              Limpar
+            </button>
+          </div>
+        </template>
+      </p-calendar>
+    </div> -->
+    <div class="field col-12 md:col-4">
+      <label for="clock">Horário</label>
+      <p-calendar
+      class="date-picker"
+        inputId="clock"
+        v-model="horarioForm"
+        :timeOnly="true"
+        @date-select="update"
+        hideOnDateTimeSelect
+        :stepMinute="15"
+      />
     </div>
   </div>
 </template>
@@ -64,17 +101,17 @@
 <script>
 import PRadioButton from "primevue/radiobutton";
 import PListBox from "primevue/listbox";
+import PCalendar from "primevue/calendar";
 export default {
-  components: { PRadioButton, PListBox },
+  components: { PRadioButton, PListBox, PCalendar },
   data() {
     return {
       diaHorario: {
-        diaSemanaForm: null,
-        horario: {
-          horaForm: null,
-      minutoForm: null,
-        }
+        id: null,
+        semana: "",
+        horario: null
       },
+      horarioForm: null,
       listaHora: [
         { hora: "00", code: "00" },
         { hora: "01", code: "01" },
@@ -111,9 +148,31 @@ export default {
   },
   methods: {
     update() {
-      this.$emit("updated", this.diaHorario)
-    }
-  }
+      let hora = this.horarioForm.getHours()
+      let minuto = this.horarioForm.getMinutes()
+      this.diaHorario.horario = `${hora}:${minuto}:00`
+      this.$emit("updated", this.diaHorario);
+    },
+    setSemanaHorario() {
+      if (this.set) {
+        this.diaHorario.id = this.semanaHorario.id;
+        this.diaHorario.semana = this.semanaHorario.diaSemanaForm;
+        this.diaHorario.horario = this.semanaHorario.horario
+        this.horarioForm = this.diaHorario.horario
+      }
+    },
+  },
+  props: {
+    set: Boolean,
+    semanaHorario: {
+      id: null,
+      diaSemanaForm: null,
+      horario: null,
+    },
+  },
+  created() {
+    this.setSemanaHorario();
+  },
 };
 </script>
 
@@ -147,8 +206,12 @@ export default {
 }
 
 .p-listbox::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
+
+.date-picker {
+  text-align: center!important;
+}
 
 label {
   display: block;

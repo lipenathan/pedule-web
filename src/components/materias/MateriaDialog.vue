@@ -4,7 +4,7 @@
       v-model:visible="show"
       :draggable="false"
       modal
-      @after-hide="closeDialog"
+      @after-hide="closeDialog()"
       :style="{ width: '50rem' }"
     >
       <template #header>
@@ -63,7 +63,16 @@
           </span>
         </div>
         <div class="inputtext">
-          <dia-semana @updated="semanaHorarioForm = $event"></dia-semana>
+          <dia-semana
+            v-if="!update"
+            @updated="semanaHorarioForm = $event"
+          ></dia-semana>
+          <dia-semana
+            v-else
+            :set="true"
+            @updated="semanaHorarioForm = $event"
+            :semanaHorario="materia.semanaHorario"
+          ></dia-semana>
         </div>
         <div class="inputtext">
           <label>Cor</label>
@@ -104,8 +113,9 @@ import { useToast } from "vue-toastification";
 import Toast, { POSITION } from "vue-toastification";
 //local
 import DiaSemana from "@/components/materias/DiaSemana.vue";
-
 import api from "@/services/API";
+//vuex - sessão do usuário
+import { mapGetters } from "vuex";
 export default {
   setup: () => ({ v$: useVuelidate() }),
   components: {
@@ -119,15 +129,14 @@ export default {
   },
   data() {
     return {
+      id: null,
       tituloForm: "",
       descricaoForm: "",
       professorForm: "",
       corForm: "",
-      usuario: {
-        id: 16,
-      },
       semanaHorarioForm: [
         {
+          id: null,
           diaSemanaForm: null,
           horario: {
             horaForm: "",
@@ -135,7 +144,6 @@ export default {
           },
         },
       ],
-
       switchColor: true,
       submitted: false, //flag que diz se formulário já foi submetido
       tituloMateriaRequired: "Título da matéria é obrigatório", //constante de mensagem de erro de título da matéria
@@ -147,6 +155,7 @@ export default {
     show: false,
     update: false,
     materia: {
+      id: null,
       titulo: "",
       professor: "",
       descricao: "",
@@ -161,56 +170,52 @@ export default {
       },
       semanaHorario: [
         {
-          horario: {
-            hour: 0,
-            minute: 0,
-            second: 0,
-            nano: 0,
-          },
+          id: 0,
+          horario: "",
           semana: {
             id: 0,
+            nome: "",
           },
         },
       ],
     },
   },
   methods: {
+    cleanDialog() {
+      this.tituloForm = "";
+      this.descricaoForm = "";
+      this.professorForm = "";
+      this.corForm = "";
+      this.semanaHorarioForm = [];
+      this.submitted = false;
+    },
+    closeDialog() {
+      this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
+      this.cleanDialog();
+    },
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
-        let listSemanaHorario = [];
-        for (let i in this.semanaHorarioForm) {
-          let diaSemana = this.semanaHorarioForm[i];
-          listSemanaHorario.push({
-            semana: {
-              id: diaSemana.diaSemanaForm,
-            },
-            horario: `${diaSemana.horario.horaForm}:${diaSemana.horario.minutoForm}:00`,
-          });
-        }
         if (!this.switchColor) {
           this.corForm = "";
         }
         api()
           .post("/materia/novo", {
+            id: this.id,
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
             professor: this.professorForm,
             cor: this.corForm,
             usuario: this.usuario,
-            semanaHorario: listSemanaHorario,
+            semanaHorario: this.semanaHorarioForm,
           })
           .then((res) => {
             this.toast.success("Matéria cadastrada com sucesso", {
-              position: POSITION.TOP_CENTER, timeout: 2500,
+              position: POSITION.TOP_CENTER,
+              timeout: 2500,
             });
-            this.tituloForm = "";
-            this.descricaoForm = "";
-            this.professorForm = "";
-            this.corForm = "";
-            this.semanaHorarioForm = [];
             this.closeDialog();
-            this.submitted = false;
+            this.$emit("itemSaved", true);
           })
           .catch((error) => {
             this.toast.error(error.message, {
@@ -223,9 +228,6 @@ export default {
         });
       }
     },
-    closeDialog() {
-      this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
-    },
     disableColorPicker() {
       if (!switchColor) {
       }
@@ -237,11 +239,17 @@ export default {
      */
     setMateria() {
       if (this.update) {
+        this.id = this.materia.id;
         this.tituloForm = this.materia.titulo;
         this.descricaoForm = this.materia.descricao;
         this.professorForm = this.materia.professor;
         this.corForm = this.materia.cor;
-        this.semanaHorarioForm = this.materia.semanaHorario;
+      } else {
+        this.id = null;
+        this.tituloForm = "";
+        this.descricaoForm = "";
+        this.professorForm = "";
+        this.corForm = "";
       }
     },
   },
@@ -250,8 +258,11 @@ export default {
       tituloForm: { required },
     };
   },
-  created() {
+  updated() {
     this.setMateria();
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
 };
 </script>

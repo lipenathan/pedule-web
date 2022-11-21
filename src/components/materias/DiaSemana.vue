@@ -8,11 +8,14 @@
       @click="addQtdDias"
     />
     <div>
-      <dia-semana-item
-        v-for="i in qtdDias"
-        :key="i"
-        @updated="update([i - 1], $event)"
-      />
+      <!-- <template v-if="set"> -->
+        <dia-semana-item
+          :set="set"
+          v-for="(item, i) in this.diasSemana"
+          :key="item.id"
+          @updated="update([i], $event)"
+          :semanaHorario="item"
+        />
     </div>
   </div>
 </template>
@@ -29,15 +32,41 @@ export default {
       diasSemana: [{ diaSemanaForm: {}, horario: {} }],
     };
   },
+  props: {
+    semanaHorario: [],
+    set: Boolean,
+  },
   methods: {
     addQtdDias() {
       this.qtdDias++;
-      this.diasSemana.push({ diaSemanaForm: {}, horario: {} });
+      this.diasSemana.push({id:null, diaSemanaForm: null, horario: {} });
     },
     update(index, diaSemana) {
       this.diasSemana[index] = diaSemana;
       this.$emit("updated", this.diasSemana);
     },
+    setFields() {
+      if (this.set) {
+        this.diasSemana = []
+        for (let i in this.semanaHorario) {
+          let diaSemana = {
+            id: this.semanaHorario[i].id,
+            diaSemanaForm: this.semanaHorario[i].semana,
+            horario: this.semanaHorario[i].horario
+            // {
+            //   horaForm: this.semanaHorario[i].horario.split(":")[0],
+            //   minutoForm: this.semanaHorario[i].horario.split(":")[1],
+            // },
+          };
+          this.diasSemana.push(diaSemana)
+        }
+        this.qtdDias = this.diasSemana.length
+        this.$emit("updated", this.diasSemana);
+      }
+    },
+  },
+  created() {
+    this.setFields();
   },
 };
 </script>
