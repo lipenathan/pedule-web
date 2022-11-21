@@ -94,10 +94,9 @@ export default {
         email: "",
         dataNascimento: "",
         instituicao: "",
-        password: {
           password: "",
           confirm: "",
-        },
+      
       },
     };
   },
@@ -155,8 +154,8 @@ body {
   align-items: flex-start;
   padding: 4rem;
   border-radius: 15px;
-  width: 300px;
-  height: 470px;
+  width: 400px;
+  height: 520px;
   background-color: #f5f5f5;
   box-shadow: 2px 3px 5px #888;
 }
@@ -269,7 +268,7 @@ input::placeholder {
   button{
    background-color: $button ;
    border: none;
-   width: 112%;
+   width: 110%;
    height: 38px;
    border-radius: 10px;
    margin-top: 20px;
