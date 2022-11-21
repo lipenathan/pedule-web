@@ -139,7 +139,7 @@ export default {
       console.log(this.dataForm)
       if (!this.v$.$invalid) {
         api()
-          .post("/atividade/novo", {
+          .post("/atividade/salvar", {
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
             prioridade: this.prioridadeForm,
