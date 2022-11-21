@@ -9,7 +9,7 @@ import TelaCadastro from '@/views/Cadastro.vue'
 import Login from '@/views/Login.vue'
 import Teste from '@/views/Teste.vue'
 import Req from '@/views/Req.vue'
-
+import store from '../store'
 
 const routes = [
   {
@@ -66,7 +66,7 @@ const routes = [
     path: '/cadastro',
     name: 'cadastro',
     component: TelaCadastro,
-  },  
+  },
 
   {
     path: '/teste',
@@ -79,5 +79,13 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  const authenticated = store.getters.isAuthenticaded
+
+  if (to.name !== "login" && !authenticated) next({ name: "login" })
+  else if (to.name === "login" && authenticated) next({ name: "cronograma" })
+  else next()
+})
 
 export default router;

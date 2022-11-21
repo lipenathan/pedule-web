@@ -7,7 +7,7 @@ const baseUrl = 'http://18.230.187.173:3333'
 const dateTransformer = data => {
     if (data instanceof Date) {
 
-        // do your specific formatting here
+        // lógica para formatação do objeto data para string
         let dataStr = data.toLocaleString().split(" ")[0].split("/")
         let dia = dataStr[0]
         let mes = dataStr[1]

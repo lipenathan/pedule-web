@@ -196,17 +196,6 @@ export default {
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
-        // let listSemanaHorario = [];
-        // for (let i in this.semanaHorarioForm) {
-        //   let diaSemana = this.semanaHorarioForm[i];
-        //   listSemanaHorario.push({
-        //     id: diaSemana.id,
-        //     semana: {
-        //       id: diaSemana.diaSemanaForm,
-        //     },
-        //     horario: `${diaSemana.horario.horaForm}:${diaSemana.horario.minutoForm}:00`,
-        //   });
-        // }
         if (!this.switchColor) {
           this.corForm = "";
         }

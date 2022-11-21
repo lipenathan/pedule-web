@@ -86,6 +86,7 @@
     <div class="field col-12 md:col-4">
       <label for="clock">Horário</label>
       <p-calendar
+      class="date-picker"
         inputId="clock"
         v-model="horarioForm"
         :timeOnly="true"
@@ -206,6 +207,10 @@ export default {
 
 .p-listbox::-webkit-scrollbar {
   display: none;
+}
+
+.date-picker {
+  text-align: center!important;
 }
 
 label {
