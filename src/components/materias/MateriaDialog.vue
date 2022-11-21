@@ -4,7 +4,7 @@
       v-model:visible="show"
       :draggable="false"
       modal
-      @after-hide="closeDialog"
+      @after-hide="closeDialog()"
       :style="{ width: '50rem' }"
     >
       <template #header>
@@ -16,7 +16,7 @@
       <div class="content">
         <div class="inputtext">
           <span class="p-float-label p-input-icon-left">
-            <i class="pi pi-search" />
+            <i class="pi pi-book" />
             <p-input-text
               :style="{ width: '45rem' }"
               id="inputtext-left"
@@ -52,7 +52,7 @@
         </div>
         <div class="inputtext">
           <span class="p-float-label p-input-icon-left">
-            <i class="pi pi-search" />
+            <i class="pi pi-user" />
             <p-input-text
               :style="{ width: '45rem' }"
               id="inputtext-left"
@@ -61,6 +61,18 @@
             />
             <label for="inputtext-left">Professor</label>
           </span>
+        </div>
+        <div class="inputtext">
+          <dia-semana
+            v-if="!update"
+            @updated="semanaHorarioForm = $event"
+          ></dia-semana>
+          <dia-semana
+            v-else
+            :set="true"
+            @updated="semanaHorarioForm = $event"
+            :semanaHorario="materia.semanaHorario"
+          ></dia-semana>
         </div>
         <div class="inputtext">
           <label>Cor</label>
@@ -86,18 +98,24 @@
   </div>
 </template>
 <script>
+//primevue
 import PDialog from "primevue/dialog";
 import PInputText from "primevue/inputtext";
 import PTextArea from "primevue/textarea";
 import PButton from "primevue/button";
 import PColorPicker from "primevue/colorpicker";
 import PInputSwitch from "primevue/inputswitch";
+//validation
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
+//toast
 import { useToast } from "vue-toastification";
 import Toast, { POSITION } from "vue-toastification";
-
+//local
+import DiaSemana from "@/components/materias/DiaSemana.vue";
 import api from "@/services/API";
+//vuex - sessão do usuário
+import { mapGetters } from "vuex";
 export default {
   setup: () => ({ v$: useVuelidate() }),
   components: {
@@ -107,30 +125,25 @@ export default {
     PButton,
     PColorPicker,
     PInputSwitch,
+    DiaSemana,
   },
   data() {
     return {
+      id: null,
       tituloForm: "",
       descricaoForm: "",
       professorForm: "",
       corForm: "",
       semanaHorarioForm: [
         {
-          id: 0,
-          horario: "",
-        //   {
-        //     hour: 0,
-        //     minute: 0,
-        //     second: 0,
-        //     nano: 0,
-        //   },
-          semana: {
-            id: 0,
-            nome: "",
+          id: null,
+          diaSemanaForm: null,
+          horario: {
+            horaForm: "",
+            minutoForm: "",
           },
         },
       ],
-
       switchColor: true,
       submitted: false, //flag que diz se formulário já foi submetido
       tituloMateriaRequired: "Título da matéria é obrigatório", //constante de mensagem de erro de título da matéria
@@ -142,6 +155,7 @@ export default {
     show: false,
     update: false,
     materia: {
+      id: null,
       titulo: "",
       professor: "",
       descricao: "",
@@ -157,14 +171,7 @@ export default {
       semanaHorario: [
         {
           id: 0,
-          horario:
-          "",
-        //    {
-        //     hour: 0,
-        //     minute: 0,
-        //     second: 0,
-        //     nano: 0,
-        //   },
+          horario: "",
           semana: {
             id: 0,
             nome: "",
@@ -174,23 +181,52 @@ export default {
     },
   },
   methods: {
+    cleanDialog() {
+      this.tituloForm = "";
+      this.descricaoForm = "";
+      this.professorForm = "";
+      this.corForm = "";
+      this.semanaHorarioForm = [];
+      this.submitted = false;
+    },
+    closeDialog() {
+      this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
+      this.cleanDialog();
+    },
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
+        if (!this.switchColor) {
+          this.corForm = "";
+        }
         api()
           .post("/materia/novo", {
+            id: this.id,
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
+            professor: this.professorForm,
+            cor: this.corForm,
+            usuario: this.usuario,
+            semanaHorario: this.semanaHorarioForm,
           })
-          .then((res) => {});
+          .then((res) => {
+            this.toast.success("Matéria cadastrada com sucesso", {
+              position: POSITION.TOP_CENTER,
+              timeout: 2500,
+            });
+            this.closeDialog();
+            this.$emit("itemSaved", true);
+          })
+          .catch((error) => {
+            this.toast.error(error.message, {
+              position: POSITION.TOP_CENTER,
+            });
+          });
       } else {
         this.toast.error(this.camposObrigatorioMessage, {
           position: POSITION.TOP_CENTER,
         });
       }
-    },
-    closeDialog() {
-      this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
     },
     disableColorPicker() {
       if (!switchColor) {
@@ -203,11 +239,17 @@ export default {
      */
     setMateria() {
       if (this.update) {
-        this.tituloForm = this.materia.titulo
-        this.descricaoForm = this.materia.descricao
-        this.professorForm = this.materia.professor
-        this.corForm = this.materia.cor
-        this.semanaHorarioForm = this.materia.semanaHorario
+        this.id = this.materia.id;
+        this.tituloForm = this.materia.titulo;
+        this.descricaoForm = this.materia.descricao;
+        this.professorForm = this.materia.professor;
+        this.corForm = this.materia.cor;
+      } else {
+        this.id = null;
+        this.tituloForm = "";
+        this.descricaoForm = "";
+        this.professorForm = "";
+        this.corForm = "";
       }
     },
   },
@@ -216,14 +258,16 @@ export default {
       tituloForm: { required },
     };
   },
-  created() {
+  updated() {
     this.setMateria();
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .inputtext {
   height: auto;
   margin-top: 2rem;

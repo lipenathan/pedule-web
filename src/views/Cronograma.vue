@@ -1,42 +1,41 @@
 <template>
-  <div class="wrapper">
-    <navbar />
-    <sidebar/>
-    <div class="content">
-      <cronograma class="cronograma" />
-      <calendar class="calendar" />
-    </div>
+  <div>
+    <custom-template>
+      <template v-slot:content>
+        <cronograma></cronograma>
+      </template>
+    </custom-template>
+    <p-button
+      class="p-button-raised p-button-rounded button-add"
+      icon="pi pi-plus"
+      @click="openDialog(false)"
+    />
   </div>
 </template>
 
 <script>
-import Navbar from "@/components/template/Navbar.vue";
-import Calendar from "@/components/cronograma/CalendarWidget.vue";
+import PButton from "primevue/button";
 import Cronograma from "@/components/cronograma/Cronograma.vue";
-import Sidebar from "@/components/template/Sidebar.vue"
+import CustomTemplate from "@/components/template/Template.vue";
 
 export default {
-  components: { Navbar, Calendar, Cronograma, Sidebar },
+  components: { Cronograma, CustomTemplate, PButton },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
+$margin-button: 4rem;
 
-.calendar {
-  margin: 5rem auto auto 2rem;
-}
-
-.content {
-  margin-left: 200px;
-  padding: 1px 16px;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: space-around;
-}
-
-.cronograma {
-  margin-top: 3rem;
+cronograma {
+  margin-top: 2rem;
   margin-inline-start: auto;
   margin-inline-end: auto;
+}
+
+.button-add {
+  width: 3.5rem !important;
+  height: 3.5rem !important;
+  position: fixed;
+  bottom: $margin-button;
+  right: $margin-button;
 }
 </style>

@@ -12,9 +12,9 @@ import 'primevue/resources/primevue.min.css';       //core css
 import 'primeicons/primeicons.css';
 
 createApp(App)
-.use(store)
 .use(router)
 .use(PrimeVue)
+.use(store)
 .mount('#app');
 
 const options = {
