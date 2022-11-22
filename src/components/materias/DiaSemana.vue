@@ -8,10 +8,9 @@
       @click="addQtdDias"
     />
     <div>
-      <!-- <template v-if="set"> -->
         <dia-semana-item
           :set="set"
-          v-for="(item, i) in this.diasSemana"
+          v-for="(item, i) in diasSemana"
           :key="item.id"
           @updated="update([i], $event)"
           :semanaHorario="item"
@@ -29,7 +28,7 @@ export default {
     return {
       diaSemanaForm: "",
       qtdDias: 1,
-      diasSemana: [{ diaSemanaForm: {}, horario: {} }],
+      diasSemana: [{ semana: {}, horario: {} }],
     };
   },
   props: {
@@ -39,7 +38,7 @@ export default {
   methods: {
     addQtdDias() {
       this.qtdDias++;
-      this.diasSemana.push({id:null, diaSemanaForm: null, horario: {} });
+      this.diasSemana.push({semana: {}, horario: "" });
     },
     update(index, diaSemana) {
       this.diasSemana[index] = diaSemana;
@@ -51,12 +50,8 @@ export default {
         for (let i in this.semanaHorario) {
           let diaSemana = {
             id: this.semanaHorario[i].id,
-            diaSemanaForm: this.semanaHorario[i].semana,
+            semana: this.semanaHorario[i].semana,
             horario: this.semanaHorario[i].horario
-            // {
-            //   horaForm: this.semanaHorario[i].horario.split(":")[0],
-            //   minutoForm: this.semanaHorario[i].horario.split(":")[1],
-            // },
           };
           this.diasSemana.push(diaSemana)
         }

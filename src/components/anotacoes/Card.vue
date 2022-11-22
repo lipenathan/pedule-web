@@ -11,10 +11,7 @@
 </template>
   
 <script>
-import AnotacoesModal from '@/components/anotacoes/AnotacoesModal.vue'
-
 export default {
-    components: { AnotacoesModal },
     data() {
         return {
 

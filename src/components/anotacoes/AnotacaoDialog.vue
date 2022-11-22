@@ -38,14 +38,14 @@
 
               <Datepicker v-if="lembreteForm" class="inputdatepicker" v-model="dataHorarioForm"
                 placeholder="Selecione uma data e hora" showNowButton nowButtonLabel="Hora Atual" locale="pt-BR"
-                cancelText="cancelar" selectText="selecionar" utc :format="format" />
+                cancelText="cancelar" selectText="selecionar" />
               <small v-if="
                 (v$.dataHorarioForm.$invalid && submitted) ||
                 v$.dataHorarioForm.$pending.$response
               " class="p-error">{{ dataHorarioFormRequired }}</small>
             </div>
             <div class="modal-footer">
-              <button v-if="update" @click="updateAnotacao()" class="btn col-1">
+              <button v-if="update" @click="submit()" class="btn col-1">
                 <i class="fas fa-check"></i>
               </button>
               <button v-if="update" @click="deleteAnotacao()" class="btn col-1">
@@ -70,38 +70,22 @@ import "bootstrap";
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "vue-toastification";
-import Toast, { POSITION } from "vue-toastification";
+import { POSITION } from "vue-toastification";
 import PInputSwitch from "primevue/inputswitch";
 import PButton from "primevue/button";
 import api from "@/services/API";
 import linkvue from "@/components/anotacoes/Link.vue";
 import PCalendar from "primevue/calendar";
-import { ref } from 'vue';
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import { mapGetters } from "vuex";
 
 export default {
   setup: () => {
     const v$ = useVuelidate()
-
-    const date = ref(new Date());
-
-    const format = (date) => {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      const hour = date.getHours();
-      const minute = date.getMinutes();
-      return `${day}/${month}/${year}, ${hour}:${minute}`;
-    }
-
     return {
-      date,
-      format,
       v$
-
     }
-
   },
   components: {
     PInputSwitch,
@@ -116,13 +100,8 @@ export default {
       tituloForm: "",
       descricaoForm: "",
       lembreteForm: false,
-
-      dataHorarioForm: this.date,
-
+      dataHorarioForm: null,
       linkForm: [],
-      usuario: {
-        id: 16,
-      },
       init: true,
       submitted: false, //flag que diz se formulário já foi submetido
       tituloAnotacaoRequired: "Título da anotação é obrigatório", //constante de mensagem de erro de título da matéria
@@ -144,11 +123,12 @@ export default {
   },
   methods: {
 
-    submit() {
+    async submit() {
       this.submitted = true;
       if (!this.v$.$invalid) {
         api()
-          .post("/anotacao/novo", {
+          .post("/anotacao/salvar", {
+            id: this.id,
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
             lembrete: this.lembreteForm,
@@ -159,8 +139,8 @@ export default {
           .then((response) => {
             this.toast.success("Anotacao Inserida com sucesso", {
               position: POSITION.TOP_CENTER,
+              timeout: 2500
             });
-
             setTimeout(() => {
               this.$router.go();
             }, 1500);
@@ -181,46 +161,9 @@ export default {
       }
 
     },
-    /**
-     *
-     * lógica para ser usada no fluxo de edição:
-     * Ao receber o objeto a ser editado via props e a flag de edição(update) == true
-     * os campos dos formulários serão preenchidos conforme objeto recebido pelo componente pai
-     */
-    async updateAnotacao() {
-      if (this.update) {
-        var res = await api().post("/anotacao/atualizar", {
-          id: this.id,
-          titulo: this.tituloForm,
-          descricao: this.descricaoForm,
-          lembrete: this.lembreteForm,
-          dataHorario: this.dataHorarioForm,
-          link: this.linkForm,
-          usuario: this.usuario,
-        });
-        if (res.status == 200) {
-          this.toast.success("Anotacao Alterada com sucesso", {
-            position: POSITION.TOP_CENTER,
-          });
-          setTimeout(() => {
-            this.$router.go();
-          }, 3000);
-        }
-      } else {
-      }
-      this.init = true
-    },
     async deleteAnotacao() {
       if (this.update) {
-        var res = await api().post("/anotacao/deletar", {
-          id: this.id,
-          titulo: this.tituloForm,
-          descricao: this.descricaoForm,
-          lembrete: this.lembreteForm,
-          dataHorario: this.dataHorarioForm,
-          link: this.linkForm,
-          usuario: this.usuario,
-        });
+        var res = await api().post(`/anotacao/deletar/${this.id}`);
         if (res.status == 200) {
           this.toast.success("Anotacao Alterada com sucesso", {
             position: POSITION.TOP_CENTER,
@@ -273,6 +216,9 @@ export default {
   updated() {
     this.setAnotacao();
   },
+  computed: {
+    ...mapGetters(['usuario'])
+  }
 };
 </script>
     

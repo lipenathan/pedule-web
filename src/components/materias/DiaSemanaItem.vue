@@ -108,7 +108,7 @@ export default {
     return {
       diaHorario: {
         id: null,
-        semana: "",
+        semana: {},
         horario: null
       },
       horarioForm: null,
@@ -156,7 +156,7 @@ export default {
     setSemanaHorario() {
       if (this.set) {
         this.diaHorario.id = this.semanaHorario.id;
-        this.diaHorario.semana = this.semanaHorario.diaSemanaForm;
+        this.diaHorario.semana = this.semanaHorario.semana;
         this.diaHorario.horario = this.semanaHorario.horario
         this.horarioForm = this.diaHorario.horario
       }
@@ -166,7 +166,7 @@ export default {
     set: Boolean,
     semanaHorario: {
       id: null,
-      diaSemanaForm: null,
+      semana: null,
       horario: null,
     },
   },

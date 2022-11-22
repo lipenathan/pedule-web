@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <navbar />
-    <Anotacoes />
-  </div>
-  
+  <custom-template>
+    <template v-slot:content>
+      <Anotacoes />
+    </template>
+  </custom-template>
+
   <!-- <div class="dialog">
     <p-button @click="showDialog = !showDialog">Show Materia Dialog</p-button>
     <dialog-anotacoes
@@ -15,13 +16,13 @@
   </div>  -->
 </template>
 <script>
-
 import Navbar from "@/components/template/Navbar.vue";
 import PButton from "primevue/button";
-import Anotacoes from "@/components/anotacoes/Anotacoes.vue"
+import Anotacoes from "@/components/anotacoes/Anotacoes.vue";
+import CustomTemplate from "@/components/template/Template.vue";
 
 export default {
-  components: { Navbar, PButton, Anotacoes },
+  components: { Navbar, PButton, Anotacoes, CustomTemplate },
   data() {
     return {
       showDialog: false,

@@ -16,7 +16,7 @@
         @click="openUpdateModal(item)"
       />
     </div>
-    <AnotacoesModal
+    <AnotacaoModal
       :anotacao="anotacao"
       :update="update"
       @closedDialog="closeModal()"
@@ -33,10 +33,11 @@ import Card from "@/components/anotacoes/Card.vue";
 import PButton from "primevue/button";
 import Api from "@/services/API";
 import PCalendar from "primevue/calendar";
-import AnotacoesModal from "@/components/anotacoes/AnotacoesModal.vue";
+import AnotacaoModal from "@/components/anotacoes/AnotacaoDialog.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  components: { Card, PButton, AnotacoesModal, PCalendar },
+  components: { Card, PButton, AnotacaoModal, PCalendar },
   data() {
     return {
       modal: "",
@@ -66,31 +67,34 @@ export default {
   methods: {
     getAnotacoes() {
       Api()
-        .get("/anotacao/listar/16", {})
+        .get(`/anotacao/listar/${this.usuario.id}`, {})
         .then((response) => {
           this.anotacoes = response.data;
         });
     },
     openModal(update) {
       this.update = update;
-      this.showModal = true
+      this.showModal = true;
       this.modal = "modal";
     },
     closeModal() {
-      this.modal = ''
+      this.modal = "";
     },
     openUpdateModal(anotacao) {
       this.anotacao = anotacao;
       this.openModal(true);
     },
     cleanAnotacao() {
-      this.anotacao = null
-      this.update = false
-    }
+      this.anotacao = null;
+      this.update = false;
+    },
   },
   created() {
     this.getAnotacoes();
   },
+  computed: {
+    ...mapGetters(['usuario'])
+  }
 };
 </script>
   
@@ -104,15 +108,7 @@ $grey: #cccccc;
 $dark-grey: #cecece92;
 $margin-button: 4rem;
 
-.content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
 .anotation {
-  margin-top: 4rem;
   // border: solid 1.5px $button;
   background: $background;
   border-radius: 1rem;

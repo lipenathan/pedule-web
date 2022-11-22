@@ -81,7 +81,7 @@
             v-model="switchColor"
             aria-labelledby="switch-color"
           />
-          <label for="cor">Selecione uma cor para a matéria (opcional)</label>
+          <label for="cor" :class="selectColor">Selecione uma cor para a matéria (opcional)</label>
           <p-color-picker id="cor" v-model="corForm" :disabled="!switchColor" />
         </div>
       </div>
@@ -110,7 +110,7 @@ import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 //toast
 import { useToast } from "vue-toastification";
-import Toast, { POSITION } from "vue-toastification";
+import { POSITION } from "vue-toastification";
 //local
 import DiaSemana from "@/components/materias/DiaSemana.vue";
 import api from "@/services/API";
@@ -144,7 +144,7 @@ export default {
           },
         },
       ],
-      switchColor: true,
+      switchColor: false,
       submitted: false, //flag que diz se formulário já foi submetido
       tituloMateriaRequired: "Título da matéria é obrigatório", //constante de mensagem de erro de título da matéria
       camposObrigatorioMessage: "Preencha os Campos obrigatórios",
@@ -200,7 +200,7 @@ export default {
           this.corForm = "";
         }
         api()
-          .post("/materia/novo", {
+          .post("/materia/salvar", {
             id: this.id,
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
@@ -263,6 +263,11 @@ export default {
   },
   computed: {
     ...mapGetters(["usuario"]),
+    selectColor() {
+      return {
+        'color-disabled': !this.switchColor
+      }
+    }
   },
 };
 </script>
@@ -279,5 +284,9 @@ export default {
 
 #switch-cor {
   display: block;
+}
+
+.color-disabled {
+  color: rgba(122, 122, 122, 0.493);
 }
 </style>
