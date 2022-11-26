@@ -8,6 +8,7 @@ import Cursos from '@/views/Cursos.vue'
 import TelaCadastro from '@/views/Cadastro.vue'
 import Login from '@/views/Login.vue'
 import Teste from '@/views/Teste.vue'
+import Confirmacao from '@/views/Confirmacao.vue'
 import Req from '@/views/Req.vue'
 import store from '../store'
 
@@ -72,6 +73,12 @@ const routes = [
     path: '/teste',
     name: 'teste',
     component: Teste,
+  },
+
+  {
+    path: '/confirmacao',
+    name: 'confirmacao',
+    component: Confirmacao,
   },
 ];
 
