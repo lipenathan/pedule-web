@@ -1,11 +1,11 @@
 <template>
-  <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
+   <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <ol class="carousel-indicators">
-        <li v-for="(lembrete, index) of lembretes" :key="index" data-bs-target="#carouselExampleIndicators" :class="{active: !index}" :data-slide-to="index">
+        <li v-for="(lembrete, index) in lembretes" :key="index" data-bs-target="#carouselExampleIndicators" :class="index === 0 ? 'active' : ' ' " :data-slide-to="index" >
         </li>
     </ol>
     <div class="carousel-inner">
-      <div v-for="(lembrete, index) of lembretes" :key="index" class="carousel-item" :class="{active: !index}">
+      <div v-for="(lembrete, index) in lembretes" :key="index" class="carousel-item" :class="index === 0 ? 'carousel-item active' : 'carousel-item'">
         {{ lembrete.titulo }}
         {{ lembrete.descricao }}
       </div>
@@ -19,20 +19,20 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
-  </div>
+  </div> 
 
 </template>
 
 <script>
-import Carousel from 'primevue/carousel';
 import Api from "@/services/API";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    Carousel
   },
   data() {
+  
     return {
+      
       anotacoes: [
         {
           id: 0,
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#carouselExampleIndicators {
+.carousel {
   width: 47.875rem;
   height: 9.498rem;
   border: 1px solid black;
