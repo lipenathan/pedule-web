@@ -83,7 +83,8 @@ const router = createRouter({
 function isRestrictedPage(pageName) {
   let resctricted = false
   resctricted = pageName !== "login"
-  resctricted = pageName !== "cadastro"
+  resctricted = resctricted && pageName !== "cadastro"
+  return resctricted
 }
 
 router.beforeEach((to, from, next) => {

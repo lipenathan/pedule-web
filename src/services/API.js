@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '../store'
 import { useToast } from 'vue-toastification'
 import { POSITION } from 'vue-toastification'
-import router from '../router/index'
+import router from '../router/index.js'
 // const baseUrl = 'http://18.230.187.173:3333' 
 const baseUrl = 'http://localhost:3333'
 
@@ -42,12 +42,13 @@ axiosConfig.interceptors.response.use(function (response) {
         store.dispatch('token', tokenRes)
     }
     return response
-}, function(error) {
+}, async function(error) {
     if(error.response.status == 403) {
         toast.warning("Realize o Login novamente para continuar.", {
             position: POSITION.TOP_CENTER
         })
         router.push('/login')
+        store.dispatch('usuario', null)
     }
     return Promise.reject(error)
 })
