@@ -137,7 +137,7 @@ export default {
             usuario: this.usuario,
           })
           .then((response) => {
-            this.toast.success("Anotacao Inserida com sucesso", {
+            this.toast.success("Anotação criada com sucesso", {
               position: POSITION.TOP_CENTER,
               timeout: 2500
             });
@@ -165,7 +165,7 @@ export default {
       if (this.update) {
         var res = await api.post(`/anotacao/deletar/${this.id}`);
         if (res.status == 200) {
-          this.toast.success("Anotacao Alterada com sucesso", {
+          this.toast.success("Anotação alterada com sucesso", {
             position: POSITION.TOP_CENTER,
           });
           setTimeout(() => {

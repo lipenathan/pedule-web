@@ -147,8 +147,6 @@ export default {
   methods: {
     submitForm() {
       this.submitted = true;
-      alert(this.dataForm);
-      console.log(this.dataForm);
       if (!this.v$.$invalid) {
         api
           .post("/atividade/salvar", {
@@ -167,6 +165,7 @@ export default {
             this.dataForm = null;
             this.submitted = false;
             this.closeDialog();
+            this.$emit("itemSaved", true);
           });
       } else {
         this.toast.error(this.camposObrigatorioMessage, {

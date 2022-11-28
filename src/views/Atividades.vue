@@ -34,6 +34,7 @@
 
     <atividade-dialog
       @closedDialog="showDialog = false"
+      @itemSaved="getAtividades()"
       :show="showDialog"
       :update="updateDialog"
       :atividade="atividadeUpdate"
