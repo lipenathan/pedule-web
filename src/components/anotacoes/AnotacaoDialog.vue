@@ -163,7 +163,7 @@ export default {
     },
     async deleteAnotacao() {
       if (this.update) {
-        var res = await api().post(`/anotacao/deletar/${this.id}`);
+        var res = await api().delete(`/anotacao/deletar/${this.anotacao.id}`);
         if (res.status == 200) {
           this.toast.success("Anotacao Alterada com sucesso", {
             position: POSITION.TOP_CENTER,
@@ -210,7 +210,7 @@ export default {
   validations() {
     return {
       tituloForm: { required },
-      dataHorarioForm: { required }
+      dataHorarioForm: {  }
     }
   },
   updated() {
