@@ -98,7 +98,7 @@ export default {
   methods: {
     login() {
       this.v$.$validate();
-      Api()
+      Api
         .post("/usuario/login", {
           email: this.state.email,
           senha: this.state.password,

@@ -72,7 +72,7 @@ export default {
       this.showDialog = !this.showDialog;
     },
     getAtividades() {
-      api()
+      api
         .get(`/atividade/listar/${this.usuario.id}`)
         .then((res) => {
           this.atividades = res.data;
@@ -83,7 +83,7 @@ export default {
       this.openDialog(true);
     },
     async deleteAtividade(item) {
-      api()
+      api
         .delete(`/atividade/deletar/${item.id}`)
         .then((res) => {
           this.getAtividades();

@@ -31,7 +31,7 @@ import "bootstrap";
 
 import Card from "@/components/anotacoes/Card.vue";
 import PButton from "primevue/button";
-import Api from "@/services/API";
+import api from "@/services/API";
 import PCalendar from "primevue/calendar";
 import AnotacaoModal from "@/components/anotacoes/AnotacaoDialog.vue";
 import { mapGetters } from "vuex";
@@ -59,18 +59,17 @@ export default {
           ],
         },
       ],
-      usuario: {
-        id: 6,
-      },
     };
   },
   methods: {
     getAnotacoes() {
-      Api()
-        .get(`/anotacao/listar/${this.usuario.id}`, {})
+      if(this.usuario) {
+        api
+        .get(`/anotacao/listar/${this.usuario.id}`)
         .then((response) => {
           this.anotacoes = response.data;
         });
+      }
     },
     openModal(update) {
       this.update = update;

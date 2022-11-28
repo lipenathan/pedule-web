@@ -16,7 +16,7 @@
         placeholder="Pesquisar"
       />
     </span>
-    <p id="nome-usuario" v-if="usuario">{{ usuario.nome }}</p>
+    <p id="nome-usuario" v-if="usuario">{{ simpleName }}</p>
     <p id="nome-usuario" v-else>Você não está logado</p>
     <template v-if="!isMenuOpen">
       <button
@@ -93,6 +93,7 @@ export default {
           icon: "pi pi-power-off",
           command: () => {
             this.$store.dispatch('usuario', null)
+            this.$store.dispatch('token', null)
             this.$router.push('/login')
           }
         },
@@ -106,6 +107,10 @@ export default {
   },
   computed: {
     ...mapGetters(["usuario"]),
+    simpleName() {
+      let nomes = this.usuario.nome.split(" ")
+      return `${nomes[0]} ${nomes[1].charAt(0)}.`
+    }
   },
 };
 </script>

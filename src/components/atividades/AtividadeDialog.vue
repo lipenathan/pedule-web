@@ -150,7 +150,7 @@ export default {
       alert(this.dataForm);
       console.log(this.dataForm);
       if (!this.v$.$invalid) {
-        api()
+        api
           .post("/atividade/salvar", {
             titulo: this.tituloForm,
             descricao: this.descricaoForm,

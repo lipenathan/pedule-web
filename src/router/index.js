@@ -15,16 +15,16 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: Login,
   },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
-  },
+  // {
+  //   path: '/about',
+  //   name: 'about',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+  // },
   {
     path: '/login',
     name: 'login',
@@ -80,10 +80,16 @@ const router = createRouter({
   routes,
 });
 
+function isRestrictedPage(pageName) {
+  let resctricted = false
+  resctricted = pageName !== "login"
+  resctricted = pageName !== "cadastro"
+}
+
 router.beforeEach((to, from, next) => {
   const authenticated = store.getters.isAuthenticaded
 
-  if (to.name !== "login" && !authenticated) next({ name: "login" })
+  if (isRestrictedPage(to.name) && !authenticated) next({ name: "login" })
   else if (to.name === "login" && authenticated) next({ name: "cronograma" })
   else next()
 })
