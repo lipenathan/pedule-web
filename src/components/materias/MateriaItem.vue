@@ -55,7 +55,7 @@ export default {
       this.$emit("edit", true);
     },
     deletar() {
-      api()
+      api
         .delete(`/materia/deletar/${this.materia.id}`)
         .then((res) => {
           this.toast.success("Matéria deletada com sucesso", {

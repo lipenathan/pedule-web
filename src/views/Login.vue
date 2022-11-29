@@ -61,7 +61,7 @@ import useValidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { computed, reactive } from "vue";
 import { useToast } from "vue-toastification";
-import Toast, { POSITION } from "vue-toastification";
+import { POSITION } from "vue-toastification";
 import Header from "@/components/template/Header.vue";
 import i18n from "@/utils/i18n.json";
 import Api from "../services/API";
@@ -98,7 +98,7 @@ export default {
   methods: {
     login() {
       this.v$.$validate();
-      Api()
+      Api
         .post("/usuario/login", {
           email: this.state.email,
           senha: this.state.password,
@@ -152,6 +152,10 @@ $btn-text: rgb(255, 255, 254);
   font-family: "Open Sans", sans-serif;
 }
 body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100vh;
   background: $background;
@@ -162,7 +166,6 @@ body {
   align-items: center;
   width: 100%;
   height: 85vh;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.212);
 }
 
 small {
