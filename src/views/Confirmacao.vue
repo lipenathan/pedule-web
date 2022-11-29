@@ -17,19 +17,12 @@
       </i>
       {{ timerCount }}
       <button @click="redirect()">Redirecionar</button>
-      
     </p-dialog>
   </div>
-  
 </template>
       
 <script>
-
 import PDialog from "primevue/dialog";
-
-setTimeout(function() {
-      window.location.href = "/login"
-  },8000);  
 
 export default {
   components: { PDialog },
@@ -39,7 +32,7 @@ export default {
       show: true,
       msg: "Email Confirmado!",
       timerCount: 8,
-    }
+    };
   },
 
   watch: {
@@ -54,14 +47,12 @@ export default {
       immediate: true,
     },
   },
-  methods: { 
-    redirect(){
-      this.$router.push("/cursos");
-    },      
-  },
-}
+};
 
-</script>
+// setTimeout(function() {
+//          window.location.href = "/login"
+//      },8000);
+// </script>
 
 <style scoped>
 h3 {

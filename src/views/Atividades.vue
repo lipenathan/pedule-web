@@ -1,32 +1,34 @@
 <template>
-<div>
-  <custom-template>
-    <template v-slot:content>
-      <div class="atividades_list">
-        <div class="header_atividade">
-          <ul>
-            <li>Atividades</li>
-            <li>Prazo</li>
-            <li>Prioridade</li>
-            <li>Excluir</li>
-          </ul>
+  <div>
+    <custom-template>
+      <template v-slot:content>
+        <div class="atividades_list">
+          <div class="header_atividade">
+            <ul>
+              <li>Atividades</li>
+              <li>Prazo</li>
+              <li>Prioridade</li>
+              <li>Excluir</li>
+            </ul>
+          </div>
+          <div class="list">
+            <atividade-item
+              v-for="item in atividades"
+              @itemClicked="openUpdateDialog(item)"
+              @delete="deleteAtividade(item)"
+              :key="item.id"
+              :atividade="item"
+            ></atividade-item>
+            <template v-if="atividades.length == 0">
+              <h4 class="empty-list">
+                As suas atividades cadastradas apareceção aqui
+              </h4>
+            </template>
+          </div>
         </div>
-        <div class="list">
-          <atividade-item
-            v-for="item in atividades"
-            @itemClicked="openUpdateDialog(item)"
-            @delete="deleteAtividade(item)"
-            :key="item.id"
-            :atividade="item"
-          ></atividade-item>
-          <template v-if="atividades.length == 0">
-            <h4 class="empty-list">As suas atividades cadastradas apareceção aqui</h4>
-          </template>
-        </div>
-      </div>
-    </template>
-  </custom-template>
-  <p-button
+      </template>
+    </custom-template>
+    <p-button
       class="p-button-raised p-button-rounded button-add"
       icon="pi pi-plus"
       @click="openDialog(false)"

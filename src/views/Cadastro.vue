@@ -1,5 +1,6 @@
 <template>
   <body>
+    <Header />
     <main class="container">
       <div class="form">
         <div class="title">
@@ -8,18 +9,23 @@
 
         <h2>Cadastre-se</h2>
         <div class="top-box">
-          <div>
-            <label for="name" id="lb-name">Nome </label>
-            <span class="icon_name"><i class="fa-solid fa-user"></i></span>
-            <input
+           <div class="field col-12 md:col-4">
+                    <span class="p-float-label p-input-icon-left">
+                        <i class="pi pi-search" />
+                        <InputText id="inputtext-left" type="text" v-model="valueIconLeft" />
+                        <label for="inputtext-left">Left Icon</label>
+                    </span>
+                </div>
+            
+            <!-- <input
               type="text"
               name="name"
               id="inp-name"
               placeholder="Digite o seu nome"
               v-model="usuario.nome" required
-            />
+            /> -->
             
-          </div>
+          
 
           <div class="top-box-child">
             <label id="lb_birth" for="birth">Data de nascimento</label>
@@ -81,11 +87,17 @@
 
 <script>
 import Api from "../services/API";
+import Header from "@/components/template/Header.vue";
+import PInputText from "primevue/inputtext";
 import useValidate from "@vuelidate/core";
 import { required, sameAs, minLength, helpers } from "@vuelidate/validators";
 import { reactive, computed } from "vue";
 
 export default {
+
+  components: {
+     Header, PInputText,
+  },
   
   data() {
     return {
@@ -136,16 +148,16 @@ body {
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", sans-serif; 
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-}
+// .container {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 100vh;
+//   width: 100%;
+// }
 
 .form {
   display: flex;
@@ -158,15 +170,19 @@ body {
   height: 520px;
   background-color: #f5f5f5;
   box-shadow: 2px 3px 5px #888;
+  margin: 0 auto;
+  
 }
 
 h1 {
-  margin-top: -70px;
+  margin-top: -50px;
   margin-bottom:0px;
+  font-size: 30px;
 }
 
 h2{
   margin-bottom: 10px;
+  font-size: 20px
 }
 
 label {
