@@ -13,7 +13,7 @@
       :update="false"
       :materia="materia"
     ></dialog-anotacoes>
-  </div>  -->
+  </div> 
 </template>
 <script>
 import Navbar from "@/components/template/Navbar.vue";
