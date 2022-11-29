@@ -55,19 +55,16 @@ const routes = [
     name: 'cursos',
     component: Cursos
   },
-
   {
     path: '/req',
     name: 'req',
     component: Req
   },
-
   {
     path: '/cadastro',
     name: 'cadastro',
     component: TelaCadastro,
   },
-
   {
     path: '/teste',
     name: 'teste',

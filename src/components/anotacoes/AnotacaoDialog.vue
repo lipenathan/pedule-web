@@ -163,7 +163,7 @@ export default {
     },
     async deleteAnotacao() {
       if (this.update) {
-        var res = await api.post(`/anotacao/deletar/${this.id}`);
+        var res = await api.delete(`/anotacao/deletar/${this.id}`);
         if (res.status == 200) {
           this.toast.success("Anotação alterada com sucesso", {
             position: POSITION.TOP_CENTER,

@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     getLembretes() {
-      api()
+      api
         .get(`/anotacao/listar/${this.usuario.id}`)
         .then((response) => {
           let anotacoes = response.data;

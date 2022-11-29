@@ -8,8 +8,7 @@
     <p-button
       class="p-button-raised p-button-rounded button-add"
       icon="pi pi-plus"
-      @click="openDialog(false)"
-    />
+      @click="openDialog(false)"/>
   </div>
 </template>
 

@@ -4,7 +4,6 @@
       <Anotacoes />
     </template>
   </custom-template>
-  <div><Lembrete/></div>
   <!-- <div class="dialog">
     <p-button @click="showDialog = !showDialog">Show Materia Dialog</p-button>
     <dialog-anotacoes
