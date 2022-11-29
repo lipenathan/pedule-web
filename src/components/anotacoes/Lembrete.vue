@@ -1,5 +1,6 @@
 <template>
-  <div class="wrapper">
+  
+    <div class="wrapper">
     <p-carousel
       :value="lembretes"
       :numVisible="1"
@@ -15,6 +16,8 @@
         </div>
       </template>
     </p-carousel>
+ 
+ 
   </div>
 </template>
 
@@ -50,9 +53,10 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-    width: 30rem;
+    width: 40rem;
     height: 8rem;
     background: #F4F4D6;
     border-radius: 1rem;
 }
+
 </style>
