@@ -63,7 +63,7 @@ import { computed, reactive } from "vue";
 import { useToast } from "vue-toastification";
 import Toast, { POSITION } from "vue-toastification";
 import Header from "@/components/template/Header.vue";
-import i18n from "@/Utils/i18n.json";
+import i18n from "@/utils/i18n.json";
 import Api from "../services/API";
 
 export default {

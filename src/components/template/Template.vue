@@ -14,6 +14,7 @@
         <calendar />
       </div>
     </div>
+    <lembrete/>
   </div>
 </template>
 <script>
@@ -21,6 +22,7 @@ import Navbar from "@/components/template/Navbar.vue";
 import Sidebar from "@/components/template/Sidebar.vue";
 import PButton from "primevue/button";
 import Calendar from "@/components/cronograma/CalendarWidget.vue";
+import Lembrete from "@/components/anotacoes/Lembrete.vue"
 
 export default {
   components: {
@@ -28,6 +30,7 @@ export default {
     PButton,
     Sidebar,
     Calendar,
+    Lembrete
   },
 };
 </script>

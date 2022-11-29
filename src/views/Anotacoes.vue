@@ -4,7 +4,7 @@
       <Anotacoes />
     </template>
   </custom-template>
-  <div class="lembrete"><Lembrete  /></div>
+  <div><Lembrete/></div>
   <!-- <div class="dialog">
     <p-button @click="showDialog = !showDialog">Show Materia Dialog</p-button>
     <dialog-anotacoes
@@ -20,10 +20,9 @@ import Navbar from "@/components/template/Navbar.vue";
 import PButton from "primevue/button";
 import Anotacoes from "@/components/anotacoes/Anotacoes.vue";
 import CustomTemplate from "@/components/template/Template.vue";
-import Lembrete from "@/components/lembrete/Lembrete.vue"
 
 export default {
-  components: { Navbar, PButton, Anotacoes, CustomTemplate, Lembrete },
+  components: { Navbar, PButton, Anotacoes, CustomTemplate },
   data() {
     return {
       /**
