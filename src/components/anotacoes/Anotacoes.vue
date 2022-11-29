@@ -1,26 +1,12 @@
 <template>
   <div class="content">
-    <p-button
-      class="p-button-raised p-button-rounded button-add"
-      icon="pi pi-plus"
-      data-bs-toggle="modal"
-      data-bs-target="#myModal"
-      @click="cleanAnotacao()"
-    />
+    <p-button class="p-button-raised p-button-rounded button-add" icon="pi pi-plus" data-bs-toggle="modal"
+      data-bs-target="#myModal" @click="cleanAnotacao()" />
     <!-- data-bs-toggle="modal" data-bs-target="#exampleModal" -->
     <div class="anotation">
-      <Card
-        v-for="item in anotacoes"
-        :key="item.id"
-        :anotacao="item"
-        @click="openUpdateModal(item)"
-      />
+      <Card v-for="item in anotacoes" :key="item.id" :anotacao="item" @click="openUpdateModal(item)" />
     </div>
-    <AnotacaoModal
-      :anotacao="anotacao"
-      :update="update"
-      @closedDialog="closeModal()"
-    />
+    <AnotacaoDialog :anotacao="anotacao" :update="update" @closedDialog="closeModal()" />
   </div>
 </template>
   
@@ -33,11 +19,11 @@ import Card from "@/components/anotacoes/Card.vue";
 import PButton from "primevue/button";
 import api from "@/services/API";
 import PCalendar from "primevue/calendar";
-import AnotacaoModal from "@/components/anotacoes/AnotacaoDialog.vue";
+import AnotacaoDialog from "@/components/anotacoes/AnotacaoDialog.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  components: { Card, PButton, AnotacaoModal, PCalendar },
+  components: { Card, PButton, AnotacaoDialog, PCalendar },
   data() {
     return {
       modal: "",
@@ -45,16 +31,16 @@ export default {
       anotacao: {},
       anotacoes: [
         {
-          id: 0,
-          titulo: "",
-          descricao: "",
+          id: null,
+          titulo: null,
+          descricao: null,
           lembrete: false,
-          dataHorario: "11/10/2022 20:11:29",
+          dataHorario: null,
           link: [
             {
-              id: 0,
-              url: "",
-              anotacao: "",
+              id: null,
+              url: null,
+              anotacao: null,
             },
           ],
         },
@@ -68,6 +54,7 @@ export default {
         .get(`/anotacao/listar/${this.usuario.id}`)
         .then((response) => {
           this.anotacoes = response.data;
+
         });
       }
     },
@@ -118,7 +105,7 @@ $margin-button: 4rem;
   flex-wrap: wrap;
 }
 
-.card > img {
+.card>img {
   width: 30%;
   height: auto;
 }

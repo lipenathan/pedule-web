@@ -152,6 +152,10 @@ $btn-text: rgb(255, 255, 254);
   font-family: "Open Sans", sans-serif;
 }
 body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100vh;
   background: $background;
@@ -162,7 +166,6 @@ body {
   align-items: center;
   width: 100%;
   height: 85vh;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.212);
 }
 
 small {

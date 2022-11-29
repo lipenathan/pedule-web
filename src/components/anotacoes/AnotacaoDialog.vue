@@ -210,7 +210,7 @@ export default {
   validations() {
     return {
       tituloForm: { required },
-      dataHorarioForm: { required }
+      dataHorarioForm: {  }
     }
   },
   updated() {

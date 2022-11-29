@@ -1,6 +1,5 @@
 <template>
     <div class="card" data-bs-toggle="modal" data-bs-target="#myModal">
-        
         <div class="titulo">
             {{ anotacao.titulo }}
         </div>
@@ -16,8 +15,6 @@ export default {
         return {
 
         }
-
-
     },
     props: {
         anotacao: {
@@ -27,7 +24,7 @@ export default {
     },
 
     methods: {
-        
+
     }
 
 }
@@ -63,6 +60,7 @@ $card: rgb(249, 192, 139);
     height: 40%;
 
 }
+
 .descricao {
     font-weight: 500;
     display: flex;

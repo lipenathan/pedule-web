@@ -4,7 +4,7 @@
       <Anotacoes />
     </template>
   </custom-template>
-
+  <div><Lembrete/></div>
   <!-- <div class="dialog">
     <p-button @click="showDialog = !showDialog">Show Materia Dialog</p-button>
     <dialog-anotacoes
@@ -25,7 +25,6 @@ export default {
   components: { Navbar, PButton, Anotacoes, CustomTemplate },
   data() {
     return {
-      showDialog: false,
       /**
        *exemplo de objeto de matéria que na verdade deverá ser pego da lista
        *que está sendo exibida ao usuário e que foi recebida via api
@@ -46,12 +45,30 @@ export default {
           id: 15,
         },
       },
+      
     };
+  },
+  props: {
+    anotacao: {
+      id: Number,
+      titulo: String,
+      descricao: String,
+      lembrete: Boolean,
+      dataHorario: String,
+      link: Array,
+    },
+    update: false,
   },
 };
 </script>
 <style lang="scss" scoped>
 .dialog {
   margin-top: 4rem;
+}
+
+.lembrete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
