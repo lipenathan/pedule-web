@@ -199,7 +199,7 @@ export default {
         if (!this.switchColor) {
           this.corForm = "";
         }
-        api()
+        api
           .post("/materia/salvar", {
             id: this.id,
             titulo: this.tituloForm,

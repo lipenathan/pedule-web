@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     submit() {
-      Api()
+      Api
         .post("/usuario/novo", {
           nome: this.usuario.nome,
           email: this.usuario.email,

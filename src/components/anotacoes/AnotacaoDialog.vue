@@ -126,7 +126,7 @@ export default {
     async submit() {
       this.submitted = true;
       if (!this.v$.$invalid) {
-        api()
+        api
           .post("/anotacao/salvar", {
             id: this.id,
             titulo: this.tituloForm,
@@ -137,7 +137,7 @@ export default {
             usuario: this.usuario,
           })
           .then((response) => {
-            this.toast.success("Anotacao Inserida com sucesso", {
+            this.toast.success("Anotação criada com sucesso", {
               position: POSITION.TOP_CENTER,
               timeout: 2500
             });
@@ -163,9 +163,9 @@ export default {
     },
     async deleteAnotacao() {
       if (this.update) {
-        var res = await api().delete(`/anotacao/deletar/${this.anotacao.id}`);
+        var res = await api.post(`/anotacao/deletar/${this.id}`);
         if (res.status == 200) {
-          this.toast.success("Anotacao Alterada com sucesso", {
+          this.toast.success("Anotação alterada com sucesso", {
             position: POSITION.TOP_CENTER,
           });
           setTimeout(() => {

@@ -1,8 +1,13 @@
 import axios from 'axios'
 
- const baseUrl = 'http://18.230.187.173:3333' 
-// const baseUrl = 'http://localhost:3333'
+import store from '../store'
+import { useToast } from 'vue-toastification'
+import { POSITION } from 'vue-toastification'
+import router from '../router/index.js'
+// const baseUrl = 'http://18.230.187.173:3333' 
+const baseUrl = 'http://localhost:3333'
 
+const toast = useToast()
 
 const dateTransformer = data => {
     if (data instanceof Date) {
@@ -26,9 +31,39 @@ const dateTransformer = data => {
     return data
 }
 
-export default (url = baseUrl) => {
-    return axios.create({
-        baseURL: url,
-        transformRequest: [dateTransformer].concat(axios.defaults.transformRequest)
-    })
-}
+const axiosConfig = axios.create({
+    baseURL: baseUrl,
+    transformRequest: [dateTransformer].concat(axios.defaults.transformRequest)
+})
+
+// interceptador de responses
+axiosConfig.interceptors.response.use(function (response) {
+    const tokenRes = response.headers['access-token']
+    if (tokenRes != null) {
+        store.dispatch('token', tokenRes)
+    }
+    return response
+}, async function(error) {
+    if(error.response.status == 403) {
+        toast.warning("Realize o Login novamente para continuar.", {
+            position: POSITION.TOP_CENTER
+        })
+        router.push('/login')
+        store.dispatch('usuario', null)
+    }
+    return Promise.reject(error)
+})
+// interceptador de requests
+axiosConfig.interceptors.request.use(function(config) {
+    let token = store.getters.token
+    if (token != null) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+}, function(error) {
+    return Promise.reject(error)
+})
+
+// axiosConfig.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+export default axiosConfig

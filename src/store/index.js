@@ -11,7 +11,8 @@ export default createStore({
   ],
   state: {
     usuario: null,
-    isAuthenticaded: false
+    isAuthenticaded: false,
+    token: null
   },
   getters: {
     usuario: (state) => {
@@ -19,16 +20,25 @@ export default createStore({
     },
     isAuthenticaded: (state) => {
       return state.usuario != null
+    },
+    token: (state) => {
+      return state.token
     }
   },
   mutations: {
     usuario(state, usuario) {
       state.usuario = usuario
+    },
+    token(state, token) {
+      state.token = token
     }
   },
   actions: {
     usuario(context, usuario) {
       context.commit('usuario', usuario)
+    },
+    token(context, token) {
+      context.commit('token', token)
     }
   },
   modules: {
