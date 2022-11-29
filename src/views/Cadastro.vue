@@ -15,9 +15,8 @@
           </span>
         </div>
         <div class="inputtext3">
-          <span class="p-float-label p-input-icon-left">
-            <!-- <i class="pi-calendar"></i> -->
-            <p-calendar
+          <span class="p-float-label p-input-icon-left" id="sp_calendar">
+            <PCalendar
               dateFormat="dd/mm/yy"
               id="inputtext-left2"
               v-model="dataForm"
@@ -25,7 +24,7 @@
             <label for="" id="lb_icon_calendar"
               ><i class="fa-solid fa-calendar-days"></i
             ></label>
-            <label for="inputtext-left">Data de nascimento</label>
+            <label for="inputtext-left">Nascimento</label>
           </span>
           <!-- <small
             v-if="
@@ -37,6 +36,12 @@
           > -->
         </div>
       </div>
+      <div class="name_user">
+          <span class="p-float-label">
+            <PInputText id="institute" type="text" v-model="value" />
+            <label for="institute">Instituição</label>
+          </span>
+        </div>
       <button id="bt" @click.prevent="submitForm">Enviar</button>
     </div>
   </body>
@@ -150,6 +155,20 @@ h2 {
 
 #username{
   border-radius: 8px;
+  width: 8rem;
+}
+#inputtext-left2{
+  border-radius: 8px;
+ width: 10rem;  
+}
+#lb_icon_calendar{
+  margin-left: -25px;
+}
+
+#institute{
+  border-radius: 8px;
+  width: 18rem;
+  margin-top: 5px;
 }
 
 button {
