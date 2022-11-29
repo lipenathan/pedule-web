@@ -1,13 +1,11 @@
 <template>
   <cronograma></cronograma>
   <router-view/>
-  <Toast/>
 </template>
 <script>
 import Cronograma from '@/views/Cronograma.vue'
-import Toast from "vue-toastification";
 export default {
-    template: { Cronograma, Toast },
+    template: { Cronograma },
 }
 
 </script>

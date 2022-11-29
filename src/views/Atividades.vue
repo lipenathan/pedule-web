@@ -57,7 +57,7 @@ export default {
     AtividadeDialog,
     PButton,
     AtividadeItem,
-    CustomTemplate,
+    CustomTemplate
   },
   data() {
     return {

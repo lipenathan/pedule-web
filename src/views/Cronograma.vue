@@ -2,7 +2,7 @@
   <div>
     <custom-template>
       <template v-slot:content>
-        <cronograma></cronograma>
+        <cronograma-cmp></cronograma-cmp>
       </template>
     </custom-template>
     <p-button
@@ -11,14 +11,13 @@
       @click="openDialog(false)"/>
   </div>
 </template>
-
 <script>
 import PButton from "primevue/button";
-import Cronograma from "@/components/cronograma/Cronograma.vue";
+import CronogramaCmp from "@/components/cronograma/Cronograma.vue";
 import CustomTemplate from "@/components/template/Template.vue";
 
 export default {
-  components: { Cronograma, CustomTemplate, PButton },
+  components: { CronogramaCmp, CustomTemplate, PButton }
 };
 </script>
 <style lang="scss" scoped>
