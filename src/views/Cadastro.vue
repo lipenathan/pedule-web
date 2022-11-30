@@ -7,41 +7,85 @@
       </div>
 
       <h2>Cadastre-se</h2>
-      <div class="name_date">
+      <div class="input name_date">
         <div class="name_user">
           <span class="p-float-label">
-            <PInputText id="username" type="text" v-model="value" />
-            <label for="username">Username</label>
+            <PInputText id="username" type="text" v-model="nome" />
+            <label for="username">Nome</label>
           </span>
+          <small
+            v-if="(v$.nome.$invalid && submitted) || v$.nome.$pending.$response"
+            class="p-error"
+            >Nome obrigatório</small
+          >
         </div>
         <div class="inputtext3">
           <span class="p-float-label p-input-icon-left" id="sp_calendar">
             <PCalendar
               dateFormat="dd/mm/yy"
               id="inputtext-left2"
-              v-model="dataForm"
+              v-model="dataNascimento"
             />
             <label for="" id="lb_icon_calendar"
               ><i class="fa-solid fa-calendar-days"></i
             ></label>
             <label for="inputtext-left">Nascimento</label>
           </span>
-          <!-- <small
-            v-if="
-              (v$.dataForm.$invalid && submitted) ||
-              v$.dataForm.$pending.$response
-            "
-            class="p-error"
-            >{{ dataEntregaRequired }}</small
-          > -->
         </div>
       </div>
-      <div class="name_user">
-          <span class="p-float-label">
-            <PInputText id="institute" type="text" v-model="value" />
-            <label for="institute">Instituição</label>
-          </span>
-        </div>
+
+      <div class="input name_user">
+        <span class="p-float-label">
+          <PInputText id="institute" type="text" v-model="instituicao" />
+          <label for="institute">Instituição</label>
+        </span>
+      </div>
+
+      <div class="input email">
+        <span class="p-float-label">
+          <PInputText id="email" type="text" v-model="email" />
+          <label for="email">Email</label>
+        </span>
+        <small
+          v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response"
+          class="p-error"
+          >Email obrigatório</small
+        >
+      </div>
+
+      <div class="input password">
+        <span class="p-float-label">
+          <PPassword id="password" v-model="password" :feedback="false" />
+          <label for="password">Senha</label>
+        </span>
+        <small
+          v-if="
+            (v$.password.$invalid && submitted) ||
+            v$.password.$pending.$response
+          "
+          class="p-error"
+          >Senha obrigatória</small
+        >
+      </div>
+
+      <div class="input confirm_password">
+        <span class="p-float-label">
+          <PPassword
+            id="confirm_password"
+            v-model="confirm"
+            :feedback="false"
+          />
+          <label for="confirm_password">Confirme sua senha</label>
+        </span>
+        <small
+          v-if="
+            (v$.confirm.$invalid && submitted) || v$.confirm.$pending.$response
+          "
+          class="p-error"
+          >Confirmação de senha obrigatória</small
+        >
+      </div>
+
       <button id="bt" @click.prevent="submitForm">Enviar</button>
     </div>
   </body>
@@ -52,49 +96,70 @@ import Api from "../services/API";
 import Header from "@/components/template/Header.vue";
 import PInputText from "primevue/inputtext";
 import PCalendar from "primevue/calendar";
-import useValidate from "@vuelidate/core";
-import { required, sameAs, minLength, helpers } from "@vuelidate/validators";
-import { reactive, computed } from "vue";
+import PPassword from "primevue/password";
+import { useToast } from "vue-toastification";
+import { POSITION } from "vue-toastification";
+import { required, sameAs } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
+
 
 export default {
+  setup: () => ({ v$: useVuelidate() }),
+
   components: {
     Header,
     PInputText,
     PCalendar,
+    PPassword,
   },
 
   data() {
     return {
-      usuario: {
-        nome: "",
-        email: "",
-        dataNascimento: "",
-        instituicao: "",
-        password: "",
-        confirm: "",
-      },
+      nome: "",
+      email: "",
+      dataNascimento: "",
+      instituicao: "",
+      password: "",
+      confirm: "",
+      submitted: false,
+      toast: useToast(),
     };
   },
   methods: {
     submitForm() {
-      Api()
-        .post("/usuario/novo", {
-          nome: this.usuario.nome,
-          email: this.usuario.email,
-          dataNascimento: this.usuario.dataNascimento,
-          instituicao: this.usuario.instituicao,
-          senha: this.usuario.password.password,
-        })
-        .then((res) => {
-          this.usuario.nome = "";
-          this.usuario.email = "";
-          this.usuario.dataNascimento = null;
-          this.usuario.instituicao = "";
-          this.usuario.password.password = "";
-          this.usuario.password.confirm = "";
+      this.submitted = true;
+      if (!this.v$.$invalid) {
+        Api.post("/usuario/novo", {
+          nome: this.nome,
+          email: this.email,
+          dataNascimento: this.dataNascimento,
+          instituicao: this.instituicao,
+          senha: this.password,
+        }).then((res) => {
+          this.nome = "";
+          this.email = "";
+          this.dataNascimento = null;
+          this.instituicao = "";
+          this.password = "";
+          this.confirm = "";
           this.$router.push("/login");
+          this.submitted = false;
         });
+      } else {
+        this.toast.error("Preencha os campos obrigatórios", {
+          POSITION: POSITION.TOP_CENTER,
+          timeout: 2500,
+        });
+      }
     },
+  },
+  validations() {
+    return {
+      nome: { required },
+      email: { required },
+      password: { required },
+      confirm: { required, sameAs:sameAs(this.password) },
+    };
   },
 };
 </script>
@@ -112,7 +177,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  text-decoration: none;
+  // text-decoration: none;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -149,26 +214,59 @@ h2 {
   color: $button;
 }
 
-.name_date{
-  display:flex
+.name_date {
+  display: flex;
 }
 
-#username{
+#username {
   border-radius: 8px;
   width: 8rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
-#inputtext-left2{
-  border-radius: 8px;
- width: 10rem;  
+
+.inputtext3 {
+  margin-left: 5px;
+  width: 155px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
-#lb_icon_calendar{
+
+#lb_icon_calendar {
   margin-left: -25px;
 }
 
-#institute{
+#institute {
   border-radius: 8px;
   width: 18rem;
   margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#email {
+  border-radius: 8px;
+  width: 18rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#password {
+  border-radius: 8px;
+  width: 18rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#confirm_password {
+  border-radius: 8px;
+  width: 18rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.input {
+  margin-top: 1.2rem;
+  height: auto;
 }
 
 button {
