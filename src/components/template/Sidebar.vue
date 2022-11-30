@@ -20,7 +20,7 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-$grey: #9b98981f;
+$grey: #9793937b;
 
 $border: 0 1rem 1rem 0;
 

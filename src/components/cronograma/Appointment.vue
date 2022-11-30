@@ -1,6 +1,6 @@
 <template>
-  <div class="appointment" :style="{ background: color }">
-    <p>{{ description }}</p>
+  <div class="appointment" :style="{ background: settedColor }">
+    <p>{{ compromisso.titulo }}</p>
   </div>
 </template>
 <script>
@@ -12,9 +12,13 @@ export default {
     };
   },
   props: {
-    description: "",
-    color: "",
+    compromisso: Object
   },
+  computed: {
+    settedColor() {
+      return this.compromisso.cor?this.compromisso.cor:'#9793937b'
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
