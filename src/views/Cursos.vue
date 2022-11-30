@@ -66,7 +66,7 @@ export default {
   methods: {
     buscarMaterias() {
       if (this.usuario) {
-        api()
+        api
           .get(`/materia/listar/${this.usuario.id}`)
           .then((res) => {
             this.materias = res.data;

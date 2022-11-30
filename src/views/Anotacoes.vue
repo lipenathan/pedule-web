@@ -4,7 +4,6 @@
       <Anotacoes />
     </template>
   </custom-template>
-  <div><Lembrete/></div>
   <!-- <div class="dialog">
     <p-button @click="showDialog = !showDialog">Show Materia Dialog</p-button>
     <dialog-anotacoes
@@ -13,7 +12,7 @@
       :update="false"
       :materia="materia"
     ></dialog-anotacoes>
-  </div> 
+  </div>  -->
 </template>
 <script>
 import Navbar from "@/components/template/Navbar.vue";
