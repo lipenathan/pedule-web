@@ -11,11 +11,16 @@
       </thead>
       <tbody>
         <tr v-for="row in this.rows" :key="row.hour">
-          <td>{{row.hour}}</td>
+          <td>{{ row.hour }}</td>
           <td v-for="i in 7" :key="i">
-            <template v-for="appointment in row.appointments" :key="appointment.hora">
-              <appointment v-if="appointment.semana == i"
-              :compromisso="appointment"></appointment>
+            <template
+              v-for="appointment in row.appointments"
+              :key="appointment.hora"
+            >
+              <appointment
+                v-if="appointment.semana == i"
+                :compromisso="appointment"
+              ></appointment>
             </template>
           </td>
         </tr>
@@ -24,16 +29,16 @@
   </div>
 </template>
 <script>
-import Appointment from '@/components/cronograma/Appointment.vue';
-import api from '@/services/API';
-import { mapGetters } from 'vuex';
+import Appointment from "@/components/cronograma/Appointment.vue";
+import api from "@/services/API";
+import { mapGetters } from "vuex";
 export default {
   components: { Appointment },
   data() {
     return {
-      headDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
+      headDays: ["Dom","Seg", "Ter", "Qua", "Qui", "Sex", "Sab", ],
       rows: [],
-      compromissos:[],
+      compromissos: [],
     };
   },
   methods: {
@@ -46,24 +51,25 @@ export default {
         let hour = this.compromissos[i].hora;
         this.rows[hour].appointments.push(this.compromissos[i]);
       }
+      //ordena os compromissos por minuto
+      this.rows.forEach( r => r.appointments.sort((a,b)=> {return a.minuto - b.minuto}))
     },
     getCompromissos() {
-      api.get(`/cronograma/${this.usuario.id}`)
-      .then((response) => {
-        this.compromissos = response.data
-        this.createRows()
-      })
-      .catch((error) => {
-
-      })
-    }
+      api
+        .get(`/cronograma/${this.usuario.id}`)
+        .then((response) => {
+          this.compromissos = response.data;
+          this.createRows();
+        })
+        .catch((error) => {});
+    },
   },
   created() {
-    this.getCompromissos()
+    this.getCompromissos();
   },
   computed: {
-    ...mapGetters(['usuario'])
-  }
+    ...mapGetters(["usuario"]),
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -86,6 +92,12 @@ $dark-grey: #cecece92;
 
 .schedule td {
   max-width: 3rem;
+}
+
+.appointment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .schedule thead th {

@@ -177,15 +177,8 @@ export default {
     closeDialog() {
       this.$emit("closedDialog", true); //emitindo evento para quando o dialog é fechado
     },
-    /**
-     * lógica para ser usada no fluxo de edição:
-     * Ao receber o objeto a ser editado via props e a flag de edição(update) == true
-     * os campos dos formulários serão preenchidos conforme objeto recebido pelo componente pai
-     */
     setAtividade() {
       if (this.update) {
-        // alert("Chegou");
-        // console.log(this.update);
         this.tituloForm = this.atividade.titulo;
         this.descricaoForm = this.atividade.descricao;
         this.dataForm = this.atividade.dataHorarioEntrega;
