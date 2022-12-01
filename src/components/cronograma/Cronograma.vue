@@ -11,12 +11,16 @@
       </thead>
       <tbody>
         <tr v-for="row in this.rows" :key="row.hour">
-          <td>{{row.hour}}</td>
+          <td>{{ row.hour }}</td>
           <td v-for="i in 7" :key="i">
-            <template v-for="appointment in row.appointments" :key="appointment.hour">
-              <appointment v-if="appointment.week == i"
-              :color="appointment.color"
-              :description="appointment.description"></appointment>
+            <template
+              v-for="appointment in row.appointments"
+              :key="appointment.hora"
+            >
+              <appointment
+                v-if="appointment.semana == i"
+                :compromisso="appointment"
+              ></appointment>
             </template>
           </td>
         </tr>
@@ -26,80 +30,15 @@
 </template>
 <script>
 import Appointment from "@/components/cronograma/Appointment.vue";
+import api from "@/services/API";
+import { mapGetters } from "vuex";
 export default {
   components: { Appointment },
   data() {
     return {
-      headDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
+      headDays: ["Dom","Seg", "Ter", "Qua", "Qui", "Sex", "Sab", ],
       rows: [],
-      mockAppointments: [
-        {
-          description: "Análise e Desenvolvimento de Sistemas",
-          color: "rgb(20, 100, 80)",
-          week: 1,
-          hour: 15,
-        },
-        {
-          description: "Programação 1",
-          color: "rgb(238, 78, 243)",
-          week: 5,
-          hour: 19,
-        },
-        {
-          description: "Banco de dados",
-          color: "rgb(243, 252, 0)",
-          week: 3,
-          hour: 21,
-        },
-        {
-          description: "Lógica de programação",
-          color: "rgb(20, 100, 80)",
-          week: 1,
-          hour: 14,
-        },
-        {
-          description: "Banco de dados",
-          color: "rgb(0, 252, 252)",
-          week: 2,
-          hour: 19,
-        },
-        {
-          description: "Gestão de Projetos",
-          color: "rgb(187, 201, 201)",
-          week: 1,
-          hour: 20,
-        },
-        {
-          description: "Estrutura de dados",
-          color: "rgb(187, 201, 201)",
-          week: 2,
-          hour: 12,
-        },
-        {
-          description: "Tópicos especiais",
-          color: "rgb(187, 201, 201)",
-          week: 3,
-          hour: 11,
-        },
-        {
-          description: "Redes",
-          color: "rgb(187, 201, 201)",
-          week: 4,
-          hour: 10,
-        },
-        {
-          description: "Empreendedorismo",
-          color: "rgb(187, 201, 201)",
-          week: 5,
-          hour: 9,
-        },
-        {
-          description: "Matemática para computação",
-          color: "rgb(187, 201, 201)",
-          week: 6,
-          hour: 20,
-        },
-      ],
+      compromissos: [],
     };
   },
   methods: {
@@ -108,14 +47,28 @@ export default {
         let row = { hour: i + ":00", appointments: [] };
         this.rows.push(row);
       }
-      for (let i = 0; i < this.mockAppointments.length; i++) {
-        let hour = this.mockAppointments[i].hour;
-        this.rows[hour].appointments.push(this.mockAppointments[i]);
+      for (let i = 0; i < this.compromissos.length; i++) {
+        let hour = this.compromissos[i].hora;
+        this.rows[hour].appointments.push(this.compromissos[i]);
       }
-    }
+      //ordena os compromissos por minuto
+      this.rows.forEach( r => r.appointments.sort((a,b)=> {return a.minuto - b.minuto}))
+    },
+    getCompromissos() {
+      api
+        .get(`/cronograma/${this.usuario.id}`)
+        .then((response) => {
+          this.compromissos = response.data;
+          this.createRows();
+        })
+        .catch((error) => {});
+    },
   },
   created() {
-    this.createRows();
+    this.getCompromissos();
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
 };
 </script>
@@ -141,6 +94,12 @@ $dark-grey: #cecece92;
   max-width: 3rem;
 }
 
+.appointment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .schedule thead th {
   background: $grey;
   position: -webkit-sticky;
@@ -149,14 +108,14 @@ $dark-grey: #cecece92;
   z-index: 2;
 }
 
-.schedule tr {
-  height: 4rem;
-  border-bottom: solid 0.1rem $grey;
+.schedule::-webkit-scrollbar {
+  display: none;
 }
 
-// .schedule tbody {
-//   width: 100%;
-// }
+.schedule tr {
+  height: 2.5rem;
+  border-bottom: solid 0.1rem $grey;
+}
 
 table {
   border-collapse: collapse;
