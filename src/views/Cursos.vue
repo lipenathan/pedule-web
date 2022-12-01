@@ -10,6 +10,9 @@
             :materia="item"
             @edit="openUpdateDialog(item)"
           ></materia-item>
+          <template v-if="materias.length == 0">
+        <h4 class="empty-list">Os seus cursos aparecerão aqui</h4>
+      </template>
         </div>
       </template>
     </custom-template>
@@ -116,5 +119,12 @@ dialog-materia {
   position: fixed;
   bottom: $margin-button;
   right: $margin-button;
+}
+
+.empty-list {
+  height: 100%!important;
+  float: none!important;
+  text-align: center!important;
+  margin: auto!important;
 }
 </style>

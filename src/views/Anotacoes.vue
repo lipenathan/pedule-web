@@ -4,15 +4,6 @@
       <Anotacoes />
     </template>
   </custom-template>
-  <!-- <div class="dialog">
-    <p-button @click="showDialog = !showDialog">Show Materia Dialog</p-button>
-    <dialog-anotacoes
-      :show="showDialog"
-      @closedDialog="showDialog = false"
-      :update="false"
-      :materia="materia"
-    ></dialog-anotacoes>
-  </div>  -->
 </template>
 <script>
 import Navbar from "@/components/template/Navbar.vue";

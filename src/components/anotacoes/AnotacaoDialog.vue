@@ -4,46 +4,104 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" @click="closedDialog()"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              @click="closedDialog()"
+            ></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <input type="text" id="titulo" class="form-control" v-model="tituloForm" placeholder="Titulo" />
+              <input
+                type="text"
+                id="titulo"
+                class="form-control"
+                v-model="tituloForm"
+                placeholder="Titulo"
+              />
             </div>
-            <small v-if="
-              (v$.tituloForm.$invalid && submitted) ||
-              v$.tituloForm.$pending.$response
-            " class="p-error">{{ tituloAnotacaoRequired }}</small>
+            <small
+              v-if="
+                (v$.tituloForm.$invalid && submitted) ||
+                v$.tituloForm.$pending.$response
+              "
+              class="p-error"
+              >{{ tituloAnotacaoRequired }}</small
+            >
             <div class="mb-3">
-              <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="descricaoForm"
-                placeholder="Descrição"></textarea>
+              <textarea
+                class="form-control"
+                name=""
+                id=""
+                cols="30"
+                rows="10"
+                v-model="descricaoForm"
+                placeholder="Descrição"
+              ></textarea>
             </div>
             <div class="link">
               <div class="buttons">
-                <p-button label="Link" id="plus" class="p-button-raised p-button-rounded" icon="pi pi-plus"
-                  @click="addLinkField()" />
+                <p-button
+                  label="Link"
+                  id="plus"
+                  class="p-button-raised p-button-rounded"
+                  icon="pi pi-plus"
+                  @click="addLinkField()"
+                />
 
-                <p-button label="Link" id="minus" class="p-button-raised p-button-rounded p-button-danger"
-                  icon="pi pi-minus" @click="deleteLinkField()" />
+                <p-button
+                  label="Link"
+                  id="minus"
+                  class="p-button-raised p-button-rounded p-button-danger"
+                  icon="pi pi-minus"
+                  @click="deleteLinkField()"
+                />
               </div>
 
-              <linkvue v-for="(item, index) in linkForm" :key="item.id" :link="item" :update="update"
-                @updateValue="updateValue($event, [index])" />
+              <linkvue
+                v-for="(item, index) in linkForm"
+                :key="item.id"
+                :link="item"
+                :update="update"
+                @updateValue="updateValue($event, [index])"
+              />
             </div>
 
             <div class="mb-3" id="lembrete">
               <label class="form-label" for="">Lembrete</label>
 
-              <p-input-switch id="Lembrete" v-model="lembreteForm" aria-labelledby="Lembrete" />
+              <p-input-switch
+                id="Lembrete"
+                v-model="lembreteForm"
+                aria-labelledby="Lembrete"
+              />
 
-              <Datepicker v-if="lembreteForm" class="inputdatepicker" v-model="dataHorarioForm"
-                placeholder="Selecione uma data e hora" locale="pt-BR"
-                cancelText="cancelar" selectText="selecionar" monthNameFormat="long" :minDate="new Date()" :filters="filters" minutesIncrement="15"  minutesGridIncrement="15" noMinutesOverlay :startTime="startTime" :modelValue="dataHorarioForm"/>
-                {{dataHorarioForm}}
-              <small v-if="
-                (v$.dataHorarioForm.$invalid && submitted) ||
-                v$.dataHorarioForm.$pending.$response
-              " class="p-error">{{ dataHorarioFormRequired }}</small>
+              <Datepicker
+                v-if="lembreteForm"
+                class="inputdatepicker"
+                v-model="dataHorarioForm"
+                placeholder="Selecione uma data e hora"
+                locale="pt-BR"
+                cancelText="cancelar"
+                selectText="selecionar"
+                monthNameFormat="long"
+                :minDate="new Date()"
+                :filters="filters"
+                minutesIncrement="15"
+                minutesGridIncrement="15"
+                noMinutesOverlay
+                :startTime="startTime"
+                :modelValue="dataHorarioForm"
+              />
+              <small
+                v-if="
+                  (v$.dataHorarioForm.$invalid && submitted) ||
+                  v$.dataHorarioForm.$pending.$response
+                "
+                class="p-error"
+                >{{ dataHorarioFormRequired }}</small
+              >
             </div>
             <div class="modal-footer">
               <button v-if="update" @click="submit()" class="btn col-1">
@@ -52,7 +110,11 @@
               <button v-if="update" @click="deleteAnotacao()" class="btn col-1">
                 <i class="far fa-trash-alt"></i>
               </button>
-              <button v-else class="btn btn-primary col-6 mx-auto" @click="submit()">
+              <button
+                v-else
+                class="btn btn-primary col-6 mx-auto"
+                @click="submit()"
+              >
                 Salvar
               </button>
             </div>
@@ -80,17 +142,17 @@ import PCalendar from "primevue/calendar";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { mapGetters } from "vuex";
-import { ref } from 'vue';
+import { ref } from "vue";
 
 export default {
   setup: () => {
-    const v$ = useVuelidate()
+    const v$ = useVuelidate();
     const startTime = ref({ hours: 0, minutes: 0 });
 
     return {
       v$,
-     startTime
-    }
+      startTime,
+    };
   },
   components: {
     PInputSwitch,
@@ -127,7 +189,6 @@ export default {
     update: false,
   },
   methods: {
-
     async submit() {
       this.submitted = true;
       if (!this.v$.$invalid) {
@@ -144,12 +205,12 @@ export default {
           .then((response) => {
             this.toast.success("Anotação criada com sucesso", {
               position: POSITION.TOP_CENTER,
-              timeout: 2000
+              timeout: 2000,
             });
             setTimeout(() => {
               this.$router.go();
             }, 2050);
-            this.init = true
+            this.init = true;
           })
           .catch((error) => {
             console.log(error);
@@ -157,14 +218,15 @@ export default {
       } else {
         if (this.lembreteForm == true) {
           this.toast.error(this.dataHorarioFormRequired, {
-            position: POSITION.TOP_CENTER, timeout: 2500
-          })
+            position: POSITION.TOP_CENTER,
+            timeout: 2500,
+          });
         }
         this.toast.error(this.camposObrigatorioMessage, {
-          position: POSITION.TOP_CENTER, timeout: 2500
-        })
+          position: POSITION.TOP_CENTER,
+          timeout: 2500,
+        });
       }
-
     },
     async deleteAnotacao() {
       if (this.update) {
@@ -172,7 +234,7 @@ export default {
         if (res.status == 200) {
           this.toast.success("Anotação deletada com sucesso", {
             position: POSITION.TOP_CENTER,
-            timeout: 2000
+            timeout: 2000,
           });
           setTimeout(() => {
             this.closedDialog();
@@ -185,10 +247,10 @@ export default {
       this.linkForm.push({ url: null, descricao: null });
     },
     deleteLinkField() {
-      this.linkForm.pop({ url: null, descricao: null })
+      this.linkForm.pop({ url: null, descricao: null });
     },
     closedDialog() {
-      this.init = true
+      this.init = true;
       this.$emit("closedDialog", true);
     },
     updateValue(value, index) {
@@ -202,30 +264,30 @@ export default {
         this.lembreteForm = this.anotacao.lembrete;
         this.dataHorarioForm = this.anotacao.dataHorario;
         this.linkForm = this.anotacao.link;
-        this.init = false
+        this.init = false;
       } else if (this.init) {
-        this.id = null
+        this.id = null;
         this.tituloForm = "";
         this.descricaoForm = "";
         this.lembreteForm = false;
         this.dataHorarioForm = "";
         this.linkForm = [];
-        this.init = false
+        this.init = false;
       }
     },
   },
   validations() {
     return {
       tituloForm: { required },
-      dataHorarioForm: {  }
-    }
+      dataHorarioForm: {},
+    };
   },
   updated() {
     this.setAnotacao();
   },
   computed: {
-    ...mapGetters(['usuario'])
-  }
+    ...mapGetters(["usuario"]),
+  },
 };
 </script>
     

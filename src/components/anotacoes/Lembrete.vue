@@ -1,7 +1,5 @@
 <template>
-  
     <div class="wrapper" v-if="(lembretes.length != 0 )">
-      
     <p-carousel
       :value="lembretes"
       :numVisible="1"
@@ -17,8 +15,6 @@
         </div>
       </template>
     </p-carousel>
- 
- 
   </div>
 </template>
 <script>
@@ -58,8 +54,9 @@ export default {
     height: 9rem;
     background: #F4F4D6;
     border-radius: 1rem;
-    
+    text-align: center;    
 }
+
 h6{
   font-size: 1.5rem;
 margin-bottom: 1.5rem;

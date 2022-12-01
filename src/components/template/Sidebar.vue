@@ -1,22 +1,42 @@
 <template>
   <div class="sidebar">
     <div class="entire">
-      <a href="">Programação</a>
-      <a href="">Banco de Dados</a>
-      <a href="">Redes</a>
-      <a href="">Lógica de Programação</a>
+      <a v-for="item in materias" :key="item.id" href="">{{ item.titulo }}</a>
     </div>
     <div class="short">
-      <a href="">PRO</a>
-      <a href="">BAD</a>
-      <a href="">RED</a>
-      <a href="">LOP</a>
+      <a v-for="item in materias" :key="item.id" href="">{{ item.abreviacao }}</a>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import api from "@/services/API";
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {
+      materias: [],
+    };
+  },
+  methods: {
+    getMaterias() {
+      if (this.materias.length == 0) {
+        api
+          .get(`/materia/listar/${this.usuario.id}`)
+          .then((res) => {
+            this.materias = res.data;
+          })
+          .catch((error) => {});
+      }
+    },
+  },
+  created() {
+    this.getMaterias();
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -24,7 +44,8 @@ $grey: #9793937b;
 
 $border: 0 1rem 1rem 0;
 
-.sidebar, .sidebar:hover {
+.sidebar,
+.sidebar:hover {
   margin: 0;
   padding: 0;
   background-color: $grey;

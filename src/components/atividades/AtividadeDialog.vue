@@ -182,6 +182,12 @@ export default {
         this.tituloForm = this.atividade.titulo;
         this.descricaoForm = this.atividade.descricao;
         this.dataForm = this.atividade.dataHorarioEntrega;
+        this.prioridadeForm = this.atividade.prioridade;
+      }  else {
+        this.tituloForm = ""
+        this.descricaoForm = ""
+        this.dataForm = null
+        this.prioridadeForm = false
       }
     },
   },
@@ -191,7 +197,7 @@ export default {
       dataForm: { required },
     };
   },
-  created() {
+  updated() {
     this.setAtividade();
   },
   computed: {

@@ -1,14 +1,17 @@
 <template>
-  <body>
+  <div class="wrapper">
     <Header />
     <div class="form">
-     
-
       <h2>Cadastre-se</h2>
       <div class="input group1">
         <div class="name_user">
           <span class="p-float-label">
-            <PInputText  id="username" type="text" v-model="nome" /> 
+            <PInputText
+              id="username"
+              type="text"
+              v-model="nome"
+              autocomplete="off"
+            />
             <label for="username"><i class="pi pi-user" /> Nome</label>
           </span>
           <small
@@ -32,17 +35,15 @@
         </div>
       </div>
 
-      
-        <div class="input name_user">
-          <span class="p-float-label">
-            <PInputText id="institute" type="text" v-model="instituicao" />
-            <label for="institute"><i class="fa-solid fa-building-columns"></i> Instituição</label>
-          </span>
-        </div>
-
+      <div class="input-rows">
         <div class="input email">
           <span class="p-float-label">
-            <PInputText id="email" type="text" v-model="email" />
+            <PInputText
+              id="email"
+              type="text"
+              v-model="email"
+              autocomplete="off"
+            />
             <label for="email"><i class="pi pi-envelope" /> Email</label>
           </span>
           <small
@@ -53,10 +54,25 @@
             >Email obrigatório</small
           >
         </div>
-      
+
+        <div class="input name_user">
+          <span class="p-float-label">
+            <PInputText id="institute" v-model="instituicao" />
+            <label for="institute"
+              ><i class="fa-solid fa-building-columns"></i> Instituição</label
+            >
+          </span>
+        </div>
+      </div>
+      <div class="input-rows">
         <div class="input password">
           <span class="p-float-label">
-            <PPassword id="password" v-model="password" :feedback="false" />
+            <PPassword
+              id="password"
+              v-model="password"
+              :feedback="false"
+              autocomplete="off"
+            />
             <label for="password"><i class="pi pi-lock" /> Senha</label>
           </span>
           <small
@@ -76,7 +92,9 @@
               v-model="confirm"
               :feedback="false"
             />
-            <label for="confirm_password"><i class="pi pi-lock" />  Confirme sua senha</label>
+            <label for="confirm_password"
+              ><i class="pi pi-lock" /> Confirme sua senha</label
+            >
           </span>
           <small
             v-if="
@@ -87,15 +105,14 @@
             >Confirmação de senha obrigatória</small
           >
         </div>
-     
-
-      <button id="bt" @click="submitForm">Enviar</button>
+      </div>
+      <button id="bt" @click="submitForm">Cadastrar</button>
     </div>
-  </body>
+  </div>
 </template>
 
 <script>
-import Api from "../services/API";
+import api from "../services/API";
 import Header from "@/components/template/Header.vue";
 import PInputText from "primevue/inputtext";
 import PCalendar from "primevue/calendar";
@@ -125,31 +142,37 @@ export default {
       confirm: "",
       submitted: false,
       toast: useToast(),
+      fieldTypes: {
+        password: "text",
+        email: "text",
+      },
     };
   },
   methods: {
     submitForm() {
       this.submitted = true;
       if (!this.v$.$invalid) {
-        Api.post("/usuario/novo", {
-          nome: this.nome,
-          email: this.email,
-          dataNascimento: this.dataNascimento,
-          instituicao: this.instituicao,
-          senha: this.password,
-        }).then((res) => {
-          this.nome = "";
-          this.email = "";
-          this.dataNascimento = null;
-          this.instituicao = "";
-          this.password = "";
-          this.confirm = "";
-          this.$router.push("/login");
-          this.submitted = false;
-        });
+        api
+          .post("/usuario/novo", {
+            nome: this.nome,
+            email: this.email,
+            dataNascimento: this.dataNascimento,
+            instituicao: this.instituicao,
+            senha: this.password,
+          })
+          .then((res) => {
+            this.nome = "";
+            this.email = "";
+            this.dataNascimento = null;
+            this.instituicao = "";
+            this.password = "";
+            this.confirm = "";
+            this.$router.push("/login");
+            this.submitted = false;
+          });
       } else {
         this.toast.error("Preencha os campos obrigatórios", {
-          POSITION: POSITION.TOP_CENTER,
+          position: POSITION.TOP_CENTER,
           timeout: 2500,
         });
       }
@@ -167,20 +190,19 @@ export default {
 </script>
 
 <style  lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
 
-$background: rgb(255, 255, 254);
+$background: rgba(255, 255, 254, 0.863);
 $button: rgb(61, 169, 252);
 $tittle: rgb(9, 64, 103);
 $paragraph: rgb(95, 108, 123);
 $btn-text: rgb(255, 255, 254);
 
-body {
+.wrapper {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  // text-decoration: none;
-  font-family: "Open Sans", sans-serif;
+  background-image: url("../../src/images/image3.jpg");
+  background-size: cover;
 }
 
 .form {
@@ -188,17 +210,21 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 4rem;
+  padding: 2rem;
   border-radius: 15px;
-  width: 400px;
-  height: 500px;
-  background-color: #f5f5f5;
+  width: 42rem;
+  height: 30rem;
+  background-color: $background;
   box-shadow: 2px 3px 5px #888;
   margin: 0 auto;
 }
 
+.input-rows {
+  display: flex;
+}
+
 h2 {
-  margin-top: -50px;
+  margin-top: -100px;
   margin-bottom: 5px;
   font-size: 20px;
 }
@@ -209,7 +235,7 @@ h2 {
 
 #username {
   border-radius: 8px;
-  width: 8rem;
+  width: 18rem;
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -236,7 +262,7 @@ h2 {
   border-radius: 8px;
   width: 18rem;
   margin-top: 5px;
-  margin-bottom: 5px;  
+  margin-bottom: 5px;
 }
 
 .password {
@@ -256,13 +282,13 @@ h2 {
 .input {
   margin-top: 1.2rem;
   height: auto;
+  margin-left: 0.5rem;
 }
 
-label{
+label {
   font-size: 13px;
   margin-left: 5px;
 }
-
 
 button {
   background-color: $button;
@@ -270,7 +296,7 @@ button {
   width: 18rem;
   height: 38px;
   border-radius: 10px;
-  margin-top: 20px;
+  margin-top: 3rem;
   margin-bottom: -30px;
   font-weight: bold;
   font-size: 20px;

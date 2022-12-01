@@ -247,6 +247,7 @@ export default {
         this.descricaoForm = "";
         this.professorForm = "";
         this.corForm = "";
+        this.switchColor = false
       }
     },
   },

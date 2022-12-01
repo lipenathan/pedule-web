@@ -18,9 +18,6 @@
         ><i class="fa-solid fa-trash-can"></i
       ></span>
     </div>
-    <div class="titulo_drescricao">
-      <h4>Descrição</h4>
-    </div>
     <div class="dv_descricao">
       <p>
         {{ atividade.descricao }}
@@ -91,12 +88,10 @@ export default {
     openDialog() {
       this.showEDialog = !this.showEDialog;
     },
-
     openUpdateDialog() {
       this.showDialog = !this.showDialog;
       this.updateDialog = !this.updateDialog;
     },
-
     changeCheck() {
       api.post("/atividade/atualizar", {
         id: this.atividade.id,
@@ -107,7 +102,6 @@ export default {
         usuario: { id: this.atividade.usuario.id },
       });
     },
-
     setAtividade() {
       this.prioridadeForm = this.atividade.prioridade;
     },
@@ -134,7 +128,7 @@ export default {
 .dv_descricao {
   display: flex;
   height: 40px;
-  margin-left: 18px;
+  margin-left: 3.5rem;
 }
 
 .dv_descricao p {
@@ -151,14 +145,14 @@ export default {
   height: 40px;
   align-items: center;
 }
+
 .div_atividade_pai {
   display: flex;
   flex-direction: column;
-  width: 54rem;
+  width: 100%;
   background-color: #ffffff;
   border-radius: 10px;
   margin-top: 8px;
-  /* margin-left: 250px; */
   height: 100px;
 }
 

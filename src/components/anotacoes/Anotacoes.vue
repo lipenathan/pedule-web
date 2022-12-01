@@ -1,12 +1,29 @@
 <template>
   <div class="content">
-    <p-button class="p-button-raised p-button-rounded button-add" icon="pi pi-plus" data-bs-toggle="modal"
-      data-bs-target="#myModal" @click="cleanAnotacao()" />
+    <p-button
+      class="p-button-raised p-button-rounded button-add"
+      icon="pi pi-plus"
+      data-bs-toggle="modal"
+      data-bs-target="#myModal"
+      @click="cleanAnotacao()"
+    />
     <!-- data-bs-toggle="modal" data-bs-target="#exampleModal" -->
     <div class="anotation">
-      <Card v-for="item in anotacoes" :key="item.id" :anotacao="item" @click="openUpdateModal(item)" />
+      <Card
+        v-for="item in anotacoes"
+        :key="item.id"
+        :anotacao="item"
+        @click="openUpdateModal(item)"
+      />
+      <template v-if="anotacoes.length == 0">
+        <h4 class="empty-list">As suas anotações aparecerão aqui</h4>
+      </template>
     </div>
-    <AnotacaoDialog :anotacao="anotacao" :update="update" @closedDialog="closeModal()" />
+    <AnotacaoDialog
+      :anotacao="anotacao"
+      :update="update"
+      @closedDialog="closeModal()"
+    />
   </div>
 </template>
   
@@ -49,12 +66,10 @@ export default {
   },
   methods: {
     getAnotacoes() {
-      if(this.usuario) {
-        api
-        .get(`/anotacao/listar/${this.usuario.id}`)
-        .then((response) => {
+      if (this.usuario) {
+        api.get(`/anotacao/listar/${this.usuario.id}`).then((response) => {
           this.anotacoes = response.data;
-          console.log(this.anotacoes)
+          console.log(this.anotacoes);
         });
       }
     },
@@ -79,8 +94,8 @@ export default {
     this.getAnotacoes();
   },
   computed: {
-    ...mapGetters(['usuario'])
-  }
+    ...mapGetters(["usuario"]),
+  },
 };
 </script>
   
@@ -105,7 +120,7 @@ $margin-button: 4rem;
   flex-wrap: wrap;
 }
 
-.card>img {
+.card > img {
   width: 30%;
   height: auto;
 }
@@ -139,6 +154,13 @@ $margin-button: 4rem;
   position: fixed;
   bottom: $margin-button;
   right: $margin-button;
+}
+
+.empty-list {
+  height: 100%!important;
+  float: none!important;
+  text-align: center!important;
+  margin: auto!important;
 }
 </style>
   

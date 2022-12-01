@@ -21,7 +21,7 @@
             ></atividade-item>
             <template v-if="atividades.length == 0">
               <h4 class="empty-list">
-                As suas atividades cadastradas apareceção aqui
+                As suas atividades aparecerão aqui
               </h4>
             </template>
           </div>
@@ -71,15 +71,17 @@ export default {
     };
   },
   methods: {
-    openDialog(update) {
-      this.showDialog = !this.showDialog;
-    },
     getAtividades() {
       api
         .get(`/atividade/listar/${this.usuario.id}`)
         .then((res) => {
-          this.atividades = res.data;
+          let resData = res.data;
+          this.atividades = resData.sort((a, b) => Number(b.bool) - Number(a.bool))
         });
+    },
+    openDialog(update) {
+      this.updateDialog = update
+      this.showDialog = !this.showDialog;
     },
     openUpdateDialog(item) {
       this.atividadeUpdate = item;

@@ -10,6 +10,11 @@
             :materia="item"
             @edit="openUpdateDialog(item)"
           ></materia-item>
+          <template v-if="materias.length == 0">
+            <h4 class="empty-list">
+              As suas matérias aparecerão aqui
+            </h4>
+          </template>
         </div>
       </template>
     </custom-template>
@@ -66,11 +71,9 @@ export default {
   methods: {
     buscarMaterias() {
       if (this.usuario) {
-        api
-          .get(`/materia/listar/${this.usuario.id}`)
-          .then((res) => {
-            this.materias = res.data;
-          });
+        api.get(`/materia/listar/${this.usuario.id}`).then((res) => {
+          this.materias = res.data;
+        });
       }
     },
     openDialog(update) {
@@ -116,5 +119,13 @@ dialog-materia {
   position: fixed;
   bottom: $margin-button;
   right: $margin-button;
+}
+
+.empty-list {
+  height: 100%;
+  float: none;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 </style>

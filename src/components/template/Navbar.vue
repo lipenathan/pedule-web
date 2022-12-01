@@ -110,7 +110,7 @@ export default {
     simpleName() {
       let nomes = this.usuario.nome.split(" ");
       let nome = "";
-      if (nomes.lenght > 1) {
+      if (nomes.length > 1) {
         nome = `${nomes[0]} ${nomes[1].charAt(0)}.`;
       } else {
         nome = nomes[0];

@@ -1,7 +1,7 @@
 <template>
-  <body>
+  <div class="wrapper">
     <Header />
-    <main class="container">
+    <div class="content">
       <div class="form">
         <fieldset class="card-login">
           <h1>Login</h1>
@@ -52,11 +52,10 @@
           <a href="#"><small>Esqueceu sua senha?</small></a>
         </fieldset>
       </div>
-    </main>
-  </body>
+    </div>
+  </div>
 </template>
-
-   <script>
+<script>
 import useValidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { computed, reactive } from "vue";
@@ -133,10 +132,8 @@ export default {
 };
 </script>
 
-   <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
-
-$background: rgb(255, 255, 254);
+<style scoped lang="scss">
+$background: rgba(255, 255, 254, 0.863);
 $button: rgb(61, 169, 252);
 $tittle: rgb(9, 64, 103);
 $paragraph: rgb(95, 108, 123);
@@ -149,23 +146,20 @@ $btn-text: rgb(255, 255, 254);
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
-  font-family: "Open Sans", sans-serif;
 }
-body {
+
+.wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100vh;
-  background: $background;
+  background-image: url("../../src/images/image3.jpg");
+  background-size: cover;
 }
-.container {
+.content {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 85vh;
 }
 
 small {
@@ -194,6 +188,7 @@ small {
   box-shadow: 0px 10px 40px #00000056;
   border: none;
   padding: 5rem;
+  background: $background;
 }
 .card-login h1::after {
   content: "";
