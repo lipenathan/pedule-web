@@ -162,7 +162,7 @@ export default {
             senha: this.password,
           })
           .then((res) => {
-            toast.success("Usuário cadastrado com sucesso", {
+            this.toast.success("Usuário cadastrado com sucesso", {
               position: POSITION.TOP_CENTER,
               timeout: 2500
             })

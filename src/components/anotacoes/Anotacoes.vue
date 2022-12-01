@@ -113,7 +113,7 @@ $margin-button: 4rem;
   //border: solid 1.5px $button;
   background: $background;
   border-radius: 1rem;
-  height: 25rem;
+  height: 22rem;
   width: 65rem;
   overflow-y: auto;
   display: flex;

@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" v-if="(lembretes.length != 0 )">
+  <div class="wrapper" v-if="lembretes.length != 0">
     <p-carousel
       :value="lembretes"
       :numVisible="1"
@@ -35,7 +35,6 @@ export default {
         .then((response) => {
           let anotacoes = response.data;
           this.lembretes = anotacoes.filter((anotacao) => anotacao.lembrete);
-          
         })
         .catch((error) => {});
     },
@@ -50,20 +49,18 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-    width: 40rem;
-    height: 9rem;
-    background: #F4F4D6;
-    border-radius: 1rem;
-    text-align: center;    
+  width: 40rem;
+  height: 8rem;
+  background: #f4f4d6;
+  border-radius: 1rem;
+  text-align: center;
 }
 
-h6{
+h6 {
   font-size: 1.5rem;
-margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-
 </style>

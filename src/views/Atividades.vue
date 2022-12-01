@@ -119,7 +119,7 @@ body {
 }
 
 .atividades_list {
-  height: 25rem;
+  height: 22rem;
   width: 65rem;
   overflow: auto;
   overflow-x: none;

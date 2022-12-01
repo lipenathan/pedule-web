@@ -5,12 +5,12 @@
         <div class="materias">
           <materia-item
             @itemSaved="buscarMaterias()"
-            v-for="item in materias"
+            v-for="item in cursos"
             :key="item.id"
             :materia="item"
             @edit="openUpdateDialog(item)"
           ></materia-item>
-          <template v-if="materias.length == 0">
+          <template v-if="cursos.length == 0">
         <h4 class="empty-list">Os seus cursos aparecerão aqui</h4>
       </template>
         </div>
@@ -64,6 +64,7 @@ export default {
         },
       ],
       materia: {},
+      cursos:[]
     };
   },
   methods: {

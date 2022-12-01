@@ -80,7 +80,7 @@ $dark-grey: #cecece92;
   display: flex;
   border: solid 0.1rem $grey;
   border-radius: 1rem;
-  height: 25rem;
+  height: 22rem;
   width: 65rem;
   overflow-y: auto;
 }

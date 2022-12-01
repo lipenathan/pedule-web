@@ -39,10 +39,6 @@ export default {
 <style lang="scss" scoped>
 $margin-button: 4rem;
 
-.wrapper {
-  // background-color: red;
-}
-
 .content {
   margin-top: 1rem;
   margin-left: auto;
