@@ -47,7 +47,7 @@
             </span>
           </div>
           <button type="submit" name="btn-enter" @click="login">
-            <a href="#">Entrar</a>
+            <a class="entrar" href="#">Entrar</a>
           </button>
           <a href="#"><small>Esqueceu sua senha?</small></a>
         </fieldset>
@@ -178,7 +178,7 @@ small {
   justify-content: center;
 }
 
-a {
+.entrar {
   color: $btn-text;
   font-weight: 800;
   font-size: 0.9rem;

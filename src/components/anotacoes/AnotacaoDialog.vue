@@ -37,8 +37,9 @@
               <p-input-switch id="Lembrete" v-model="lembreteForm" aria-labelledby="Lembrete" />
 
               <Datepicker v-if="lembreteForm" class="inputdatepicker" v-model="dataHorarioForm"
-                placeholder="Selecione uma data e hora" showNowButton nowButtonLabel="Hora Atual" locale="pt-BR"
-                cancelText="cancelar" selectText="selecionar" />
+                placeholder="Selecione uma data e hora" locale="pt-BR"
+                cancelText="cancelar" selectText="selecionar" monthNameFormat="long" :minDate="new Date()" :filters="filters" minutesIncrement="15"  minutesGridIncrement="15" noMinutesOverlay :startTime="startTime" :modelValue="dataHorarioForm"/>
+                {{dataHorarioForm}}
               <small v-if="
                 (v$.dataHorarioForm.$invalid && submitted) ||
                 v$.dataHorarioForm.$pending.$response
@@ -79,12 +80,16 @@ import PCalendar from "primevue/calendar";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { mapGetters } from "vuex";
+import { ref } from 'vue';
 
 export default {
   setup: () => {
     const v$ = useVuelidate()
+    const startTime = ref({ hours: 0, minutes: 0 });
+
     return {
-      v$
+      v$,
+     startTime
     }
   },
   components: {
@@ -139,11 +144,11 @@ export default {
           .then((response) => {
             this.toast.success("Anotação criada com sucesso", {
               position: POSITION.TOP_CENTER,
-              timeout: 2500
+              timeout: 2000
             });
             setTimeout(() => {
               this.$router.go();
-            }, 1500);
+            }, 2050);
             this.init = true
           })
           .catch((error) => {
@@ -163,14 +168,16 @@ export default {
     },
     async deleteAnotacao() {
       if (this.update) {
-        var res = await api.post(`/anotacao/deletar/${this.id}`);
+        var res = await api.delete(`/anotacao/deletar/${this.id}`);
         if (res.status == 200) {
-          this.toast.success("Anotação alterada com sucesso", {
+          this.toast.success("Anotação deletada com sucesso", {
             position: POSITION.TOP_CENTER,
+            timeout: 2000
           });
           setTimeout(() => {
             this.closedDialog();
-          }, 1500);
+            this.$router.go();
+          }, 2050);
         }
       }
     },

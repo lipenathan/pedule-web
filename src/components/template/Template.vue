@@ -13,8 +13,10 @@
       <div class="calendar">
         <calendar />
       </div>
+    </div >
+    <div class="content">
+      <lembrete/>
     </div>
-    <lembrete/>
   </div>
 </template>
 <script>
@@ -69,4 +71,5 @@ $margin-button: 4rem;
 .sidebar-style {
   width: 9rem;
 }
+
 </style>

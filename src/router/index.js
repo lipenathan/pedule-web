@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
 import Cronograma from '@/views/Cronograma.vue'
 import Atividades from '@/views/Atividades.vue'
 import Materias from '@/views/Materias.vue'
@@ -18,14 +17,6 @@ const routes = [
     name: 'home',
     component: Login,
   },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
-  // },
   {
     path: '/login',
     name: 'login',
@@ -56,25 +47,16 @@ const routes = [
     name: 'cursos',
     component: Cursos
   },
-
-  {
-    path: '/req',
-    name: 'req',
-    component: Req
-  },
-
   {
     path: '/cadastro',
     name: 'cadastro',
     component: TelaCadastro,
   },
-
   {
     path: '/teste',
     name: 'teste',
     component: Teste,
   },
-
   {
     path: '/confirmacao',
     name: 'confirmacao',

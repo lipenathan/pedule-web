@@ -54,7 +54,7 @@ export default {
         .get(`/anotacao/listar/${this.usuario.id}`)
         .then((response) => {
           this.anotacoes = response.data;
-
+          console.log(this.anotacoes)
         });
       }
     },
@@ -95,7 +95,7 @@ $dark-grey: #cecece92;
 $margin-button: 4rem;
 
 .anotation {
-  // border: solid 1.5px $button;
+  //border: solid 1.5px $button;
   background: $background;
   border-radius: 1rem;
   height: 25rem;
