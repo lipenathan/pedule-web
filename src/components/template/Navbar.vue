@@ -63,11 +63,11 @@
   </div>
 </template>
 <script>
-import PInputText from 'primevue/inputtext';
-import PMenu from 'primevue/menu';
-import { mapGetters } from 'vuex';
-import Template from './Template.vue';
-import {useToast} from 'vue-toastification'
+import PInputText from "primevue/inputtext";
+import PMenu from "primevue/menu";
+import { mapGetters } from "vuex";
+import Template from "./Template.vue";
+import { useToast } from "vue-toastification";
 import { POSITION } from "vue-toastification";
 export default {
   components: { PInputText, PMenu },
@@ -82,20 +82,20 @@ export default {
           label: "Configurações",
           icon: "pi pi-cog",
           command: () => {
-            this.toast.warning('Tela ainda não implementada', {
+            this.toast.warning("Tela ainda não implementada", {
               position: POSITION.TOP_CENTER,
               timeout: 2500,
-            })
-					}
+            });
+          },
         },
         {
           label: "Sair",
           icon: "pi pi-power-off",
           command: () => {
-            this.$store.dispatch('usuario', null)
-            this.$store.dispatch('token', null)
-            this.$router.push('/login')
-          }
+            this.$store.dispatch("usuario", null);
+            this.$store.dispatch("token", null);
+            this.$router.push("/login");
+          },
         },
       ],
     };
@@ -108,9 +108,15 @@ export default {
   computed: {
     ...mapGetters(["usuario"]),
     simpleName() {
-      let nomes = this.usuario.nome.split(" ")
-      return `${nomes[0]} ${nomes[1].charAt(0)}.`
-    }
+      let nomes = this.usuario.nome.split(" ");
+      let nome = "";
+      if (nomes.lenght > 1) {
+        nome = `${nomes[0]} ${nomes[1].charAt(0)}.`;
+      } else {
+        nome = nomes[0];
+      }
+      return nome;
+    },
   },
 };
 </script>
