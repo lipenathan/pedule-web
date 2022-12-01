@@ -2,8 +2,8 @@
   <div class="div_atividade_pai">
     <div class="div_atividade">
       <input type="checkbox" name="" id="inp_check" />
-      <h3 class="nome_atividade" @click="openUpdateDialog(item)">
-       <p> {{ atividade.titulo }}</p>
+      <h3 class="nome_atividade" @click="itemClicked">
+        <p>{{ atividade.titulo }}</p>
       </h3>
       <span class="data_atividade">{{ atividade.dataHorarioEntrega }}</span>
       <label class="check_prioridade">
@@ -48,12 +48,12 @@
       </template>
     </PDialog>
   </div>
-  <atividade-dialog
+  <!-- <atividade-dialog
     @closedDialog="showDialog = false"
     :show="showDialog"
     :update="updateDialog"
     :atividade="atividadeUpdate"
-  ></atividade-dialog>
+  ></atividade-dialog> -->
 </template>
 
 <script>
@@ -88,12 +88,8 @@ export default {
     openDialog() {
       this.showEDialog = !this.showEDialog;
     },
-    openUpdateDialog() {
-      this.showDialog = !this.showDialog;
-      this.updateDialog = !this.updateDialog;
-    },
     changeCheck() {
-      api.post("/atividade/atualizar", {
+      api.post("/atividade/salvar", {
         id: this.atividade.id,
         titulo: this.atividade.titulo,
         descricao: this.atividade.descricao,
@@ -101,6 +97,9 @@ export default {
         dataHorarioEntrega: this.atividade.dataHorarioEntrega,
         usuario: { id: this.atividade.usuario.id },
       });
+    },
+    itemClicked() {
+      this.$emit('itemClicked', true)
     },
     setAtividade() {
       this.prioridadeForm = this.atividade.prioridade;
@@ -144,6 +143,7 @@ export default {
   display: flex;
   height: 40px;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .div_atividade_pai {
@@ -168,7 +168,6 @@ export default {
   cursor: pointer;
   font-size: 14px;
   align-items: center;
-  
 }
 
 .nome_atividade p {
@@ -195,6 +194,10 @@ export default {
   width: 18px;
   height: 18px;
 }
+.check_prioridade {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .check_prioridade input {
   display: none;
@@ -217,8 +220,10 @@ input[type="button"] {
   margin-left: 185px;
   border: none;
 }
+
 .icon_trash {
-  margin-left: 196px;
+  margin-left: auto;
+  margin-right: 7rem;
   opacity: 0.6;
   font-size: 20px;
   cursor: pointer;

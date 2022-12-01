@@ -35,8 +35,7 @@
           >
         </div>
         <div class="inputtext">
-          <span class="p-float-label p-input-icon-left">
-            <i class="pi pi-search" />
+          <span class="p-float-label">
             <div class="field col-12 md:col-4">
               <span class="p-float-label">
                 <p-text-area

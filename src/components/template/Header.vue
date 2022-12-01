@@ -8,7 +8,7 @@
       />
     </router-link>
 
-    <button type="submit" class="btn-register" name="btn-register">
+    <button v-if="this.$route.name == 'login'" type="submit" class="btn-register" name="btn-register">
       <router-link to="/cadastro">Cadastre-se</router-link>
     </button>
   </header>

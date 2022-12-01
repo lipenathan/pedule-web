@@ -23,7 +23,8 @@
         <div class="inputtext3">
           <span class="p-float-label p-input-icon-left" id="sp_calendar">
             <PCalendar
-              dateFormat="dd/mm/yy"
+              :dateFormat="dd/mm/yy"
+              :dateOnly="true"
               id="inputtext-left2"
               v-model="dataNascimento"
             />
@@ -161,6 +162,10 @@ export default {
             senha: this.password,
           })
           .then((res) => {
+            toast.success("Usuário cadastrado com sucesso", {
+              position: POSITION.TOP_CENTER,
+              timeout: 2500
+            })
             this.nome = "";
             this.email = "";
             this.dataNascimento = null;
@@ -203,6 +208,7 @@ $btn-text: rgb(255, 255, 254);
   box-sizing: border-box;
   background-image: url("../../src/images/image3.jpg");
   background-size: cover;
+  height: 100vh;
 }
 
 .form {

@@ -155,6 +155,7 @@ $btn-text: rgb(255, 255, 254);
   align-items: center;
   background-image: url("../../src/images/image3.jpg");
   background-size: cover;
+  height: 100vh;
 }
 .content {
   display: flex;

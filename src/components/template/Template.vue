@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <div>
       <navbar />
     </div>
@@ -32,27 +32,23 @@ export default {
     PButton,
     Sidebar,
     Calendar,
-    Lembrete
+    Lembrete,
   },
 };
 </script>
 <style lang="scss" scoped>
 $margin-button: 4rem;
 
+.wrapper {
+  // background-color: red;
+}
+
 .content {
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
   display: flex;
-}
-
-.button-add {
-  width: 3.5rem !important;
-  height: 3.5rem !important;
-  position: fixed;
-  bottom: $margin-button;
-  right: $margin-button;
 }
 
 .calendar {

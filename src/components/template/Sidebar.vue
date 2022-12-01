@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="entire">
-      <a v-for="item in materias" :key="item.id" href="">{{ item.titulo }}</a>
+      <a v-for="item in materias" :key="item.id" href="/materias">{{ item.titulo }}</a>
     </div>
     <div class="short">
       <a v-for="item in materias" :key="item.id" href="">{{ item.abreviacao }}</a>

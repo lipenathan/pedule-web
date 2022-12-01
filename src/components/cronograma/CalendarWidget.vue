@@ -129,6 +129,8 @@ export default {
     calendarNextMonth() {
       this.calendar.splice(0)
       this.date = new Date(this.date.setMonth(this.date.getMonth()+1));
+      this.month = null
+      this.calendar = []
       this.getCalendar();
     },
     getStringMonth(number) {
@@ -205,10 +207,10 @@ ul {
   border-radius: 20px;
   background: $primary;
   height: 14rem;
-  width: 12rem;
+  width: 13rem;
    // min-height: 16rem;
   // max-width: 15rem;
-  display: grid;
+  display: flex;
   justify-content: center;
   align-content: center;
   box-shadow: 0 1rem 2.5rem rgb(27, 64, 94);
@@ -223,6 +225,7 @@ ul {
   &__body {
     padding: 1rem 1rem;
     border-top: 1px solid #ccc;
+    width: 100%;
 
     &--days {
       display: flex;

@@ -35,8 +35,7 @@
           >
         </div>
         <div class="inputtext2">
-          <span class="p-float-label p-input-icon-left">
-            <i class="fa-regular fa-pen-to-square"></i>
+          <span class="p-float-label">
             <p-text-area
               :style="{ width: '45rem' }"
               id="inputtext-left2"
@@ -46,8 +45,7 @@
             <label for="inputtext-left">Descrição</label>
           </span>
         </div>
-
-        <div>
+        <div class="inputtext">
           <h4>Prioridade?</h4>
           <p-toggle-button
             v-model="prioridadeForm"
@@ -107,7 +105,7 @@ import { useToast } from "vue-toastification";
 import { POSITION } from "vue-toastification";
 import PCalendar from "primevue/calendar";
 import PToggleButton from "primevue/togglebutton";
-import { mapGetters } from "vuex"
+import { mapGetters } from "vuex";
 
 import api from "@/services/API";
 export default {
@@ -122,6 +120,7 @@ export default {
   },
   data() {
     return {
+      id: null,
       tituloForm: "",
       descricaoForm: "",
       dataForm: null,
@@ -150,6 +149,7 @@ export default {
       if (!this.v$.$invalid) {
         api
           .post("/atividade/salvar", {
+            id: this.id,
             titulo: this.tituloForm,
             descricao: this.descricaoForm,
             prioridade: this.prioridadeForm,
@@ -157,7 +157,13 @@ export default {
             usuario: this.usuario,
           })
           .then((res) => {
-            this.toast.success("Atividade cadastrada com sucesso", {
+            let mensagem = "";
+            if (this.id == null) {
+              mensagem = "Atividade cadastrada com sucesso";
+            } else {
+              mensagem = "Atividate atualizada com sucesso";
+            }
+            this.toast.success(mensagem, {
               position: POSITION.TOP_CENTER,
             });
             this.tituloForm = "";
@@ -179,15 +185,17 @@ export default {
     },
     setAtividade() {
       if (this.update) {
+        this.id = this.atividade.id;
         this.tituloForm = this.atividade.titulo;
         this.descricaoForm = this.atividade.descricao;
         this.dataForm = this.atividade.dataHorarioEntrega;
         this.prioridadeForm = this.atividade.prioridade;
-      }  else {
-        this.tituloForm = ""
-        this.descricaoForm = ""
-        this.dataForm = null
-        this.prioridadeForm = false
+      } else {
+        this.id = null;
+        this.tituloForm = "";
+        this.descricaoForm = "";
+        this.dataForm = null;
+        this.prioridadeForm = false;
       }
     },
   },
@@ -201,8 +209,8 @@ export default {
     this.setAtividade();
   },
   computed: {
-    ...mapGetters(['usuario'])
-  }
+    ...mapGetters(["usuario"]),
+  },
 };
 </script>
   

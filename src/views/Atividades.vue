@@ -20,9 +20,7 @@
               :atividade="item"
             ></atividade-item>
             <template v-if="atividades.length == 0">
-              <h4 class="empty-list">
-                As suas atividades aparecerão aqui
-              </h4>
+              <h4 class="empty-list">As suas atividades aparecerão aqui</h4>
             </template>
           </div>
         </div>
@@ -59,7 +57,7 @@ export default {
     AtividadeDialog,
     PButton,
     AtividadeItem,
-    CustomTemplate
+    CustomTemplate,
   },
   data() {
     return {
@@ -72,15 +70,15 @@ export default {
   },
   methods: {
     getAtividades() {
-      api
-        .get(`/atividade/listar/${this.usuario.id}`)
-        .then((res) => {
-          let resData = res.data;
-          this.atividades = resData.sort((a, b) => Number(b.bool) - Number(a.bool))
-        });
+      api.get(`/atividade/listar/${this.usuario.id}`).then((res) => {
+        this.atividades = res.data;
+        this.atividades.sort(
+          (a, b) => Number(b.prioridade) - Number(a.prioridade)
+        );
+      });
     },
     openDialog(update) {
-      this.updateDialog = update
+      this.updateDialog = update;
       this.showDialog = !this.showDialog;
     },
     openUpdateDialog(item) {
