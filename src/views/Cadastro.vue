@@ -1,123 +1,167 @@
 <template>
   <body>
-    <main class="container">
-      <div class="form">
-        <div class="title">
-          <h1>Bem vindo!</h1>
+    <Header />
+    <div class="form">
+     
+
+      <h2>Cadastre-se</h2>
+      <div class="input group1">
+        <div class="name_user">
+          <span class="p-float-label">
+            <PInputText  id="username" type="text" v-model="nome" /> 
+            <label for="username"><i class="pi pi-user" /> Nome</label>
+          </span>
+          <small
+            v-if="(v$.nome.$invalid && submitted) || v$.nome.$pending.$response"
+            class="p-error"
+            >Nome obrigatório</small
+          >
         </div>
-
-        <h2>Cadastre-se</h2>
-        <div class="top-box">
-          <div>
-            <label for="name" id="lb-name">Nome </label>
-            <span class="icon_name"><i class="fa-solid fa-user"></i></span>
-            <input
-              type="text"
-              name="name"
-              id="inp-name"
-              placeholder="Digite o seu nome"
-              v-model="usuario.nome" required
+        <div class="inputtext3">
+          <span class="p-float-label p-input-icon-left" id="sp_calendar">
+            <PCalendar
+              dateFormat="dd/mm/yy"
+              id="inputtext-left2"
+              v-model="dataNascimento"
             />
-            
-          </div>
-
-          <div class="top-box-child">
-            <label id="lb_birth" for="birth">Data de nascimento</label>
-            <span class="icon_birth"><i class="fa-sharp fa-solid fa-cake-candles"></i></span>
-            <input
-              type="date"
-              name="birth"
-              id="birth"
-              v-model="usuario.dataNascimento" required
-            />
-          </div>
+            <label for="" id="lb_icon_calendar"
+              ><i class="fa-solid fa-calendar-days"></i
+            ></label>
+            <label for="inputtext-left">Nascimento</label>
+          </span>
         </div>
-        
-        <label for="institute">Instituição</label>
-        <span class="icon_institute"><i class="fa-sharp fa-solid fa-building-columns"></i></span>
-        <input
-          type="text"
-          name="institute"
-          id="inp-institute"
-          placeholder="Informe a instituição"
-          v-model="usuario.instituicao" class="inp_top_box2" required/>
-        
-
-        <label for="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="inp-email"
-          placeholder="Insira o seu email"
-          v-model="usuario.email" class="inp_top_box2" required
-        />
-        <span class="icon_email" ><i class="fa-solid fa-envelope"></i></span>
-
-        <label for="password">Senha</label>
-        <span class="icon_password"><i class="fa-solid fa-lock"></i></span>
-        <input
-          type="password"
-          name="password"
-          id="inp-password"
-          placeholder="Insira sua senha"
-          v-model="usuario.password" class="inp_top_box2" required
-        />
-
-        <label for="conf-password">Cofirme sua senha</label>
-        <span class="icon_conf_password"><i class="fa-solid fa-lock"></i></span>
-        <input
-          v-model="usuario.confirm"
-          type="password"
-          name="conf-password"
-          id="conf-password"
-          placeholder="Confirme sua senha" class="inp_top_box2" required
-        />
-
-        <button id="bt" @click.prevent="submitForm">Enviar</button>
       </div>
-    </main>
+
+      
+        <div class="input name_user">
+          <span class="p-float-label">
+            <PInputText id="institute" type="text" v-model="instituicao" />
+            <label for="institute"><i class="fa-solid fa-building-columns"></i> Instituição</label>
+          </span>
+        </div>
+
+        <div class="input email">
+          <span class="p-float-label">
+            <PInputText id="email" type="text" v-model="email" />
+            <label for="email"><i class="pi pi-envelope" /> Email</label>
+          </span>
+          <small
+            v-if="
+              (v$.email.$invalid && submitted) || v$.email.$pending.$response
+            "
+            class="p-error"
+            >Email obrigatório</small
+          >
+        </div>
+      
+        <div class="input password">
+          <span class="p-float-label">
+            <PPassword id="password" v-model="password" :feedback="false" />
+            <label for="password"><i class="pi pi-lock" /> Senha</label>
+          </span>
+          <small
+            v-if="
+              (v$.password.$invalid && submitted) ||
+              v$.password.$pending.$response
+            "
+            class="p-error"
+            >Senha obrigatória</small
+          >
+        </div>
+
+        <div class="input confirm_password">
+          <span class="p-float-label">
+            <PPassword
+              id="confirm_password"
+              v-model="confirm"
+              :feedback="false"
+            />
+            <label for="confirm_password"><i class="pi pi-lock" />  Confirme sua senha</label>
+          </span>
+          <small
+            v-if="
+              (v$.confirm.$invalid && submitted) ||
+              v$.confirm.$pending.$response
+            "
+            class="p-error"
+            >Confirmação de senha obrigatória</small
+          >
+        </div>
+     
+
+      <button id="bt" @click="submitForm">Enviar</button>
+    </div>
   </body>
 </template>
 
 <script>
 import Api from "../services/API";
-import useValidate from "@vuelidate/core";
-import { required, sameAs, minLength, helpers } from "@vuelidate/validators";
-import { reactive, computed } from "vue";
+import Header from "@/components/template/Header.vue";
+import PInputText from "primevue/inputtext";
+import PCalendar from "primevue/calendar";
+import PPassword from "primevue/password";
+import { useToast } from "vue-toastification";
+import { POSITION } from "vue-toastification";
+import { required, sameAs } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 export default {
-  
+  setup: () => ({ v$: useVuelidate() }),
+
+  components: {
+    Header,
+    PInputText,
+    PCalendar,
+    PPassword,
+  },
+
   data() {
     return {
-      usuario: {
-        nome: "",
-        email: "",
-        dataNascimento: "",
-        instituicao: "",
-          password: "",
-          confirm: "",
-      
-      },
+      nome: "",
+      email: "",
+      dataNascimento: "",
+      instituicao: "",
+      password: "",
+      confirm: "",
+      submitted: false,
+      toast: useToast(),
     };
   },
   methods: {
     submitForm() {
-      Api.post("/usuario/novo", {
-        nome: this.usuario.nome,
-        email: this.usuario.email,
-        dataNascimento: this.usuario.dataNascimento,
-        instituicao: this.usuario.instituicao,
-        senha: this.usuario.password,
-      }).then(res => {
-        this.usuario.nome = ""
-        this.usuario.email = ""
-        this.usuario.dataNascimento = null
-        this.usuario.instituicao = ""
-        this.usuario.password = ""
-        this.usuario.confirm = ""
-        this.$router.push('/login')
-      })
+      this.submitted = true;
+      if (!this.v$.$invalid) {
+        Api.post("/usuario/novo", {
+          nome: this.nome,
+          email: this.email,
+          dataNascimento: this.dataNascimento,
+          instituicao: this.instituicao,
+          senha: this.password,
+        }).then((res) => {
+          this.nome = "";
+          this.email = "";
+          this.dataNascimento = null;
+          this.instituicao = "";
+          this.password = "";
+          this.confirm = "";
+          this.$router.push("/login");
+          this.submitted = false;
+        });
+      } else {
+        this.toast.error("Preencha os campos obrigatórios", {
+          POSITION: POSITION.TOP_CENTER,
+          timeout: 2500,
+        });
+      }
     },
+  },
+  validations() {
+    return {
+      nome: { required },
+      email: { required },
+      password: { required },
+      confirm: { required, sameAs: sameAs(this.password) },
+    };
   },
 };
 </script>
@@ -135,16 +179,8 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  text-decoration: none;
+  // text-decoration: none;
   font-family: "Open Sans", sans-serif;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
 }
 
 .form {
@@ -155,128 +191,91 @@ body {
   padding: 4rem;
   border-radius: 15px;
   width: 400px;
-  height: 520px;
+  height: 500px;
   background-color: #f5f5f5;
   box-shadow: 2px 3px 5px #888;
+  margin: 0 auto;
 }
 
-h1 {
-  margin-top: -70px;
-  margin-bottom:0px;
+h2 {
+  margin-top: -50px;
+  margin-bottom: 5px;
+  font-size: 20px;
 }
 
-h2{
-  margin-bottom: 10px;
-}
-
-label {
-  padding: 5px;
-}
-
-.title {
+.group1 {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  color: $button;
 }
 
-#inp-name{
-  padding: 0 1rem;
-  width: 120px;
-  height: 25px;
-}
-
-.top-box {
-  display: flex;
-  text-align: start;
-  width: 306px;
-}
-.top-box div input[type="text"] {
-  height: 23px;
-}
-.top-box-child {
-  margin-left: 21px;
-}
-
-.top-box-child input[type="date"] {
-  width: 134px;
-  height: 23px;
-
-}
-
-input {
-  width: 103%;
-  padding-left: 1.5rem;
+#username {
   border-radius: 8px;
-  height: 28px;
-  border: 0.5px solid rgb(104, 104, 104, 0.2);
-  margin-bottom: 10px;
+  width: 8rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-input::placeholder {
-  color: #ccc;
+.inputtext3 {
+  width: 155px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
 }
 
-.top-box div input {
-  width: 120px;
-}
- 
-.icon_institute{
-  position: absolute;
-  margin-top:-99px;
-  margin-left: 0.4rem;
-  margin-bottom: 0.7rem;
-  opacity: 0.3;
+#lb_icon_calendar {
+  margin-left: -25px;
 }
 
-.icon_email{
-   position: absolute;
-   margin-left: 0.4rem;
-   margin-top:41px;
-   opacity: 0.3;
- }
+#institute {
+  border-radius: 8px;
+  width: 18rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 
- .icon_password{
-   position: absolute;
-   margin-left: 0.4rem;
-   margin-top: 185px;
-   opacity: 0.3;
- }
+#email {
+  border-radius: 8px;
+  width: 18rem;
+  margin-top: 5px;
+  margin-bottom: 5px;  
+}
 
- .icon_conf_password{
-   position: absolute;
-   margin-left: 0.4rem;
-   margin-top: 334px;
-   opacity: 0.3;
- }
+.password {
+  border-radius: 8px;
+  width: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 
- .icon_name{
-   position: absolute;
-   margin-left: -3.3rem;
-   margin-top: 22px;
-   opacity: 0.3;
- }
+.confirm_password {
+  border-radius: 8px;
+  width: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 
- .icon_birth{
-   position: absolute;
-   margin-left: -9.6rem;
-   margin-top: 23px;
-   opacity: 0.3;
- }
+.input {
+  margin-top: 1.2rem;
+  height: auto;
+}
 
-  button{
-   background-color: $button ;
-   border: none;
-   width: 110%;
-   height: 38px;
-   border-radius: 10px;
-   margin-top: 20px;
-   margin-bottom: -30px;
-   font-weight: bold;
-   font-size: 20px;
-   color: #FFFFFF;
-   box-shadow: 0px 2px 3px #888;
-   cursor: pointer;
-  }
+label{
+  font-size: 13px;
+  margin-left: 5px;
+}
+
+
+button {
+  background-color: $button;
+  border: none;
+  width: 18rem;
+  height: 38px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: -30px;
+  font-weight: bold;
+  font-size: 20px;
+  color: #ffffff;
+  box-shadow: 0px 2px 3px #888;
+  cursor: pointer;
+}
 </style>

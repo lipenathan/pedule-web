@@ -53,36 +53,6 @@
         >
       </div>
     </div>
-    <!-- <div class="time">
-      <p-calendar
-        :showIcon="true"
-        icon="pi pi-clock"
-        :timeOnly="true"
-        :showTime="true"
-        :step-minute="15"
-        v-model="horarioForm"
-        :manualInput="false"
-      >
-        <template #footer>
-          <div class="p-datepicker-buttonbar">
-            <button
-              class="p-button p-component p-button-text"
-              type="button"
-              @click="selecionar()"
-            >
-              Selecionar
-            </button>
-            <button
-              class="p-button p-component p-button-text"
-              type="button"
-              @click="limpar()"
-            >
-              Limpar
-            </button>
-          </div>
-        </template>
-      </p-calendar>
-    </div> -->
     <div class="field col-12 md:col-4">
       <label for="clock">Horário</label>
       <p-calendar

@@ -1,6 +1,6 @@
 <template>
   <div class="item" :style="{ background: '#' + materia.cor }">
-    <h3>{{ materia.titulo }}</h3>
+    <h5>{{ materia.titulo }}</h5>
     <p-button @click="edit()" class="edit" icon="pi pi-pencil"></p-button>
     <p-button
       class="delete"
@@ -84,12 +84,12 @@ $button-size: 3rem;
   margin: 0.5rem 0.5rem 0.5rem 0.5rem;
   border-radius: 10px;
   border: 1px solid;
-  height: 3rem;
+  height: 2.5rem;
   display: flex;
   align-items: center;
 }
 
-.item > h3 {
+.item > h5 {
   margin-left: 1rem;
   width: fit-content;
 }
