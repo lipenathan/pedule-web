@@ -199,7 +199,7 @@ export default {
         if (!this.switchColor) {
           this.corForm = "";
         }
-        api()
+        api
           .post("/materia/salvar", {
             id: this.id,
             titulo: this.tituloForm,
@@ -228,10 +228,6 @@ export default {
         });
       }
     },
-    disableColorPicker() {
-      if (!switchColor) {
-      }
-    },
     /**
      * lógica para ser usada no fluxo de edição:
      * Ao receber o objeto a ser editado via props e a flag de edição(update) == true
@@ -244,6 +240,7 @@ export default {
         this.descricaoForm = this.materia.descricao;
         this.professorForm = this.materia.professor;
         this.corForm = this.materia.cor;
+        this.switchColor = this.corForm !== ""
       } else {
         this.id = null;
         this.tituloForm = "";

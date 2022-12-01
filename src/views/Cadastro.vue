@@ -60,13 +60,13 @@
           name="password"
           id="inp-password"
           placeholder="Insira sua senha"
-          v-model="usuario.password.password" class="inp_top_box2" required
+          v-model="usuario.password" class="inp_top_box2" required
         />
 
         <label for="conf-password">Cofirme sua senha</label>
         <span class="icon_conf_password"><i class="fa-solid fa-lock"></i></span>
         <input
-          v-model="usuario.password.confirm"
+          v-model="usuario.confirm"
           type="password"
           name="conf-password"
           id="conf-password"
@@ -102,19 +102,19 @@ export default {
   },
   methods: {
     submitForm() {
-      Api().post("/usuario/novo", {
+      Api.post("/usuario/novo", {
         nome: this.usuario.nome,
         email: this.usuario.email,
         dataNascimento: this.usuario.dataNascimento,
         instituicao: this.usuario.instituicao,
-        senha: this.usuario.password.password,
+        senha: this.usuario.password,
       }).then(res => {
         this.usuario.nome = ""
         this.usuario.email = ""
         this.usuario.dataNascimento = null
         this.usuario.instituicao = ""
-        this.usuario.password.password = ""
-        this.usuario.password.confirm = ""
+        this.usuario.password = ""
+        this.usuario.confirm = ""
         this.$router.push('/login')
       })
     },

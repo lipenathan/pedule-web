@@ -1,18 +1,19 @@
 <template>
   
-    <div class="wrapper">
+    <div class="wrapper" v-if="(lembretes.length != 0 )">
+      
     <p-carousel
       :value="lembretes"
       :numVisible="1"
       :numScroll="1"
       :circular="true"
       :autoplayInterval="20000"
-      style="width: 100%; height: 100%;margin-top: 2em"
+      style="width: 100%; height: 100%; margin-top: 2em"
     >
       <template #item="lembrete">
         <div class="lembrete">
-          <h6>{{lembrete.data.titulo}}</h6>
-          <span>{{lembrete.data.descricao}}</span>
+          <h6>{{ lembrete.data.titulo }}</h6>
+          <span>{{ lembrete.data.descricao }}</span>
         </div>
       </template>
     </p-carousel>
@@ -20,9 +21,8 @@
  
   </div>
 </template>
-
 <script>
-import api from "@/services/API";
+import axios from "@/services/API";
 import { mapGetters } from "vuex";
 import PCarousel from "primevue/carousel";
 export default {
@@ -34,11 +34,12 @@ export default {
   },
   methods: {
     getLembretes() {
-      api()
+      axios
         .get(`/anotacao/listar/${this.usuario.id}`)
         .then((response) => {
           let anotacoes = response.data;
           this.lembretes = anotacoes.filter((anotacao) => anotacao.lembrete);
+          
         })
         .catch((error) => {});
     },
@@ -54,9 +55,18 @@ export default {
 <style scoped>
 .wrapper {
     width: 40rem;
-    height: 8rem;
+    height: 9rem;
     background: #F4F4D6;
     border-radius: 1rem;
+    
 }
+h6{
+  font-size: 1.5rem;
+margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 </style>

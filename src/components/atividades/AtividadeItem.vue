@@ -98,7 +98,7 @@ export default {
     },
 
     changeCheck() {
-      api().post("/atividade/atualizar", {
+      api.post("/atividade/atualizar", {
         id: this.atividade.id,
         titulo: this.atividade.titulo,
         descricao: this.atividade.descricao,

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
 import Cronograma from '@/views/Cronograma.vue'
 import Atividades from '@/views/Atividades.vue'
 import Materias from '@/views/Materias.vue'
@@ -15,15 +14,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    component: Login,
   },
   {
     path: '/login',
@@ -55,23 +46,10 @@ const routes = [
     name: 'cursos',
     component: Cursos
   },
-
-  {
-    path: '/req',
-    name: 'req',
-    component: Req
-  },
-
   {
     path: '/cadastro',
     name: 'cadastro',
     component: TelaCadastro,
-  },
-
-  {
-    path: '/teste',
-    name: 'teste',
-    component: Teste,
   },
 ];
 
@@ -80,10 +58,17 @@ const router = createRouter({
   routes,
 });
 
+function isRestrictedPage(pageName) {
+  let resctricted = false
+  resctricted = pageName !== "login"
+  resctricted = resctricted && pageName !== "cadastro"
+  return resctricted
+}
+
 router.beforeEach((to, from, next) => {
   const authenticated = store.getters.isAuthenticaded
 
-  if (to.name !== "login" && !authenticated) next({ name: "login" })
+  if (isRestrictedPage(to.name) && !authenticated) next({ name: "login" })
   else if (to.name === "login" && authenticated) next({ name: "cronograma" })
   else next()
 })
